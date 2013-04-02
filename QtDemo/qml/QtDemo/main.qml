@@ -3,8 +3,8 @@ import "engine.js" as Engine
 
 Item{
     id: app
-    width: 640
-    height: 480
+    width: 1280
+    height: 800
     clip: true
     Rectangle{
         anchors.centerIn: parent
@@ -18,6 +18,101 @@ Item{
         width: 1
         height:1000
         color: "black"
+    }
+
+    MouseArea{
+        id: worldMouseArea
+
+        property int startX: 0
+        property int startY: 0
+
+        property int oldX: 0
+        property int oldY: 0
+
+        property bool panning: false
+        property bool flicking: false
+
+        anchors.fill: parent
+
+        onClicked: {
+            var target = null;
+            var velocity = 0;
+
+            if (flicking){
+                var a=mouse.x-startX;
+                var b=mouse.y-startY;
+
+                velocity = Math.sqrt(a*a+b*b)
+
+                if (velocity < 10) flicking = false
+            }
+
+            if (flicking) {
+                print ("flick gesture recognized")
+
+                var angle = Math.atan2(-(mouse.y-startY),-(mouse.x-startX))*57.2957795
+                target = Engine.lookForSlides(mouse.x, mouse.y, angle)
+
+            } else if (panning) {
+                panning = false
+                return
+            }
+
+            if (!target){
+
+                var object = mapToItem(canvas, mouse.x, mouse.y)
+                var item = canvas.childAt(object.x,object.y)
+
+
+                if (item && item.objectName === 'slide') {
+                    target = Engine.selectTarget(item.uid)
+                } else {
+                    //select random target for now...
+                    target = Engine.selectTarget(null)
+                }
+            }
+
+            canvas.xOffset = -target.x
+            canvas.yOffset = -target.y
+            canvas.rotationOriginX = target.x
+            canvas.rotationOriginY = target.y
+            canvas.angle = -target.angle
+
+            canvas.zoomOutTarget = .4
+            canvas.zoomInTarget = 1.0/target.scale
+
+            zoomFlyByAnimation.restart()
+        }
+
+        onPressed: {
+            startX = mouse.x
+            startY = mouse.y
+            oldX = mouse.x
+            oldY = mouse.y
+            flicking = true
+            flickTimer.restart()
+        }
+
+        onPositionChanged: {
+            panning= true
+
+            canvas.xOffset+=(mouse.x - oldX)
+            canvas.yOffset+=(mouse.y - oldY)
+
+            oldX = mouse.x
+            oldY = mouse.y
+        }
+
+        //onFlickingChanged: print ("Flicking changed to: "+flicking)
+
+        Timer {
+            id: flickTimer
+            interval: 200  //Adjust suitable interval for flicking gesture
+            repeat: false
+            onTriggered: {
+                worldMouseArea.flicking = false
+            }
+        }
     }
 
     Item{
@@ -39,7 +134,7 @@ Item{
         property real rotationOriginX
         property real rotationOriginY
 
-        Behavior on angle {NumberAnimation{duration: 1000}}
+        Behavior on angle {RotationAnimation{duration: 1000; direction: RotationAnimation.Shortest}}
 
         Behavior on xOffset {
             id: xOffsetBehaviour
@@ -56,13 +151,24 @@ Item{
         Behavior on rotationOriginX {NumberAnimation{duration: 1000}}
         Behavior on rotationOriginY {NumberAnimation{duration: 1000}}
 
-        Rectangle{
+        //        Rectangle{
+        //            anchors.centerIn: parent
+        //            width:4000
+        //            height:4000
+        //            color:"transparent"
+        //            radius:2000
+        //            border{color:"red"; width:100}
+        //        }
+
+        Image{
+            id: logo
+            //Qt logo image taken 28.3.2013 from: http://upload.wikimedia.org/wikipedia/de/0/08/Qt_(Bibliothek)_logo.svg
+            source: "QtLogo.svg"
             anchors.centerIn: parent
-            width:4000
-            height:4000
-            color:"transparent"
-            radius:2000
-            border{color:"red"; width:100}
+            width: 5030
+            height: 6000
+            sourceSize: Qt.size(5030,6000)
+            smooth: !zoomFlyByAnimation.running
         }
 
         transform: [
@@ -87,76 +193,10 @@ Item{
     SequentialAnimation{
         id: zoomFlyByAnimation
         alwaysRunToEnd: true
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 500; to:canvas.zoomOutTarget; easing.type: Easing.OutCubic }
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 500; to:canvas.zoomInTarget; easing.type: Easing.InCubic }
+        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 700; to:canvas.zoomOutTarget; easing.type: Easing.OutCubic }
+        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 700; to:canvas.zoomInTarget; easing.type: Easing.OutBounce }
     }
 
-    MouseArea{
-        id: worldMouseArea
-
-        property int startX: 0
-        property int startY: 0
-
-        property int oldX: 0
-        property int oldY: 0
-
-        property bool panning: false
-
-        anchors.fill: parent
-
-        onClicked: {
-            if (panning) {
-                panning = false
-                return
-            }
-            var object = mapToItem(canvas, mouse.x, mouse.y)
-            var item = canvas.childAt(object.x,object.y)
-
-            var target = null
-
-            if (item && item.objectName === 'slide') {
-                target = Engine.selectTarget(item.uid)
-            } else {
-                //select random target for now...
-                target = Engine.selectTarget(null)
-            }
-
-            canvas.xOffset = -target.x
-            canvas.yOffset = -target.y
-            canvas.rotationOriginX = target.x
-            canvas.rotationOriginY = target.y
-            canvas.angle = -target.angle
-            canvas.zoomOutTarget = .4
-            canvas.zoomInTarget = 1.0/target.scale
-
-            zoomFlyByAnimation.restart()
-        }
-
-        onPressed: {
-            startX = mouse.x
-            startY = mouse.y
-            oldX = mouse.x
-            oldY = mouse.y
-        }
-
-        onPositionChanged: {
-            panning= true
-
-            canvas.xOffset+=(mouse.x - oldX)
-            canvas.yOffset+=(mouse.y - oldY)
-
-            oldX = mouse.x
-            oldY = mouse.y
-        }
-
-        onReleased: {
-            //TODO: make it so that movement slows down and stops
-            //rather that just stopping the movement
-        }
-
-        // drag.target: canvas
-        // drag.axis: Drag.XAndYAxis
-    }
 
     NavigationPanel{
         anchors{top:parent.top; right:parent.right}
