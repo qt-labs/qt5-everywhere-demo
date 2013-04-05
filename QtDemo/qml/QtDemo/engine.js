@@ -1,20 +1,22 @@
-var positions = [{x:1300, y:-500, angle:-45, borderColor: "blue", scale: .7, url: "demos/calqlatr/Calqlatr.qml"},
-        {x:-200, y:200, angle:0, borderColor: "grey", scale: .7, url: "demos/tweetsearch/tweetsearch.qml"},
-        {x:-1600, y:-1300, angle:170, borderColor: "green", scale: .8, url: "demos/calqlatr/Calqlatr.qml"},
-        {x:-1000, y:1500, angle:289, borderColor: "red", scale: .7, url: "demos/tweetsearch/tweetsearch.qml"},
-        {x: 1700, y: 1100, angle:270, borderColor: "lime", scale: .8, url: "demos/calqlatr/Calqlatr.qml"},
-        {x:50, y:-1500, angle:-45, borderColor: "black", scale: .7, url: "demos/tweetsearch/tweetsearch.qml"}
+var positions = [{x:1300, y:-500, angle: 0, borderColor: "blue", scale: .6, url: "demos/calqlatr/Calqlatr.qml", device: 0},
+        {x:-1200, y:200, angle:0, borderColor: "grey", scale: .6, url: "demos/tweetsearch/tweetsearch.qml", device: 0},
+        {x:-1600, y:-1300, angle: 0, borderColor: "green", scale: .6, url: "demos/samegame/samegame.qml", device: 0},
+        {x:-1300, y:1500, angle: 0, borderColor: "red", scale: 1.4, url: "demos/particledemo/particledemo.qml", device: 1},
+        {x: 1700, y: 1100, angle:0, borderColor: "lime", scale: .6, url: "demos/calqlatr/Calqlatr.qml", device: 0},
+        {x:50, y:-1500, angle: 0, borderColor: "black", scale: .6, url: "demos/tweetsearch/tweetsearch.qml", device: 0},
+        {x: 1200, y:-1600, angle: 0, borderColor: "orange", scale: .8, url: "demos/particledemo/particledemo.qml", device: 2},
+        {x: 500, y:1400, angle: 0, borderColor: "orange", scale: 2, url: "demos/particledemo/particledemo.qml", device: 3}
         ]
 
 var objects = []
 
 function initSlides(){
     positions.forEach(function(pos){
-        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.scale, pos.url)
+        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.scale, pos.url, pos.device)
     })
 }
 
-function createNew(x,y,angle,borderColor,scale,url){
+function createNew(x,y,angle,borderColor,scale,url,device){
     var component = Qt.createComponent("Slide.qml")
     if (component.status === Component.Ready)
     var object=component.createObject(canvas)
@@ -26,6 +28,8 @@ function createNew(x,y,angle,borderColor,scale,url){
                                   //in future objects will also
                                   //get destroyed and re-created
     object.borderColor = borderColor
+    object.device = device
+
 
     if (url){
         object.url = url;
@@ -53,7 +57,7 @@ function lookForSlides(x,y,angle){
             return selectTarget(positions[idx].uid);
         }
     }
-    return null; //no match
+    return selectTarget(null) //random
 }
 
 function selectTarget(uid){

@@ -6,11 +6,15 @@ Item{
     width: 1280
     height: 800
     clip: true
+
+    property bool showDebugRects: false
+
     Rectangle{
         anchors.centerIn: parent
         width:1000
         height:1
         color: "black"
+        visible: app.showDebugRects
     }
 
     Rectangle{
@@ -18,6 +22,7 @@ Item{
         width: 1
         height:1000
         color: "black"
+        visible: app.showDebugRects
     }
 
     MouseArea{
@@ -33,6 +38,21 @@ Item{
         property bool flicking: false
 
         anchors.fill: parent
+
+        onDoubleClicked: {
+            //to initial state
+            canvas.xOffset = 0
+            canvas.yOffset = 0
+            canvas.rotationOriginX = 0
+            canvas.rotationOriginY = 0
+            canvas.angle = 0
+
+            //canvas.zoomOutTarget = .4
+            //canvas.scalingFactor = 5
+            canvas.zoomInTarget = 0.2 //1.0/canvas.scalingFactor
+
+            zoomOutAnimation.restart()
+        }
 
         onClicked: {
             var target = null;
@@ -71,6 +91,7 @@ Item{
                     target = Engine.selectTarget(null)
                 }
             }
+            panning = false;
 
             canvas.xOffset = -target.x
             canvas.yOffset = -target.y
@@ -165,9 +186,9 @@ Item{
             //Qt logo image taken 28.3.2013 from: http://upload.wikimedia.org/wikipedia/de/0/08/Qt_(Bibliothek)_logo.svg
             source: "QtLogo.svg"
             anchors.centerIn: parent
-            width: 5030
-            height: 6000
-            sourceSize: Qt.size(5030,6000)
+            width: 503*2
+            height: 600*2
+            sourceSize: Qt.size(503*2,600*2)
             smooth: !zoomFlyByAnimation.running
         }
 
@@ -192,11 +213,17 @@ Item{
 
     SequentialAnimation{
         id: zoomFlyByAnimation
-        alwaysRunToEnd: true
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 700; to:canvas.zoomOutTarget; easing.type: Easing.OutCubic }
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 700; to:canvas.zoomInTarget; easing.type: Easing.OutBounce }
+        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 500; to:canvas.zoomOutTarget; easing.type: Easing.OutCubic }
+        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 500; to:canvas.zoomInTarget; easing.type: Easing.InCubic }
+        //NumberAnimation { target: canvas; property: "scalingFactor"; duration: 600; to:canvas.zoomInTarget; easing.type: Easing.OutBounce }
     }
 
+    SequentialAnimation{
+        id: zoomOutAnimation
+        alwaysRunToEnd: true
+        NumberAnimation { target: canvas; property: "scalingFactor"; duration: 1500; to:canvas.zoomInTarget; easing.type: Easing.OutCubic }
+        onStarted: zoomFlyByAnimation.stop()
+    }
 
     NavigationPanel{
         anchors{top:parent.top; right:parent.right}
