@@ -2,14 +2,11 @@ import QtQuick 2.0
 import QtQuick.Particles 2.0
 
 Rectangle {
-    width: 800
-    height: 480
-    color: "blue"
-
+    color: "#000022"
+    anchors.fill: parent
     ParticleSystem {
         id: system
-        width: 640
-        height: 480
+        anchors.fill: parent
         running: true
 
         Emitter {
