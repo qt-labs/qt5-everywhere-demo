@@ -46,9 +46,7 @@ function createNew(x,y,angle,borderColor,scale,url,device){
     object.device = device
     object.rotation = angle
     object.scale = scale
-    object.uid = objects.length+1 //TODO make unique
-                                  //in future objects will also
-                                  //get destroyed and re-created
+    object.uid = objects.length+1
     object.borderColor = borderColor
     object.x = x-object.width/2
     object.y = y-object.height/2
@@ -86,8 +84,17 @@ function lookForSlides(x,y,angle){
 }
 
 function loadCurrentDemo(){
-    if (currentDemoId != -1){
-        objects[currentDemoId].loadDemo();
+
+    // Load current demo and release all others possible running demos
+    if (currentDemoId != -1) {
+        for (var i=0; i < objects.length; i++){
+            if (currentDemoId == i){
+                objects[currentDemoId].loadDemo();
+            }
+            else {
+                objects[i].releaseDemo();
+            }
+        }
     }
 }
 
@@ -95,20 +102,17 @@ function selectTarget(uid){
 
     var idx = -1;
 
-        for (var i=0; i < objects.length; i++){
-            if (uid && objects[i].uid === uid){
-                idx = i
-            } else {
-                objects[i].releaseDemo();
-            }
+    for (var i=0; i < objects.length; i++){
+        if (uid && objects[i].uid === uid){
+            idx = i
+        } else {
+            objects[i].releaseDemo();
         }
-        if (idx !== -1){
-            currentDemoId = idx
-            return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "scale": positions[idx].scale}
-        }
+    }
+    if (idx !== -1){
+        currentDemoId = idx
+        return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "scale": positions[idx].scale}
+    }
 
-    //randomly select new target for now
-    idx = Math.floor(Math.random()*positions.length)
-    currentDemoId = idx //objects[idx].loadDemo();
-    return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "scale": positions[idx].scale}
+    return null;
 }

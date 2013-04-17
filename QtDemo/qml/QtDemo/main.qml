@@ -28,88 +28,59 @@ Rectangle{
 
     MouseArea{
         id: worldMouseArea
-        enabled: !zoomAnimation.running && !zoomFlyByAnimation.running
-
-        property int startX: 0
-        property int startY: 0
+        anchors.fill: parent
 
         property int oldX: 0
         property int oldY: 0
-
         property bool panning: false
-        //property bool flicking: false
 
-        anchors.fill: parent
+        onReleased: {
+            // Check the point only if we didn't move the mouse
+            if (!panning) {
+                var target = null;
 
-        onDoubleClicked: {
-            //to initial state
-            canvas.xOffset = 0
-            canvas.yOffset = 0
-            canvas.rotationOriginX = 0
-            canvas.rotationOriginY = 0
-            canvas.angle = 0
-            canvas.zoomInTarget = 0.2
+                // Check if there is target under mouse.
+                if (!target){
 
-            zoomAnimation.restart()
-        }
+                    var object = mapToItem(canvas, mouse.x, mouse.y)
+                    var item = canvas.childAt(object.x,object.y)
 
-        onClicked: {
-            print ("MOUSEAREA CLICKED!: "+mouse.x +", "+mouse.y)
-            var target = null;
-            var velocity = 0;
-
-            panning = false;
-
-            if (!target){
-
-                var object = mapToItem(canvas, mouse.x, mouse.y)
-                var item = canvas.childAt(object.x,object.y)
-
-                if (item && item.objectName === 'slide') {
-                    target = Engine.selectTarget(item.uid)
-                } else {
-                    //select random target for now...
-                    //target = Engine.selectTarget(null)
+                    if (item && item.objectName === 'slide') {
+                        target = Engine.selectTarget(item.uid)
+                    }
                 }
+
+                // If we found target, go to the target
+                if (target)
+                    canvas.goTo(target)
+                else // If not target under mouse -> go home
+                    canvas.goHome()
             }
-
-            if (!target) return
-            canvas.xOffset = -target.x
-            canvas.yOffset = -target.y
-            canvas.rotationOriginX = target.x
-            canvas.rotationOriginY = target.y
-            canvas.angle = -target.angle
-
-            canvas.zoomOutTarget = .4
-
-            canvas.zoomInTarget = 1.0/(target.scale)
-
-                //zoomFlyByAnimation.restart()
-                zoomAnimation.restart()
+            panning = false
         }
 
         onPressed: {
-            startX = mouse.x
-            startY = mouse.y
+            // Save mouse state
             oldX = mouse.x
             oldY = mouse.y
-            //flicking = true
-            //flickTimer.restart()
         }
 
         onPositionChanged: {
-            //if (!panning && (Math.abs(mouse.x-startX) >20 || Math.abs(mouse.x-startX) >20)){
-                panning= true
-            //}
+            var dx = mouse.x - oldX;
+            var dy = mouse.y - oldY;
 
-            canvas.xOffset+=(mouse.x - oldX)
-            canvas.yOffset+=(mouse.y - oldY)
+            if (!panning && (Math.abs(dx) > 1 || Math.abs(dy) > 1))
+                panning=true;
 
-            oldX = mouse.x
-            oldY = mouse.y
+            oldX = mouse.x;
+            oldY = mouse.y;
+
+            if (!zoomAnimation.running)
+            {
+                canvas.xOffset += dx;
+                canvas.yOffset += dy;
+            }
         }
-
-        //onFlickingChanged: print ("Flicking changed to: "+flicking)
 
     }
     Item{
@@ -127,7 +98,7 @@ Rectangle{
         pinch.maximumScale: 5
         pinch.maximumRotation: 360
         pinch.minimumRotation: -360
-        enabled: !zoomAnimation.running && !zoomFlyByAnimation.running
+        enabled: !zoomAnimation.running
 
         property bool pinching: false
 
@@ -137,10 +108,10 @@ Rectangle{
             pinchProxy.scale = canvas.scalingFactor
 
             if (canvas.scalingFactor>1){
-            var object = mapToItem(canvas, pinch.center.x, pinch.center.y)
+                var object = mapToItem(canvas, pinch.center.x, pinch.center.y)
 
-            canvas.rotationOriginX = object.x
-            canvas.rotationOriginY = object.y
+                canvas.rotationOriginX = object.x
+                canvas.rotationOriginY = object.y
             }
         }
         onPinchFinished: pinching = false;
@@ -164,6 +135,30 @@ Rectangle{
 
         property real rotationOriginX
         property real rotationOriginY
+
+        function goHome()
+        {
+            xOffset = 0
+            yOffset = 0
+            rotationOriginX = 0
+            rotationOriginY = 0
+            angle = 0
+            zoomInTarget = 0.2
+
+            zoomAnimation.restart();
+        }
+        function goTo(target)
+        {
+            xOffset = -target.x
+            yOffset = -target.y
+            rotationOriginX = target.x
+            rotationOriginY = target.y
+            angle = -target.angle
+            zoomOutTarget = .4
+            zoomInTarget = 1.0/(target.scale)
+
+            zoomAnimation.restart()
+        }
 
         Behavior on angle {
             RotationAnimation{
@@ -214,7 +209,7 @@ Rectangle{
             width: Style.LOGO_WIDTH
             height: Style.LOGO_HEIGHT
             sourceSize: Qt.size(Style.LOGO_WIDTH, Style.LOGO_HEIGHT)
-            smooth: !zoomFlyByAnimation.running
+            smooth: !zoomAnimation.running
             opacity: .0
             Behavior on opacity {
                 SequentialAnimation{
@@ -244,17 +239,8 @@ Rectangle{
     }
 
     SequentialAnimation{
-        id: zoomFlyByAnimation
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: Style.APP_ANIMATION_DELAY/2; to:canvas.zoomOutTarget; easing.type: Easing.OutCubic }
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: Style.APP_ANIMATION_DELAY/2; to:canvas.zoomInTarget; easing.type: Easing.InCubic }
-        //NumberAnimation { target: canvas; property: "scalingFactor"; duration: 600; to:canvas.zoomInTarget; easing.type: Easing.OutBounce }
-    }
-
-    SequentialAnimation{
         id: zoomAnimation
-        alwaysRunToEnd: true
         NumberAnimation { target: canvas; property: "scalingFactor"; duration: Style.APP_ANIMATION_DELAY; to:canvas.zoomInTarget }
-        onStarted: zoomFlyByAnimation.stop()
         onRunningChanged: {
             if (!running && canvas.zoomInTarget !== .2){
                 print ("zoomanimation calls loaddemo")
