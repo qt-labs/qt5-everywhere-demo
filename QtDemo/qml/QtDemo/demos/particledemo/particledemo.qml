@@ -4,42 +4,33 @@ import QtQuick.Particles 2.0
 Rectangle {
     color: "#000022"
     anchors.fill: parent
-    ParticleSystem {
-        id: system
+
+    /**
+     * Create six ParticleSysComponents for drawing particles
+     * in the place of multitouch points with the given color.
+     */
+    ParticleSysComponent{ point: point1; particleColor: "#ff0000" }
+    ParticleSysComponent{ point: point2; particleColor: "#00ff00" }
+    ParticleSysComponent{ point: point3; particleColor: "#0000ff" }
+    ParticleSysComponent{ point: point4; particleColor: "#ffffff" }
+    ParticleSysComponent{ point: point5; particleColor: "#ff00ff" }
+    ParticleSysComponent{ point: point6; particleColor: "#00ffff" }
+
+    /**
+     * In this demo we only support six touch point at the same time.
+     */
+    MultiPointTouchArea {
+        id: multiPointTouchArea
         anchors.fill: parent
-        running: true
-
-        Emitter {
-            id: emitter
-            lifeSpan: 500
-            emitRate: 20
-            size: 12
-            endSize: 30
-            sizeVariation: .5
-            enabled: mouseArea.pressed
-            velocity: AngleDirection{angle:0; angleVariation: 360; magnitude:100}
-            acceleration: AngleDirection{angle:0; angleVariation: 360; magnitude: 100}
-            shape: EllipseShape{fill:true}
-        }
-
-        ImageParticle {
-            source: "particle.png"
-            alpha: 0.0
-        }
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        onPositionChanged: {
-            emitter.x=mouse.x
-            emitter.y=mouse.y
-        }
-
-        onPressed: {
-            emitter.x=mouse.x
-            emitter.y=mouse.y
-            emitter.burst(10)
-        }
+        minimumTouchPoints: 1
+        maximumTouchPoints: 6
+        touchPoints: [
+            TouchPoint { id: point1 },
+            TouchPoint { id: point2 },
+            TouchPoint { id: point3 },
+            TouchPoint { id: point4 },
+            TouchPoint { id: point5 },
+            TouchPoint { id: point6 }
+        ]
     }
 }
