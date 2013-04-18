@@ -17,6 +17,7 @@ Rectangle {
     property int device: 0
     property bool loaded: false
     property real targetScale: 1
+    property real targetAngle: device === 0 ? -90 : 0
 
     property int maskWidth: device === 0 ? 375 : device === 1 ? 900 : device === 2 ? 840 : 867
     property int maskHeight: device === 0 ? 835 : device === 1 ? 661 : device === 2 ? 763 : 520
@@ -27,6 +28,15 @@ Rectangle {
     property int maskVerticalOffset: device === 0 ? 44 : device === 1 ? 37 : device === 2 ? 91 :  51
     property int maskHorizontalOffset: device === 0 ? -2 : device === 1 ? -5 : device === 2 ? 0 : 1
 
+    function targetWidth()
+    {
+        return device == 0 ? height*scale: width*scale;
+    }
+
+    function targetHeight()
+    {
+        return device == 0 ? width*scale : height*scale;
+    }
 
     Rectangle{
         id: demoContainer

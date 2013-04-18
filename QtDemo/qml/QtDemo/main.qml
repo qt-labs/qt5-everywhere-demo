@@ -15,8 +15,8 @@ Rectangle{
 
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
-            var appWidth = app.width * 0.90;
-            var appHeight = app.height * 0.90;
+            var appWidth = app.width*0.9;
+            var appHeight = app.height*0.9;
 
             var bbox = Engine.boundingBox();
             app.homeScaleFactor = Engine.scaleToBox(appWidth, appHeight, bbox.width, bbox.height);
@@ -181,7 +181,7 @@ Rectangle{
             yOffset = -target.y;
             rotationOriginX = target.x;
             rotationOriginY = target.y;
-            angle = -target.angle;
+            angle = -target.angle + target.targetAngle;
             zoomInTarget = target.targetScale;
 
             zoomAnimation.restart()

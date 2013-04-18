@@ -110,7 +110,9 @@ function selectTarget(uid){
     }
     if (idx !== -1){
         currentDemoId = idx
-        return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "targetScale": objects[idx].targetScale}
+        return {"x": positions[idx].x, "y":  positions[idx].y,
+                "angle": positions[idx].angle, "targetScale": objects[idx].targetScale,
+                "targetAngle": objects[idx].targetAngle}
     }
 
     return null;
@@ -144,18 +146,11 @@ function boundingBox(){
 
 function scaleToBox(destWidth, destHeight, sourceWidth, sourceHeight)
 {
-    var xscale = destWidth / sourceWidth;
-    var yscale = destHeight / sourceHeight;
-
-    var scale = Math.max(xscale, yscale);
-    if (sourceWidth > destWidth || sourceHeight > destHeight)
-        scale = Math.min(xscale,yscale);
-
-    return scale;
+    return Math.min(destWidth / sourceWidth, destHeight / sourceHeight);
 }
 
 function updateObjectScales(destWidth, destHeight)
 {
     for (var i=0; i<objects.length; i++)
-        objects[i].targetScale = scaleToBox(destWidth, destHeight, objects[i].width*objects[i].scale, objects[i].height*objects[i].scale);
+        objects[i].targetScale = scaleToBox(destWidth, destHeight, objects[i].targetWidth(), objects[i].targetHeight());
 }
