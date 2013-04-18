@@ -4,11 +4,34 @@ import "style.js" as Style
 
 Rectangle{
     id: app
-    width: Style.APP_WIDTH
-    height: Style.APP_HEIGHT
     clip: true
     color: "white"
     property bool showDebugRects: false //true
+    property real homeScaleFactor: .2
+    property real minScaleFactor: .04
+    property real maxScaleFactor: 1
+    property real tapLimitX : 2
+    property real tapLimitY : 1
+
+    function calculateScales(){
+        if (app.width > 0 && app.height > 0){
+            var appWidth = app.width * 0.90;
+            var appHeight = app.height * 0.90;
+
+            var bbox = Engine.boundingBox();
+            app.homeScaleFactor = Engine.scaleToBox(appWidth, appHeight, bbox.width, bbox.height);
+            app.minScaleFactor = app.homeScaleFactor / 5;
+            app.maxScaleFactor = app.homeScaleFactor * 5;
+
+            Engine.updateObjectScales(app.width, app.height);
+            tapLimitX = Math.max(1,app.width * 0.02);
+            tapLimitY = Math.max(1,app.height * 0.02);
+        }
+
+    }
+
+    onWidthChanged: calculateScales();
+    onHeightChanged: calculateScales();
 
     Rectangle{
         anchors.centerIn: parent
@@ -32,11 +55,18 @@ Rectangle{
 
         property int oldX: 0
         property int oldY: 0
+        property int startMouseX: 0
+        property int startMouseY: 0
         property bool panning: false
 
         onReleased: {
-            // Check the point only if we didn't move the mouse
-            if (!panning) {
+            var dx = mouse.x - startMouseX;
+            var dy = mouse.y - startMouseY;
+
+            // Check the point only if we didn't move the mouse too much
+            if (!mouse.wasHeld && Math.abs(dx) <= app.tapLimitX && Math.abs(dy) <= app.tapLimitY)
+            {
+                panning = false
                 var target = null;
 
                 // Check if there is target under mouse.
@@ -56,27 +86,26 @@ Rectangle{
                 else // If not target under mouse -> go home
                     canvas.goHome()
             }
-            panning = false
         }
 
         onPressed: {
             // Save mouse state
             oldX = mouse.x
             oldY = mouse.y
+            startMouseX = mouse.x
+            startMouseY = mouse.y
         }
 
         onPositionChanged: {
             var dx = mouse.x - oldX;
             var dy = mouse.y - oldY;
 
-            if (!panning && (Math.abs(dx) > 1 || Math.abs(dy) > 1))
-                panning=true;
-
             oldX = mouse.x;
             oldY = mouse.y;
 
             if (!zoomAnimation.running)
             {
+                panning = true;
                 canvas.xOffset += dx;
                 canvas.yOffset += dy;
             }
@@ -94,8 +123,8 @@ Rectangle{
         id: worldPinchArea
         anchors.fill: parent
         pinch.target: pinchProxy
-        pinch.minimumScale: .2
-        pinch.maximumScale: 5
+        pinch.minimumScale: app.minScaleFactor
+        pinch.maximumScale: app.maxScaleFactor
         pinch.maximumRotation: 360
         pinch.minimumRotation: -360
         enabled: !zoomAnimation.running
@@ -128,34 +157,32 @@ Rectangle{
         property real xOffset: 0
         property real yOffset: 0
         property real angle: 0
-        property real scalingFactor: .2
 
-        property real zoomInTarget: 1
-        property real zoomOutTarget: .4
+        property real zoomInTarget: app.homeScaleFactor
+        property real scalingFactor: app.homeScaleFactor
 
         property real rotationOriginX
         property real rotationOriginY
 
         function goHome()
         {
-            xOffset = 0
-            yOffset = 0
-            rotationOriginX = 0
-            rotationOriginY = 0
-            angle = 0
-            zoomInTarget = 0.2
+            xOffset = 0;
+            yOffset = 0;
+            rotationOriginX = 0;
+            rotationOriginY = 0;
+            angle = 0;
+            zoomInTarget = app.homeScaleFactor;
 
             zoomAnimation.restart();
         }
         function goTo(target)
         {
-            xOffset = -target.x
-            yOffset = -target.y
-            rotationOriginX = target.x
-            rotationOriginY = target.y
-            angle = -target.angle
-            zoomOutTarget = .4
-            zoomInTarget = 1.0/(target.scale)
+            xOffset = -target.x;
+            yOffset = -target.y;
+            rotationOriginX = target.x;
+            rotationOriginY = target.y;
+            angle = -target.angle;
+            zoomInTarget = target.targetScale;
 
             zoomAnimation.restart()
         }
@@ -242,8 +269,7 @@ Rectangle{
         id: zoomAnimation
         NumberAnimation { target: canvas; property: "scalingFactor"; duration: Style.APP_ANIMATION_DELAY; to:canvas.zoomInTarget }
         onRunningChanged: {
-            if (!running && canvas.zoomInTarget !== .2){
-                print ("zoomanimation calls loaddemo")
+            if (!running && canvas.zoomInTarget !== app.homeScaleFactor){
                 Engine.loadCurrentDemo();
             }
         }
@@ -255,7 +281,6 @@ Rectangle{
 
 
     Component.onCompleted: {
-
         logo.opacity=1.0
         Engine.showBootScreen()
 

@@ -6,6 +6,7 @@ Rectangle {
 
     width: device === 0 ? 375 : device === 1 ? 838 : device === 2 ? 840 : 867
     height: device === 0 ? 835 : device === 1 ? 589 : device === 2 ? 763 : 520
+    scale: device === 0 ? .6 : device === 1 ? 1.4 : device === 2 ? .8 : 2
 
     color: "transparent"
     border {color: app.showDebugRects ? borderColor : "transparent"; width:3}
@@ -15,7 +16,7 @@ Rectangle {
     property string url: ""
     property int device: 0
     property bool loaded: false
-
+    property real targetScale: 1
 
     property int maskWidth: device === 0 ? 375 : device === 1 ? 900 : device === 2 ? 840 : 867
     property int maskHeight: device === 0 ? 835 : device === 1 ? 661 : device === 2 ? 763 : 520

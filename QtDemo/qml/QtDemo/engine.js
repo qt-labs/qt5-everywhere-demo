@@ -1,19 +1,19 @@
-var positions = [{x:700, y:-400, angle: 0, borderColor: "blue", scale: .6, url: "demos/samegame/samegame.qml", device: 0},
-        {x:1200, y:-200, angle:5, borderColor: "grey", scale: .6, url: "demos/tweetsearch/tweetsearch.qml", device: 0},
-        {x:-700, y:-300, angle: 2, borderColor: "green", scale: .6, url: "demos/calqlatr/Calqlatr.qml", device: 0},
-        {x:-1300, y:400, angle: -2, borderColor: "red", scale: 1.4, url: "demos/particledemo/particledemo.qml", device: 1},
-        {x: 900, y: 200, angle: 0, borderColor: "lime", scale: .6, url: "demos/tweetsearch/tweetsearch.qml", device: 0},
-        {x:-300, y:-900, angle: 8, borderColor: "black", scale: .6, url: "demos/calqlatr/Calqlatr.qml", device: 0},
-        {x: 300, y:-1000, angle: 0, borderColor: "orange", scale: .8, url: "demos/particledemo/particledemo.qml", device: 2},
-        {x: 200, y:1100, angle: -8, borderColor: "orange", scale: 2, url: "demos/particledemo/particledemo.qml", device: 3},
+var positions = [{x:700, y:-400, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0},
+        {x:1200, y:-200, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
+        {x:-700, y:-300, angle: 2, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0},
+        {x:-1300, y:400, angle: -2, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
+        {x: 900, y: 200, angle: 0, borderColor: "lime", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
+        {x:-300, y:-900, angle: 8, borderColor: "black", url: "demos/calqlatr/Calqlatr.qml", device: 0},
+        {x: 300, y:-1000, angle: 0, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 2},
+        {x: 200, y:1100, angle: -8, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 3},
 
-        {x: -1300, y:1100, angle: 3, borderColor: "orange", scale: .8, url: "demos/boot/BootScreen.qml", device: 2},
-        {x: 1500, y:800, angle: -3, borderColor: "orange", scale: .8, url: "demos/boot/BootScreen.qml", device: 2},
-        {x: 1500, y:-1100, angle: -3, borderColor: "red", scale: 1.4, url: "demos/particledemo/particledemo.qml", device: 1},
-        {x: 2000, y: 0, angle: 5, borderColor: "red", scale: 1.4, url: "demos/photosurface/photosurface.qml", device: 1},
-        {x: -1700, y: -900, angle: 3, borderColor: "orange", scale: 2, url: "demos/particledemo/particledemo.qml", device: 3},
+        {x: -1300, y:1100, angle: 3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 2},
+        {x: 1500, y:800, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 2},
+        {x: 1500, y:-1100, angle: -3, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
+        {x: 2000, y: 0, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 1},
+        {x: -1700, y: -900, angle: 3, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 3},
 
-        {x:-2200, y:200, angle: -5, borderColor: "blue", scale: .6, url: "demos/samegame/samegame.qml", device: 0}
+        {x:-2200, y:200, angle: -5, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0}
         ]
 
 var order = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
@@ -24,11 +24,11 @@ var objects = []
 
 function initSlides(){
     positions.forEach(function(pos){
-        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.scale, pos.url, pos.device)
+        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.url, pos.device)
     })
 }
 
-function showBootScreen(){
+function showBootScreen(scale){
     print ("Show BootScreen")
     var component = Qt.createComponent("demos/boot/BootScreen.qml")
     print ("component on: "+component)
@@ -39,13 +39,12 @@ function showBootScreen(){
     }
 }
 
-function createNew(x,y,angle,borderColor,scale,url,device){
+function createNew(x,y,angle,borderColor,url,device){
     var component = Qt.createComponent("Slide.qml")
     if (component.status === Component.Ready){
     var object=component.createObject(canvas)
     object.device = device
     object.rotation = angle
-    object.scale = scale
     object.uid = objects.length+1
     object.borderColor = borderColor
     object.x = x-object.width/2
@@ -111,8 +110,52 @@ function selectTarget(uid){
     }
     if (idx !== -1){
         currentDemoId = idx
-        return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "scale": positions[idx].scale}
+        return {"x": positions[idx].x, "y":  positions[idx].y, "angle": positions[idx].angle, "targetScale": objects[idx].targetScale}
     }
 
     return null;
+}
+
+function boundingBox(){
+    var minX = 0, maxX = 0, minY = 0, maxY = 0;
+
+    for (var i=0; i<objects.length; i++){
+        var scale = objects[i].scale;
+        var w2 = objects[i].width/2*scale;
+        var h2 = objects[i].height/2*scale;
+        var left = objects[i].x - w2;
+        var right = objects[i].x - w2;
+        var top = objects[i].y - h2;
+        var bottom = objects[i].y + h2;
+
+        if (left < minX)
+            minX = left;
+        else if (right > maxX)
+            maxX = right;
+
+        if (top < minY)
+            minY = top;
+        else if (bottom > maxY)
+            maxY = bottom;
+    }
+
+    return {"x": minX, "y": minY, "width": maxX-minX, "height": maxY-minY};
+}
+
+function scaleToBox(destWidth, destHeight, sourceWidth, sourceHeight)
+{
+    var xscale = destWidth / sourceWidth;
+    var yscale = destHeight / sourceHeight;
+
+    var scale = Math.max(xscale, yscale);
+    if (sourceWidth > destWidth || sourceHeight > destHeight)
+        scale = Math.min(xscale,yscale);
+
+    return scale;
+}
+
+function updateObjectScales(destWidth, destHeight)
+{
+    for (var i=0; i<objects.length; i++)
+        objects[i].targetScale = scaleToBox(destWidth, destHeight, objects[i].width*objects[i].scale, objects[i].height*objects[i].scale);
 }
