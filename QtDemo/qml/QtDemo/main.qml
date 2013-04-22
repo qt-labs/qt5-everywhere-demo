@@ -6,7 +6,6 @@ Rectangle{
     id: app
     clip: true
     color: "white"
-    property bool showDebugRects: false //true
     property real homeScaleFactor: .2
     property real minScaleFactor: .04
     property real maxScaleFactor: 1
@@ -20,34 +19,20 @@ Rectangle{
 
             var bbox = Engine.boundingBox();
             app.homeScaleFactor = Engine.scaleToBox(appWidth, appHeight, bbox.width, bbox.height);
-            app.minScaleFactor = app.homeScaleFactor / 5;
-            app.maxScaleFactor = app.homeScaleFactor * 5;
+            app.minScaleFactor = app.homeScaleFactor / 10;
+            app.maxScaleFactor = app.homeScaleFactor * 10;
 
             Engine.updateObjectScales(app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
+
+            canvas.goHome()
         }
 
     }
 
     onWidthChanged: calculateScales();
     onHeightChanged: calculateScales();
-
-    Rectangle{
-        anchors.centerIn: parent
-        width:1000
-        height:1
-        color: "black"
-        visible: app.showDebugRects
-    }
-
-    Rectangle{
-        anchors.centerIn: parent
-        width: 1
-        height:1000
-        color: "black"
-        visible: app.showDebugRects
-    }
 
     MouseArea{
         id: worldMouseArea
@@ -158,8 +143,8 @@ Rectangle{
         property real yOffset: 0
         property real angle: 0
 
-        property real zoomInTarget: app.homeScaleFactor
-        property real scalingFactor: app.homeScaleFactor
+        property real zoomInTarget: 5
+        property real scalingFactor: 5
 
         property real rotationOriginX
         property real rotationOriginY
@@ -220,15 +205,6 @@ Rectangle{
             enabled: !worldPinchArea.pinching
         }
 
-        //        Rectangle{
-        //            anchors.centerIn: parent
-        //            width:4000
-        //            height:4000
-        //            color:"transparent"
-        //            radius:2000
-        //            border{color:"red"; width:100}
-        //        }
-
         Image{
             id: logo
             source: "QtLogo.png"
@@ -237,13 +213,7 @@ Rectangle{
             height: Style.LOGO_HEIGHT
             sourceSize: Qt.size(Style.LOGO_WIDTH, Style.LOGO_HEIGHT)
             smooth: !zoomAnimation.running
-            opacity: .0
-            Behavior on opacity {
-                SequentialAnimation{
-                    PauseAnimation {duration: 800}
-                    NumberAnimation {duration: 300}
-                }
-            }
+            opacity: 1.0
         }
 
         transform: [
@@ -265,12 +235,19 @@ Rectangle{
         ]
     }
 
-    SequentialAnimation{
+    NumberAnimation {
         id: zoomAnimation
-        NumberAnimation { target: canvas; property: "scalingFactor"; duration: Style.APP_ANIMATION_DELAY; to:canvas.zoomInTarget }
+        target: canvas;
+        property: "scalingFactor";
+        duration: Style.APP_ANIMATION_DELAY;
+        to:canvas.zoomInTarget
+
         onRunningChanged: {
-            if (!running && canvas.zoomInTarget !== app.homeScaleFactor){
-                Engine.loadCurrentDemo();
+            if (!running) {
+                if (canvas.zoomInTarget !== app.homeScaleFactor)
+                    Engine.loadCurrentDemo();
+                else
+                    Engine.releaseDemos();
             }
         }
     }
@@ -279,11 +256,7 @@ Rectangle{
         anchors{top:parent.top; right:parent.right}
     }
 
-
     Component.onCompleted: {
-        logo.opacity=1.0
-        Engine.showBootScreen()
-
         Engine.initSlides()
     }
 }

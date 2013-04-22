@@ -4,9 +4,9 @@ Rectangle {
     id: slide
     objectName: "slide"
 
-    width: device === 0 ? 375 : device === 1 ? 838 : device === 2 ? 840 : 867
-    height: device === 0 ? 835 : device === 1 ? 589 : device === 2 ? 763 : 520
-    scale: device === 0 ? .6 : device === 1 ? 1.4 : device === 2 ? .8 : 2
+    width: 867
+    height: 520
+    scale: 2
 
     color: "transparent"
     border {color: app.showDebugRects ? borderColor : "transparent"; width:3}
@@ -19,14 +19,14 @@ Rectangle {
     property real targetScale: 1
     property real targetAngle: device === 0 ? -90 : 0
 
-    property int maskWidth: device === 0 ? 375 : device === 1 ? 900 : device === 2 ? 840 : 867
-    property int maskHeight: device === 0 ? 835 : device === 1 ? 661 : device === 2 ? 763 : 520
+    property int maskWidth: 867
+    property int maskHeight: 520
 
-    property int demoWidth: device === 0 ? 321 : device === 1 ? 735 : device === 2 ? 688 : 603
-    property int demoHeight: device === 0 ? 481 : device === 1 ? 460 : device === 2 ? 462 : 378
+    property int demoWidth: 603
+    property int demoHeight: 378
 
-    property int maskVerticalOffset: device === 0 ? 44 : device === 1 ? 37 : device === 2 ? 91 :  51
-    property int maskHorizontalOffset: device === 0 ? -2 : device === 1 ? -5 : device === 2 ? 0 : 1
+    property int maskVerticalOffset: 51
+    property int maskHorizontalOffset: 1
 
     function targetWidth()
     {
@@ -62,19 +62,6 @@ Rectangle {
         z: slide.loaded ? 1:-1
     }
 
-//    ShaderEffectSource {
-//        id: disabledImage
-//        anchors.centerIn: demoContainer
-//        width: demoContainer.width
-//        height: demoContainer.height
-//        sourceItem: demoContainer
-//        live: false
-//        visible: true
-//        smooth: false
-//        z: slide.loaded ? -1:1
-//    }
-
-
     Image {
         id: deviceMaskImage
         anchors.centerIn: parent
@@ -87,7 +74,6 @@ Rectangle {
                                                                             ""
         width: maskWidth
         height: maskHeight
-        sourceSize: Qt.size(maskWidth, maskHeight)
         z: 2
     }
 
