@@ -1,20 +1,12 @@
-var positions = [{x:700, y:-400, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0},
-                 {x:1200, y:-200, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
-                 {x:-700, y:-300, angle: 2, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0},
-                 {x:-1300, y:400, angle: -2, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
-                 {x: 900, y: 200, angle: 0, borderColor: "lime", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
-                 {x:-300, y:-900, angle: 8, borderColor: "black", url: "demos/calqlatr/Calqlatr.qml", device: 0},
-                 {x: 300, y:-1000, angle: 0, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 2},
-                 {x: 200, y:1100, angle: -8, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 3},
-
-                 {x: -1300, y:1100, angle: 3, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 2},
+var positions = [{x:-900, y:-700, angle: 2, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0},
+                 {x:200, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0},
+                 {x:1000, y:-400, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
+                 {x: 1900, y: -200, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 1},
+                 {x:-1700, y:100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
+                 {x: -1400, y:1100, angle: 3, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 2},
                  {x: 1500, y:800, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 2},
-                 {x: 1500, y:-1100, angle: -3, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
-                 {x: 2000, y: 0, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 1},
-                 {x: -1700, y: -900, angle: 3, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 3},
+                 {x: 200, y:1300, angle: -8, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 3}]
 
-                 {x:-2200, y:200, angle: -5, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0}
-        ]
 var widths = [375, 838, 840, 867]
 var heights = [835, 589, 763, 520]
 var scales = [0.6, 1.4, 0.8, 2]
@@ -146,12 +138,12 @@ function boundingBox(){
 
     for (var i=0; i<objects.length; i++){
         var scale = objects[i].scale;
-        var w2 = objects[i].width/2*scale;
-        var h2 = objects[i].height/2*scale;
-        var left = objects[i].x - w2;
-        var right = objects[i].x - w2;
-        var top = objects[i].y - h2;
-        var bottom = objects[i].y + h2;
+        var w2 = objects[i].width/2;
+        var h2 = objects[i].height/2;
+        var left = (objects[i].x - w2)*scale;
+        var right = (objects[i].x + w2)*scale;
+        var top = (objects[i].y - h2)*scale;
+        var bottom = (objects[i].y + h2)*scale;
 
         if (left < minX)
             minX = left;
@@ -164,7 +156,7 @@ function boundingBox(){
             maxY = bottom;
     }
 
-    return {"x": minX, "y": minY, "width": maxX-minX, "height": maxY-minY};
+    return {"x": minX, "y": minY, "width": maxX-minX, "height": maxY-minY, "centerX": (minX+maxX)/2, "centerY": (minY+maxY)/2};
 }
 
 function scaleToBox(destWidth, destHeight, sourceWidth, sourceHeight)

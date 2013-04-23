@@ -74,6 +74,17 @@ Rectangle {
         z: 2
     }
 
+    Image {
+        id: islandImage
+        anchors.top: deviceMaskImage.bottom
+        anchors.topMargin: -deviceMaskImage.height*0.4
+        anchors.horizontalCenter: deviceMaskImage.horizontalCenter
+        source: "images/LaunchDemoVectors-02.svg"
+        width: deviceMaskImage.width*1.5
+        height: deviceMaskImage.height
+        z: -2
+    }
+
     function loadDemo(){
         if (!slide.url || slide.loaded) return;
 

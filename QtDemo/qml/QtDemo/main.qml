@@ -7,6 +7,8 @@ Rectangle{
     clip: true
     color: "white"
     property real homeScaleFactor: .2
+    property int homeCenterX: 0
+    property int homeCenterY: 0
     property real minScaleFactor: .04
     property real maxScaleFactor: 1
     property real tapLimitX : 2
@@ -19,9 +21,10 @@ Rectangle{
 
             var bbox = Engine.boundingBox();
             app.homeScaleFactor = Engine.scaleToBox(appWidth, appHeight, bbox.width, bbox.height);
+            app.homeCenterX = bbox.centerX;
+            app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;
             app.maxScaleFactor = app.homeScaleFactor * 10;
-
             Engine.updateObjectScales(app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
@@ -33,6 +36,11 @@ Rectangle{
 
     onWidthChanged: calculateScales();
     onHeightChanged: calculateScales();
+
+    gradient: Gradient {
+        GradientStop { position: 0.0; color: "#2efffd" }
+        GradientStop { position: 1.0; color: "#effffd" }
+    }
 
     MouseArea{
         id: worldMouseArea
@@ -151,8 +159,8 @@ Rectangle{
 
         function goHome()
         {
-            xOffset = 0;
-            yOffset = 0;
+            xOffset = 0; //(app.homeCenterX * app.homeScaleFactor);
+            yOffset = (-app.homeCenterY * app.homeScaleFactor);
             rotationOriginX = 0;
             rotationOriginY = 0;
             angle = 0;
@@ -214,6 +222,18 @@ Rectangle{
             sourceSize: Qt.size(Style.LOGO_WIDTH, Style.LOGO_HEIGHT)
             smooth: !zoomAnimation.running
             opacity: 1.0
+            z: 2
+        }
+
+        Image {
+            id: logoIsland
+            anchors.top: logo.bottom
+            anchors.topMargin: -logo.height*0.4
+            anchors.horizontalCenter: logo.horizontalCenter
+            source: "images/LaunchDemoVectors-02.svg"
+            width: logo.width*1.5
+            height: logo.height
+            z: -2
         }
 
         transform: [
