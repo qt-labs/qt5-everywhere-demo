@@ -7,7 +7,7 @@ var positions = [{x:700, y:-400, angle: 0, borderColor: "blue", url: "demos/same
                  {x: 300, y:-1000, angle: 0, borderColor: "orange", url: "demos/particledemo/particledemo.qml", device: 2},
                  {x: 200, y:1100, angle: -8, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 3},
 
-                 {x: -1300, y:1100, angle: 3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 2},
+                 {x: -1300, y:1100, angle: 3, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 2},
                  {x: 1500, y:800, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 2},
                  {x: 1500, y:-1100, angle: -3, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 1},
                  {x: 2000, y: 0, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 1},
@@ -18,8 +18,6 @@ var positions = [{x:700, y:-400, angle: 0, borderColor: "blue", url: "demos/same
 var widths = [375, 838, 840, 867]
 var heights = [835, 589, 763, 520]
 var scales = [0.6, 1.4, 0.8, 2]
-var maskWidths = [375, 900, 840, 867]
-var maskHeights = [835, 661, 763, 520]
 var demoWidths = [321, 735, 688, 603]
 var demoHeights = [481, 460, 462, 378]
 var maskVerticalOffsets = [44, 37, 91, 51]
@@ -59,8 +57,6 @@ function createNew(x,y,angle,borderColor,url,device){
         object.width = widths[device]
         object.height = heights[device]
         object.scale = scales[device]
-        object.maskWidth = maskWidths[device]
-        object.maskHeight = maskHeights[device]
         object.demoWidth = demoWidths[device]
         object.demoHeight = demoHeights[device]
         object.maskVerticalOffset = maskVerticalOffsets[device]

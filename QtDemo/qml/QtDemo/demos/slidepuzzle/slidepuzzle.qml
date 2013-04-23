@@ -161,7 +161,7 @@ Rectangle {
 
             var xNew = freeX;
             var yNew = freeY;
-            switch(num)
+            switch (num)
             {
             case 0: xNew = Math.max(0,freeX-1); break; //move left
             case 1: xNew = Math.min(2,freeX+1); break; //move right

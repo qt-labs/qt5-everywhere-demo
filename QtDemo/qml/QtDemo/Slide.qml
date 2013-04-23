@@ -19,9 +19,6 @@ Rectangle {
     property real targetScale: 1
     property real targetAngle: device === 0 ? -90 : 0
 
-    property int maskWidth: 867
-    property int maskHeight: 520
-
     property int demoWidth: 603
     property int demoHeight: 378
 
@@ -72,8 +69,8 @@ Rectangle {
                                               device === 2 ? "images/MedicalDevice_mask.png" :
                                                              device === 3 ? "images/Laptop_mask.png" :
                                                                             ""
-        width: maskWidth
-        height: maskHeight
+        width: slide.width
+        height: slide.height
         z: 2
     }
 
