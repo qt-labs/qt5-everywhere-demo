@@ -50,7 +50,7 @@ Rectangle {
     focus: true
     color: "#272822"
 
-    onWidthChanged: controller.reload()
+    //onWidthChanged: controller.reload()
 
     function operatorPressed(operator) { CalcEngine.operatorPressed(operator) }
     function digitPressed(digit) { CalcEngine.digitPressed(digit) }

@@ -1,35 +1,20 @@
 import QtQuick 2.0
 
 Column{
+
     Button {
-        label: "<"
-        color: "#aaaaaa"
-        onClicked: {
-            canvas.angle+=10
-        }
+        imageSource: "images/btn_previous.svg"
+        onClicked: canvas.goPrevious()
     }
 
     Button {
-        label: ">"
-        color: "#aaaaaa"
-        onClicked: {
-            canvas.angle-=10
-        }
+        imageSource: "images/btn_next.svg"
+        onClicked: canvas.goNext()
     }
 
     Button {
-        label: "+"
-        color: "#aaaaaa"
-        onClicked: {
-            canvas.scalingFactor+=.1
-        }
+        imageSource: "images/btn_home.svg"
+        onClicked: canvas.goHome()
     }
 
-    Button {
-        label: "-"
-        color: "#aaaaaa"
-        onClicked: {
-            if (canvas.scalingFactor > .1) canvas.scalingFactor-=.1
-        }
-    }
 }

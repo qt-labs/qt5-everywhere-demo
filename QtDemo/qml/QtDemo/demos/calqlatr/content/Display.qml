@@ -42,6 +42,10 @@ import QtQuick 2.0
 
 Item {
     id: display
+    function clearAll()
+    {
+        listView.model.clear();
+    }
 
     function displayOperator(operator)
     {

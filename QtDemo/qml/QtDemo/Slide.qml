@@ -16,6 +16,7 @@ Rectangle {
     property string url: ""
     property int device: 0
     property bool loaded: false
+    property bool loading: false
     property real targetScale: 1
     property real targetAngle: device === 0 ? -90 : 0
 
@@ -27,12 +28,12 @@ Rectangle {
 
     function targetWidth()
     {
-        return device == 0 ? height*scale: width*scale;
+        return device == 0 ? demoHeight*scale: demoWidth*scale;
     }
 
     function targetHeight()
     {
-        return device == 0 ? width*scale : height*scale;
+        return device == 0 ? demoWidth*scale : demoHeight*scale;
     }
 
     Rectangle{
@@ -42,7 +43,7 @@ Rectangle {
         height: demoHeight
         color: "black"
         clip: true
-        z: slide.loaded ? 1:-1
+        z: (slide.loading || slide.loaded) ? 1:-1
     }
 
     ShaderEffectSource{
@@ -51,12 +52,12 @@ Rectangle {
         width: demoWidth
         height: demoHeight
         sourceItem: demoContainer
-        live: slide.loaded
+        live: (slide.loading || slide.loaded)
         visible: true
         smooth: false
         hideSource: true
         clip: true
-        z: slide.loaded ? 1:-1
+        z: (slide.loading || slide.loaded) ? 1:-1
     }
 
     Image {
@@ -64,54 +65,91 @@ Rectangle {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: maskVerticalOffset
         anchors.horizontalCenterOffset: maskHorizontalOffset
-        source: device === 0 ? "images/iPhone_mask.png" :
-                               device === 1 ? "images/Tablet_mask.png" :
-                                              device === 2 ? "images/MedicalDevice_mask.png" :
+        source: device === 0 ? "images/iPhone_mask.svg" :
+                               device === 1 ? "images/MedicalDevice_mask.png" :
+                                              device === 2 ? "images/Tablet_mask.png" :
                                                              device === 3 ? "images/Laptop_mask.png" :
                                                                             ""
         width: slide.width
         height: slide.height
         z: 2
+
+        IslandElementContainer { place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { place: 2; islandHeight: islandImage.height; islandWidth: islandImage.width }
     }
 
     Image {
         id: islandImage
         anchors.top: deviceMaskImage.bottom
-        anchors.topMargin: -deviceMaskImage.height*0.4
+        anchors.topMargin: -height * 0.4
         anchors.horizontalCenter: deviceMaskImage.horizontalCenter
-        source: "images/LaunchDemoVectors-02.svg"
-        width: deviceMaskImage.width*1.5
-        height: deviceMaskImage.height
-        z: -2
+        source: "images/island.svg"
+        width: Math.max(deviceMaskImage.width, deviceMaskImage.height) * 1.6
+        height: width/2
+        z: -3
+    }
+
+    // Load timer
+    Timer {
+        id: loadTimer
+        interval: 5
+        running: false
+        repeat: false
+        onTriggered: load()
     }
 
     function loadDemo(){
+        loadSplashScreen();
+        loadTimer.start();
+    }
+
+    function load() {
         if (!slide.url || slide.loaded) return;
 
+        print("CREATING DEMO: "+ slide.url)
         var component = Qt.createComponent(slide.url);
-        print ("CREATED COMPONENT FROM: "+slide.url)
-        var incubator = component.incubateObject(demoContainer, {
-                                                     x: 0,
-                                                     y: 0,
-                                                     objectName: "demoApp"
-                                                 });
+        print ("CREATED: "+slide.url)
+        var incubator = component.incubateObject(demoContainer, { x: 0, y: 0, objectName: "demoApp" });
         if (incubator.status !== Component.Ready) {
             incubator.onStatusChanged = function(status) {
                 if (status === Component.Ready) {
                     print ("Object", incubator.object, "is now ready!");
                     //disabledImage.scheduleUpdate()
                     slide.loaded = true
+                    releaseSplashScreen()
                 }
             }
         } else {
             print ("Object", incubator.object, "is ready immediately!");
             //disabledImage.scheduleUpdate()
             slide.loaded = true
+            releaseSplashScreen()
+        }
+    }
+
+    function loadSplashScreen()
+    {
+        slide.loading = true
+        var splash = Qt.createComponent("SplashScreen.qml");
+        if (splash.status === Component.Ready)
+            splash.createObject(demoContainer, {objectName: "splashScreen"});
+    }
+
+    function releaseSplashScreen()
+    {
+        slide.loading = false
+        for (var i =0; i<demoContainer.children.length; i++){
+            if (demoContainer.children[i].objectName === "splashScreen"){
+                demoContainer.children[i].destroy();
+            }
         }
     }
 
     function releaseDemo(){
-        if (!slide.loaded) return;
+        if (!slide.loaded)
+            return;
+
         slide.loaded = false;
 
         for (var i =0; i<demoContainer.children.length; i++){
@@ -124,13 +162,4 @@ Rectangle {
     Component.onCompleted: {
         print ("new slide created!")
     }
-
-//    Rectangle{
-//        id: debug
-//        anchors.fill: demoContainer
-//        color: "transparent"
-//        z: 100
-//        border {color: "red"; width:3}
-//    }
-
 }

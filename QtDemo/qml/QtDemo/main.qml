@@ -25,86 +25,38 @@ Rectangle{
             app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;
             app.maxScaleFactor = app.homeScaleFactor * 10;
-            Engine.updateObjectScales(app.width, app.height);
+            Engine.updateObjectScales(app.width*0.8, app.width*0.8); //app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 
             canvas.goHome()
         }
+    }
+    function selectTarget(uid) {
+        return Engine.selectTarget(uid)
+    }
 
+    function getNext() {
+        return Engine.getNext()
+    }
+
+    function getPrevious() {
+        return Engine.getPrevious()
     }
 
     onWidthChanged: calculateScales();
     onHeightChanged: calculateScales();
 
     gradient: Gradient {
-        GradientStop { position: 0.0; color: "#2efffd" }
-        GradientStop { position: 1.0; color: "#effffd" }
+        GradientStop { position: 0.0; color: "#89d4ff" }
+        GradientStop { position: 1.0; color: "#f3fbff" }
     }
 
-    MouseArea{
-        id: worldMouseArea
-        anchors.fill: parent
+    Cloud { id: cloud1; sourceImage: "images/cloud1.svg"}
+    Cloud { id: cloud2; sourceImage: "images/cloud1.svg"}
+    Cloud { id: cloud3; sourceImage: "images/cloud2.svg"}
+    Cloud { id: cloud4; sourceImage: "images/cloud2.svg"}
 
-        property int oldX: 0
-        property int oldY: 0
-        property int startMouseX: 0
-        property int startMouseY: 0
-        property bool panning: false
-
-        onReleased: {
-            var dx = mouse.x - startMouseX;
-            var dy = mouse.y - startMouseY;
-
-            // Check the point only if we didn't move the mouse too much
-            if (!mouse.wasHeld && Math.abs(dx) <= app.tapLimitX && Math.abs(dy) <= app.tapLimitY)
-            {
-                panning = false
-                var target = null;
-
-                // Check if there is target under mouse.
-                if (!target){
-
-                    var object = mapToItem(canvas, mouse.x, mouse.y)
-                    var item = canvas.childAt(object.x,object.y)
-
-                    if (item && item.objectName === 'slide') {
-                        target = Engine.selectTarget(item.uid)
-                    }
-                }
-
-                // If we found target, go to the target
-                if (target)
-                    canvas.goTo(target)
-                else // If not target under mouse -> go home
-                    canvas.goHome()
-            }
-        }
-
-        onPressed: {
-            // Save mouse state
-            oldX = mouse.x
-            oldY = mouse.y
-            startMouseX = mouse.x
-            startMouseY = mouse.y
-        }
-
-        onPositionChanged: {
-            var dx = mouse.x - oldX;
-            var dy = mouse.y - oldY;
-
-            oldX = mouse.x;
-            oldY = mouse.y;
-
-            if (!zoomAnimation.running)
-            {
-                panning = true;
-                canvas.xOffset += dx;
-                canvas.yOffset += dy;
-            }
-        }
-
-    }
     Item{
         id: pinchProxy
         scale:.2
@@ -112,148 +64,16 @@ Rectangle{
         onScaleChanged: canvas.scalingFactor=scale
     }
 
-    PinchArea{
-        id: worldPinchArea
-        anchors.fill: parent
-        pinch.target: pinchProxy
-        pinch.minimumScale: app.minScaleFactor
-        pinch.maximumScale: app.maxScaleFactor
-        pinch.maximumRotation: 360
-        pinch.minimumRotation: -360
-        enabled: !zoomAnimation.running
-
-        property bool pinching: false
-
-        onPinchStarted: {
-            pinching = true
-            pinchProxy.rotation = canvas.angle
-            pinchProxy.scale = canvas.scalingFactor
-
-            if (canvas.scalingFactor>1){
-                var object = mapToItem(canvas, pinch.center.x, pinch.center.y)
-
-                canvas.rotationOriginX = object.x
-                canvas.rotationOriginY = object.y
-            }
-        }
-        onPinchFinished: pinching = false;
+    WorldMouseArea { id: worldMouseArea }
+    WorldPinchArea { id: worldPinchArea }
+    WorldCanvas { id:canvas }
+    NavigationPanel{
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.rightMargin: app.width * 0.02
+        spacing: app.height * 0.05
     }
 
-    Item{
-        id:canvas
-        width:1
-        height:1
-
-        x: app.width/2+xOffset
-        y: app.height/2+yOffset
-
-        property real xOffset: 0
-        property real yOffset: 0
-        property real angle: 0
-
-        property real zoomInTarget: 5
-        property real scalingFactor: 5
-
-        property real rotationOriginX
-        property real rotationOriginY
-
-        function goHome()
-        {
-            xOffset = 0; //(app.homeCenterX * app.homeScaleFactor);
-            yOffset = (-app.homeCenterY * app.homeScaleFactor);
-            rotationOriginX = 0;
-            rotationOriginY = 0;
-            angle = 0;
-            zoomInTarget = app.homeScaleFactor;
-
-            zoomAnimation.restart();
-        }
-        function goTo(target)
-        {
-            xOffset = -target.x;
-            yOffset = -target.y;
-            rotationOriginX = target.x;
-            rotationOriginY = target.y;
-            angle = -target.angle + target.targetAngle;
-            zoomInTarget = target.targetScale;
-
-            zoomAnimation.restart()
-        }
-
-        Behavior on angle {
-            RotationAnimation{
-                duration: Style.APP_ANIMATION_DELAY
-                direction: RotationAnimation.Shortest
-            }
-            enabled: !worldPinchArea.pinching
-        }
-
-        Behavior on xOffset {
-            id: xOffsetBehaviour
-            enabled: !worldMouseArea.panning
-            NumberAnimation{duration: Style.APP_ANIMATION_DELAY}
-        }
-
-        Behavior on yOffset {
-            id: yOffsetBehaviour
-            enabled: !worldMouseArea.panning
-            NumberAnimation{duration: Style.APP_ANIMATION_DELAY}
-        }
-
-        Behavior on rotationOriginX {
-            NumberAnimation{
-                duration: Style.APP_ANIMATION_DELAY
-            }
-            enabled: !worldPinchArea.pinching
-        }
-        Behavior on rotationOriginY {
-            NumberAnimation{
-                duration: Style.APP_ANIMATION_DELAY
-            }
-            enabled: !worldPinchArea.pinching
-        }
-
-        Image{
-            id: logo
-            source: "QtLogo.png"
-            anchors.centerIn: parent
-            width: Style.LOGO_WIDTH
-            height: Style.LOGO_HEIGHT
-            sourceSize: Qt.size(Style.LOGO_WIDTH, Style.LOGO_HEIGHT)
-            smooth: !zoomAnimation.running
-            opacity: 1.0
-            z: 2
-        }
-
-        Image {
-            id: logoIsland
-            anchors.top: logo.bottom
-            anchors.topMargin: -logo.height*0.4
-            anchors.horizontalCenter: logo.horizontalCenter
-            source: "images/LaunchDemoVectors-02.svg"
-            width: logo.width*1.5
-            height: logo.height
-            z: -2
-        }
-
-        transform: [
-
-            Scale{
-                id: canvasScale
-                origin.x: canvas.rotationOriginX
-                origin.y: canvas.rotationOriginY
-                xScale: canvas.scalingFactor
-                yScale :canvas.scalingFactor
-
-            },
-            Rotation{
-                id: canvasRotation
-                origin.x: canvas.rotationOriginX
-                origin.y: canvas.rotationOriginY
-                angle: canvas.angle
-            }
-        ]
-    }
 
     NumberAnimation {
         id: zoomAnimation
@@ -272,11 +92,44 @@ Rectangle{
         }
     }
 
-    NavigationPanel{
-        anchors{top:parent.top; right:parent.right}
+    SequentialAnimation {
+        id: navigationAnimation
+
+        NumberAnimation {
+            id: zoomOutAnimation
+            target: canvas;
+            property: "scalingFactor";
+            duration: Style.APP_ANIMATION_DELAY/2;
+            to: app.homeScaleFactor
+            easing.type: Easing.OutCubic
+        }
+
+        NumberAnimation {
+            id: zoomInAnimation
+            target: canvas;
+            property: "scalingFactor";
+            duration: Style.APP_ANIMATION_DELAY/2;
+            to: canvas.zoomInTarget
+            easing.type: Easing.InCubic
+        }
+
+        onRunningChanged: {
+            if (!running) {
+                if (canvas.zoomInTarget !== app.homeScaleFactor)
+                    Engine.loadCurrentDemo();
+                else
+                    Engine.releaseDemos();
+            }
+        }
     }
 
     Component.onCompleted: {
+        print("START TO INITIALIZE SLIDES")
         Engine.initSlides()
+        print("SLIDES READY")
+        cloud1.start();
+        cloud2.start();
+        cloud3.start();
+        cloud4.start();
     }
 }

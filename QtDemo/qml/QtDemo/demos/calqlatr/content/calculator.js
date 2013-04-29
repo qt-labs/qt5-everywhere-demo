@@ -57,6 +57,9 @@ function disabled(op) {
 
 function digitPressed(op)
 {
+    if (lastOp == "=")
+        display.newLine("", "");
+
     if (disabled(op))
         return
     if (digits.toString().length >= 14)
@@ -130,7 +133,11 @@ function operatorPressed(op)
     } else if (op == "Off") {
         Qt.quit();
     } else if (op == "C") {
-        digits = "0"
+        curVal = 0
+        memory = 0
+        lastOp = ""
+        digits = ""
+        display.clearAll()
     } else if (op == "AC") {
         curVal = 0
         memory = 0

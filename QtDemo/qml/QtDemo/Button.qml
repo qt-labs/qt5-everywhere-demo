@@ -2,31 +2,29 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    width: 40
-    height: 40
-    border {color: "#333333"; width: 1}
-    radius: 20
-    smooth: true
-    gradient: Gradient{
-        GradientStop {position: .0; color: buttonMouseArea.pressed ? "#dddddd" : "#aaaaaa"}
-        GradientStop {position: 1.0; color: "#666666"}
-    }
+    width: Math.min(app.height, app.width) * 0.10
+    height: width
+    color: "transparent"
 
-    property string label: ""
+    property string imageSource : ""
     signal clicked()
 
-    Text{
-        text: root.label
-        anchors.centerIn: root
-        color: "white"
-        font { pixelSize: 26; weight: Font.Bold }
+    Image {
+        id: buttonImage
+        anchors.fill: root
+        anchors.margins: 0
+        source: root.imageSource
+        opacity: 0.7
     }
 
     MouseArea {
         id: buttonMouseArea
         anchors.fill: root
-        onClicked: {
-            root.clicked()
-        }
+        anchors.margins: -20
+        onClicked: root.clicked()
+        onEntered: buttonImage.anchors.margins = -(root.width * 0.1)
+        onExited: buttonImage.anchors.margins = 0
+        onPressed: buttonImage.opacity = 1.0
+        onReleased: buttonImage.opacity = 0.7
     }
 }

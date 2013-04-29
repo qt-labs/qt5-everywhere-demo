@@ -43,34 +43,39 @@ import QtQuick 2.0
 Item {
     property alias text: textItem.text
     property alias color: textItem.color
-
     property bool operator: false
 
     signal clicked
 
-    width: 30
+    width: 0.33*pad.width
     height: 50
 
     Text {
         id: textItem
+        anchors.fill: parent
+        horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 48
-        wrapMode: Text.WordWrap
+        elide: Text.ElideLeft
         lineHeight: 0.75
         color: "white"
     }
 
-//    Rectangle {
-//        color: "red"
-//        opacity: 0.2
-//        anchors.fill: mouse
-//    }
+    Image {
+        id: touchImage
+        source: "images/touch-green.png"
+        anchors.centerIn: parent
+        width: 2*parent.height
+        height: 2*parent.height
+        visible: false
+    }
 
     MouseArea {
         id: mouse
         anchors.fill: parent
         anchors.margins: -5
+        onPressed: touchImage.visible = true
+        onReleased: touchImage.visible = false
         onClicked: {
-            //parent.clicked()
             if (operator)
                 window.operatorPressed(parent.text)
             else

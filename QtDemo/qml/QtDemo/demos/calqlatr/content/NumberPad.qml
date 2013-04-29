@@ -42,7 +42,7 @@ import QtQuick 2.0
 
 Grid {
     columns: 3
-    columnSpacing: 32
+    columnSpacing: 2
     rowSpacing: 16
 
     Button { text: "7" }
