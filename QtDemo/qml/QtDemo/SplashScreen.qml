@@ -6,11 +6,12 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
+    property int splashWidth : 100
     Image {
         id: splashImage
         anchors.centerIn: parent
-        source: "QtLogo.png"
-        width: 150
-        height: 150
+        source: "QtLogo_splash.png"
+        width: splashWidth
+        height: splashWidth * 1.19
     }
 }

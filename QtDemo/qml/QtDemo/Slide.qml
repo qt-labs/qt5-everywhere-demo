@@ -4,8 +4,8 @@ Rectangle {
     id: slide
     objectName: "slide"
 
-    width: 867
-    height: 520
+//    width: 867
+//    height: 520
     scale: 2
 
     color: "transparent"
@@ -15,10 +15,11 @@ Rectangle {
     property color borderColor: "black"
     property string url: ""
     property int device: 0
+    property string imageSource: ""
     property bool loaded: false
     property bool loading: false
     property real targetScale: 1
-    property real targetAngle: device === 0 ? -90 : 0
+    property real targetAngle: device <= 2 ? -90 : 0
 
     property int demoWidth: 603
     property int demoHeight: 378
@@ -28,12 +29,12 @@ Rectangle {
 
     function targetWidth()
     {
-        return device == 0 ? demoHeight*scale: demoWidth*scale;
+        return device <= 2 ? demoHeight*scale: demoWidth*scale;
     }
 
     function targetHeight()
     {
-        return device == 0 ? demoWidth*scale : demoHeight*scale;
+        return device <= 2 ? demoWidth*scale : demoHeight*scale;
     }
 
     Rectangle{
@@ -41,7 +42,7 @@ Rectangle {
         anchors.centerIn: parent
         width: demoWidth
         height: demoHeight
-        color: "black"
+        color: "#111111"
         clip: true
         z: (slide.loading || slide.loaded) ? 1:-1
     }
@@ -65,24 +66,20 @@ Rectangle {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: maskVerticalOffset
         anchors.horizontalCenterOffset: maskHorizontalOffset
-        source: device === 0 ? "images/iPhone_mask.svg" :
-                               device === 1 ? "images/MedicalDevice_mask.png" :
-                                              device === 2 ? "images/Tablet_mask.png" :
-                                                             device === 3 ? "images/Laptop_mask.png" :
-                                                                            ""
+        source: slide.imageSource
         width: slide.width
         height: slide.height
-        z: 2
+        z: -1
 
-        IslandElementContainer { place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
-        IslandElementContainer { place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
-        IslandElementContainer { place: 2; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { id: bottomElementcontainer;place: 2; islandHeight: islandImage.height; islandWidth: islandImage.width }
     }
 
     Image {
         id: islandImage
         anchors.top: deviceMaskImage.bottom
-        anchors.topMargin: -height * 0.4
+        anchors.topMargin: -height * 0.3
         anchors.horizontalCenter: deviceMaskImage.horizontalCenter
         source: "images/island.svg"
         width: Math.max(deviceMaskImage.width, deviceMaskImage.height) * 1.6
@@ -157,6 +154,13 @@ Rectangle {
                 demoContainer.children[i].destroy();
             }
         }
+    }
+
+    function createElements()
+    {
+        leftElementcontainer.createElements()
+        rightElementcontainer.createElements()
+        bottomElementcontainer.createElements()
     }
 
     Component.onCompleted: {

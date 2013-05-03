@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="758px" height="565px" viewBox="0 0 758 565" enable-background="new 0 0 758 565" xml:space="preserve">
+<g>
+	<path opacity="0.2" fill="#35322F" d="M758,512.012C758,541.274,588.294,565,379.008,565C169.686,565,0,541.274,0,512.012
+		C0,482.733,169.686,459,379.008,459C588.294,459,758,482.733,758,512.012z"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="379.0005" y1="517" x2="379.0005" y2="1.0005">
+		<stop  offset="0" style="stop-color:#5D5B59"/>
+		<stop  offset="1" style="stop-color:#AEADAC"/>
+	</linearGradient>
+	<path fill="url(#SVGID_1_)" d="M720,1H38C17.598,1,1,17.598,1,38v442c0,20.402,16.598,37,37,37h682c20.402,0,37-16.598,37-37V38
+		C757,17.598,740.402,1,720,1z M699,459H59V59h640V459z"/>
+	<path d="M720,2c19.851,0,36,16.149,36,36v442c0,19.851-16.149,36-36,36H38c-19.851,0-36-16.149-36-36V38C2,18.149,18.149,2,38,2
+		H720 M720,0H38C17.1,0,0,17.1,0,38v442c0,20.9,17.1,38,38,38h682c20.9,0,38-17.1,38-38V38C758,17.1,740.9,0,720,0L720,0z"/>
+	<path d="M719,7H39C21.4,7,7,21.4,7,39v440c0,17.6,14.4,32,32,32h680c17.6,0,32-14.4,32-32V39C751,21.4,736.6,7,719,7z M699,459H59
+		V59h640V459z"/>
+	<g>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="379.0005" y1="39" x2="379.0005" y2="27">
+			<stop  offset="0" style="stop-color:#35322F"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path fill="url(#SVGID_2_)" d="M385,33c0,3.311-2.687,6-6,6c-3.312,0-6-2.689-6-6s2.688-6,6-6C382.313,27,385,29.689,385,33z"/>
+		<path d="M383.668,32.998c0,2.58-2.092,4.67-4.669,4.67c-2.581,0-4.667-2.09-4.667-4.67c0-2.576,2.086-4.666,4.667-4.666
+			C381.576,28.332,383.668,30.422,383.668,32.998z"/>
+	</g>
+	<path opacity="0.1" fill="#FFFFFF" d="M39,7C21.4,7,7,21.4,7,39v440c0,13.032,7.9,24.303,19.145,29.279L255.71,7H39z"/>
+	<path fill="#1E1B18" d="M699,59v400H59V59H699 M701,57h-2H59h-2v2v400v2h2h640h2v-2V59V57L701,57z"/>
+</g>
+</svg>

@@ -1,20 +1,21 @@
 var positions = [{x:-800, y:-800, angle: 0, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0},
-                 {x:700, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 0},
-                 {x:1400, y:-500, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 0},
-                 {x: -1800, y:-100, angle: -4, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 1},
-                 {x: 1700, y:200, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 1},
-                 {x: -1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 2},
-                 {x:1600, y:900, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 2},
-                 {x: -200, y:1500, angle: -8, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 3}]
+                 {x:700, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 1},
+                 {x:1400, y:-500, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 2},
+                 {x:-1800, y:-100, angle: -4, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 3},
+                 {x:1700, y:200, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 4},
+                 {x:-1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 5},
+                 {x:1600, y:1100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 6},
+                 {x:-200, y:1600, angle: 3, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 7}]
 
-var widths = [375, 840, 838, 867]
-var heights = [835, 763, 589, 520]
-var scales = [0.6, 0.8, 1.4, 2]
-var demoWidths = [321, 688, 735, 603]
-var demoHeights = [481, 462, 460, 378]
-var maskVerticalOffsets = [44, 91, 37, 51]
-var maskHorizontalOffsets = [-2, 0, -5, 1]
-var targetAngles = [-90, 0, 0, 0]
+var imageSources = ["phone1","phone2", "phone3","tablet1", "medical_device", "laptop1", "laptop2", "tv"]
+var widths = [358, 361, 366, 758, 600, 888, 888, 708]
+var heights = [723, 707, 721, 565, 489, 513, 513, 565]
+var scales = [0.6, 0.6, 0.6, 0.8, 1.4, 1.4, 1.5, 2]
+var demoWidths = [324, 324, 324, 644, 484, 644, 644, 644]
+var demoHeights = [484, 484, 484, 404, 324, 404, 404, 404]
+var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
+var maskVerticalOffsets = [27, 33, 16, 25, 46, 34, 34, 50]
+var targetAngles = [-90, -90, -90, 0, 0, 0, 0, 0]
 
 var currentDemoId = -1
 var objects = []
@@ -30,6 +31,7 @@ function createNew(x,y,angle,borderColor,url,device){
     if (component.status === Component.Ready){
         var object=component.createObject(canvas)
         object.device = device
+        object.imageSource = "images/" + imageSources[device] + ".svg"
         object.width = widths[device]
         object.height = heights[device]
         object.scale = scales[device]
@@ -42,6 +44,7 @@ function createNew(x,y,angle,borderColor,url,device){
         object.borderColor = borderColor
         object.x = x-object.width/2
         object.y = y-object.height/2
+        object.createElements();
 
         if (url){
             object.url = url;
