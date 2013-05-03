@@ -46,7 +46,7 @@ import "content"
 
 Rectangle {
     id: root
-    width: 320; height: 480
+    anchors.fill: parent
     property int acc: 0
 
 
@@ -294,20 +294,20 @@ Rectangle {
         source: "content/gfx/bar.png"
         y: parent.height - Settings.footerHeight;
         z: 2
-        Button {
+        /*Button {
             id: quitButton
             height: Settings.toolButtonHeight
             imgSrc: "content/gfx/but-quit.png"
             onClicked: {Qt.quit(); }
             anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 11 }
-        }
+        }*/
         Button {
             id: menuButton
             height: Settings.toolButtonHeight
             imgSrc: "content/gfx/but-menu.png"
             visible: (root.state == "in-game");
             onClicked: {root.state = ""; Logic.cleanUp(); gameCanvas.mode = ""}
-            anchors { left: quitButton.right; verticalCenter: parent.verticalCenter; leftMargin: 0 }
+            anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 0 }
         }
         Button {
             id: againButton

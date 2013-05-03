@@ -4,8 +4,8 @@ Rectangle {
     id: slide
     objectName: "slide"
 
-//    width: 867
-//    height: 520
+    width: 867
+    height: 520
     scale: 2
 
     color: "transparent"
@@ -97,8 +97,11 @@ Rectangle {
     }
 
     function loadDemo(){
-        loadSplashScreen();
-        loadTimer.start();
+        if (!slide.loaded)
+        {
+            loadSplashScreen();
+            loadTimer.start();
+        }
     }
 
     function load() {

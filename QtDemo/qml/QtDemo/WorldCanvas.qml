@@ -29,6 +29,7 @@ Item{
         angle = 0;
         zoomInTarget = app.homeScaleFactor;
 
+        navigationPanel.rotateButtons(0);
         zoomAnimation.restart();
     }
     function goTo(target)
@@ -42,6 +43,7 @@ Item{
             rotationOriginY = target.y;
             angle = -target.angle + target.targetAngle;
             zoomInTarget = target.targetScale;
+            navigationPanel.rotateButtons(target.targetAngle);
         }
     }
 

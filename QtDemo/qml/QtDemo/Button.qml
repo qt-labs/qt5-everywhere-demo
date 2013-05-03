@@ -7,6 +7,7 @@ Rectangle {
     color: "transparent"
 
     property string imageSource : ""
+    property double rotation: 0
     signal clicked()
 
     Image {
@@ -15,6 +16,7 @@ Rectangle {
         anchors.margins: 0
         source: root.imageSource
         opacity: 0.7
+        rotation: root.rotation
     }
 
     MouseArea {

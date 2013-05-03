@@ -24,7 +24,7 @@ Rectangle{
             app.homeCenterX = bbox.centerX;
             app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;
-            app.maxScaleFactor = app.homeScaleFactor * 10;
+            app.maxScaleFactor = app.homeScaleFactor * 20;
             Engine.updateObjectScales(app.width*0.8, app.width*0.8); //app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
@@ -68,6 +68,7 @@ Rectangle{
     WorldPinchArea { id: worldPinchArea }
     WorldCanvas { id:canvas }
     NavigationPanel{
+        id: navigationPanel
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.rightMargin: app.width * 0.02

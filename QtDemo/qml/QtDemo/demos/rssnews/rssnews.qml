@@ -45,9 +45,9 @@ import "content"
 
 Rectangle {
     id: window
-    width: 688; height: 462
+    anchors.fill: parent
 
-    property int listWidth: 220
+    property int listWidth: window.width*0.35
     property string currentFeed: "rss.news.yahoo.com/rss/topstories"
     property bool loading: feedModel.status == XmlListModel.Loading
 

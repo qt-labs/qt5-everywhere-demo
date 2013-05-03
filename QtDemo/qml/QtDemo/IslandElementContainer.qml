@@ -9,8 +9,6 @@ Rectangle {
     color: "transparent"
     //border {width: 3; color: "red"}
 
-    onWidthChanged: print("width changed " + width)
-
     property int place : 0
     property int itemWidth : islandWidth * 0.07
     property int islandWidth: 100
@@ -21,19 +19,8 @@ Rectangle {
         var count = Math.floor(Math.random()*2.9)
         var itemId = place == 2 ? Math.floor(Math.random()*2.9) : Math.floor(Math.random()*1.9);
         var step = place == 2 ? elementContainer.width / Math.max(count,1) : elementContainer.height / Math.max(count,1);
-        print("place: " + place)
-        print("elementContainer: " + elementContainer.width + " x " + elementContainer.height)
-        print("count: " + count);
-        print("itemId: " + itemId);
-        print("step: " + step);
 
         for (var i=0; i<count; i++) {
-            print("i: " + i)
-            if (place == 2)
-                print("posX: " + (step/2 + step*i));
-            else
-                print("posY: " + (step/2 + step*i));
-
             var component = Qt.createComponent("Element.qml")
             if (component.status === Component.Ready)
                 component.createObject(elementContainer,

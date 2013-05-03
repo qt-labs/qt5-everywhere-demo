@@ -43,8 +43,7 @@ import "content"
 
 Rectangle {
     id: main
-    width: 320
-    height: 480
+    anchors.fill: parent
     color: "#d6d6d6"
 
     property string searchTerms: ""
