@@ -1,11 +1,11 @@
-var positions = [{x:-800, y:-800, angle: 0, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0},
-                 {x:700, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 1},
-                 {x:1400, y:-500, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 2},
-                 {x:-1800, y:-100, angle: -4, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 3},
-                 {x:1700, y:200, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 4},
-                 {x:-1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 5},
-                 {x:1600, y:1100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 6},
-                 {x:-200, y:1600, angle: 3, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 7}]
+var positions = [{x:-800, y:-800, angle: 0, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+                 {x:700, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
+                 {x:1400, y:-500, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
+                 {x:-1800, y:-100, angle: -4, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
+                 {x:1700, y:200, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 4, name: "Particles"},
+                 {x:-1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo surface"},
+                 {x:1600, y:1100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
+                 {x:-200, y:1600, angle: 3, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 7, name: "Slide puzzle"}]
 
 var imageSources = ["phone1","phone2", "phone3","tablet1", "medical_device", "laptop1", "laptop2", "tv"]
 var widths = [358, 361, 366, 758, 600, 888, 888, 708]
@@ -22,11 +22,11 @@ var objects = []
 
 function initSlides(){
     positions.forEach(function(pos){
-        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.url, pos.device)
+        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.url, pos.device, pos.name)
     })
 }
 
-function createNew(x,y,angle,borderColor,url,device){
+function createNew(x,y,angle,borderColor,url,device,name){
     var component = Qt.createComponent("Slide.qml")
     if (component.status === Component.Ready){
         var object=component.createObject(canvas)
@@ -42,6 +42,7 @@ function createNew(x,y,angle,borderColor,url,device){
         object.rotation = angle
         object.uid = objects.length
         object.borderColor = borderColor
+        object.name = name
         object.x = x-object.width/2
         object.y = y-object.height/2
         object.createElements();

@@ -27,6 +27,8 @@ Rectangle {
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
 
+    property string name: ""
+
     function targetWidth()
     {
         return device <= 2 ? demoHeight*scale: demoWidth*scale;
@@ -45,6 +47,16 @@ Rectangle {
         color: "#111111"
         clip: true
         z: (slide.loading || slide.loaded) ? 1:-1
+
+        Text {
+            id: splashScreenText
+            color: 'white'
+            font.pixelSize: parent.height *.1
+            text: slide.name
+            anchors.centerIn: parent
+            smooth: true
+            visible: false
+        }
     }
 
     ShaderEffectSource{
@@ -69,7 +81,7 @@ Rectangle {
         source: slide.imageSource
         width: slide.width
         height: slide.height
-        z: -1
+        z: 2
 
         IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
         IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
@@ -93,13 +105,17 @@ Rectangle {
         interval: 5
         running: false
         repeat: false
-        onTriggered: load()
+        onTriggered: {
+            loadSplashScreen();
+            load()
+        }
     }
 
     function loadDemo(){
         if (!slide.loaded)
         {
-            loadSplashScreen();
+            splashScreenText.visible = true
+            demo.scheduleUpdate()
             loadTimer.start();
         }
     }
@@ -133,15 +149,16 @@ Rectangle {
         slide.loading = true
         var splash = Qt.createComponent("SplashScreen.qml");
         if (splash.status === Component.Ready)
-            splash.createObject(demoContainer, {objectName: "splashScreen"});
+            splash.createObject(demoContainer, {objectName: "splashScreen", text: slide.name});
     }
 
     function releaseSplashScreen()
     {
+        splashScreenText.visible = false
         slide.loading = false
         for (var i =0; i<demoContainer.children.length; i++){
             if (demoContainer.children[i].objectName === "splashScreen"){
-                demoContainer.children[i].destroy();
+                demoContainer.children[i].explode();
             }
         }
     }
