@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,50 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
+// Based on http://kodemongki.blogspot.com/2011/06/kameraku-custom-shader-effects-example.html
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+uniform float targetHue;
+uniform float windowWidth;
+uniform float dividerValue;
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+uniform sampler2D source;
+uniform lowp float qt_Opacity;
+varying vec2 qt_TexCoord0;
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+void rgb2hsl(vec3 rgb, out float h, out float s, float l)
+{
+    float maxval = max(rgb.r, max(rgb.g, rgb.b));
+    float minval = min(rgb.r, min(rgb.g, rgb.b));
+    float delta = maxval - minval;
+    l = (minval + maxval) / 2.0;
+    s = 0.0;
+    if (l > 0.0 && l < 1.0)
+        s = delta / (l < 0.5 ? 2.0 * l : 2.0 - 2.0 * l);
+    h = 0.0;
+    if (delta > 0.0)
+    {
+        if (rgb.r == maxval && rgb.g != maxval)
+            h += (rgb.g - rgb.b ) / delta;
+        if (rgb.g == maxval && rgb.b != maxval)
+            h += 2.0  + (rgb.b - rgb.r) / delta;
+        if (rgb.b == maxval && rgb.r != maxval)
+            h += 4.0 + (rgb.r - rgb.g) / delta;
+        h *= 60.0;
     }
+}
 
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
-        }
-    }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+void main()
+{
+    vec2 uv = qt_TexCoord0.xy;
+    vec3 col = texture2D(source, uv).rgb;
+    float h, s, l;
+    rgb2hsl(col, h, s, l);
+    float h2 = (h > targetHue) ? h - 360.0 : h + 360.0;
+    float y = 0.3 * col.r + 0.59 * col.g + 0.11 * col.b;
+    vec3 result;
+    if (uv.x > dividerValue || (abs(h - targetHue) < windowWidth) || (abs(h2 - targetHue) < windowWidth))
+        result = col;
+    else
+        result = vec3(y, y, y);
+    gl_FragColor = qt_Opacity * vec4(result, 1.0);
 }

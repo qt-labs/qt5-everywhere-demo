@@ -44,9 +44,10 @@ import QtQuick 2.0
 ListModel {
     id: rssFeeds
 
-    ListElement { name: "Top Stories"; feed: "finance.yahoo.com/rss/topstories" }
+    ListElement { name: "Top Stories"; feed: "feeds.bbci.co.uk/news/rss.xml" }
     ListElement { name: "Popular Stories"; feed: "finance.yahoo.com/rss/popularstories" }
     ListElement { name: "Qt Blog"; feed: "blog.qt.digia.com/feed/" }
+    ListElement { name: "Planet Qt"; feed: "planet.qt-project.org/rss20.xml" }
     ListElement { name: "World"; feed: "rss.news.yahoo.com/rss/world" }
     ListElement { name: "Oceania"; feed: "rss.news.yahoo.com/rss/oceania" }
     ListElement { name: "U.S. National"; feed: "rss.news.yahoo.com/rss/us" }

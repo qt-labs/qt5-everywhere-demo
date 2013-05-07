@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -40,56 +40,69 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
 
 Rectangle {
-    id: window
-    anchors.fill: parent
+    id: root
+    property alias effect: effectLoader.item
+    property string effectSource: "Effects/EffectPassThrough.qml"
+    signal contentSizeChanged(size contentSize)
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+    color: "black"
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+    ShaderEffectSource {
+        id: theSource
+        smooth: true
+        hideSource: true
     }
 
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
+    LogoContainer {
+        id: logoContainer
+        anchors.fill: root
+    }
 
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
+    Loader {
+        id: effectLoader
+        source: effectSource
+    }
+
+    onWidthChanged: {
+        if (effectLoader.item)
+            effectLoader.item.targetWidth = root.width
+    }
+
+    onHeightChanged: {
+        if (effectLoader.item)
+            effectLoader.item.targetHeight = root.height
+    }
+
+    onEffectSourceChanged: {
+        effectLoader.source = effectSource
+        updateSource()
+    }
+
+    function updateSource() {
+        if (effectLoader.item) {
+            effectLoader.item.parent = root
+            effectLoader.item.targetWidth = root.width
+            effectLoader.item.targetHeight = root.height
+            effectLoader.item.anchors.fill = logoContainer
+            effectLoader.item.source = theSource
         }
     }
 
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    function init() {
+        print("Content init()")
+        theSource.sourceItem = logoContainer
+        root.effectSource = "Effects/EffectPassThrough.qml"
+        effectLoader.source = root.effectSource
+        updateSource()
+    }
+
+    function play() {
+        logoContainer.play()
+    }
+
+    function pause() {
+        logoContainer.pause()
+    }
 }

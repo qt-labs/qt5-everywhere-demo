@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,35 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
+// Based on http://www.geeks3d.com/20091116/shader-library-2d-shockwave-post-processing-filter-glsl/
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+uniform float centerX;
+uniform float centerY;
+uniform float dividerValue;
+uniform float granularity;
+uniform float time;
+uniform float weight;
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+uniform sampler2D source;
+uniform lowp float qt_Opacity;
+varying vec2 qt_TexCoord0;
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
-    }
-
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
+void main()
+{
+    vec2 uv = qt_TexCoord0.xy;
+    vec2 tc = qt_TexCoord0;
+    vec2 center = vec2(centerX, centerY);
+    const vec3 shock = vec3(10.0, 1.5, 0.1);
+    if (uv.x < dividerValue) {
+        float distance = distance(uv, center);
+        if ((distance <= (time + shock.z)) &&
+            (distance >= (time - shock.z))) {
+            float diff = (distance - time);
+            float powDiff = 1.0 - pow(abs(diff*shock.x), shock.y*weight);
+            float diffTime = diff  * powDiff;
+            vec2 diffUV = normalize(uv - center);
+            tc += (diffUV * diffTime);
         }
     }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    gl_FragColor = qt_Opacity * texture2D(source, tc);
 }

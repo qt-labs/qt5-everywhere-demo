@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,47 @@
 **
 ****************************************************************************/
 
+// Based on http://www.geeks3d.com/20100909/shader-library-gaussian-blur-post-processing-filter-in-glsl/
+
 import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
 
-Rectangle {
-    id: window
-    anchors.fill: parent
-
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
-
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
-    }
-
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
+Item {
+    id: root
+    property bool divider: true
+    property real dividerValue: 1
+    property ListModel parameters: ListModel {
+        ListElement {
+            name: "radius"
+            value: 0.5
         }
     }
 
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    property alias targetWidth: verticalShader.targetWidth
+    property alias targetHeight: verticalShader.targetHeight
+    property alias source: verticalShader.source
+
+    Effect {
+        id: verticalShader
+        anchors.fill:  parent
+        dividerValue: parent.dividerValue
+        property real blurSize: 4.0 * parent.parameters.get(0).value / targetHeight
+        fragmentShaderFilename: "shaders/gaussianblur_v.fsh"
+    }
+
+    Effect {
+        id: horizontalShader
+        anchors.fill: parent
+        dividerValue: parent.dividerValue
+        property real blurSize: 4.0 * parent.parameters.get(0).value / parent.targetWidth
+        fragmentShaderFilename: "shaders/gaussianblur_h.fsh"
+        source: horizontalShaderSource
+
+        ShaderEffectSource {
+            id: horizontalShaderSource
+            sourceItem: verticalShader
+            smooth: true
+            hideSource: true
+        }
+    }
 }
+

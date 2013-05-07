@@ -78,6 +78,7 @@ Rectangle {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: maskVerticalOffset
         anchors.horizontalCenterOffset: maskHorizontalOffset
+        smooth: true
         source: slide.imageSource
         width: slide.width
         height: slide.height

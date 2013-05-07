@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -40,56 +40,69 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
 
 Rectangle {
-    id: window
-    anchors.fill: parent
+    id: root
+    height: view.model.count * sliderHeight
+    color: "#BB333333"
+    property color lineColor: "black"
+    property real spacing: 10
+    property real sliderHeight: 50
+    property bool isMouseAbove: mouseAboveMonitor.containsMouse
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+    property ListModel model: ListModel { }
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+    MouseArea {
+        id: mouseAboveMonitor
+        anchors.fill: parent
+        hoverEnabled: true;
     }
 
-    Row {
+    Component {
+        id: editDelegate
+
         Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
+            id: delegate
+            width: root.width
+            height: root.sliderHeight
+            color: "transparent"
 
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
+            Text {
+                id: text
+                text: name
+                color: "white"
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left: parent.left
+                    leftMargin: root.width * 0.05
+                }
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: delegate.height * 0.3
+                font.capitalization: Font.Capitalize
+                width: root.width * 0.35
             }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
+
+            Slider {
+                anchors {
+                    verticalCenter: text.verticalCenter
+                    left: text.right
+                    leftMargin: root.width * 0.05
+                    right: parent.right
+                    rightMargin: root.width * 0.05
+                }
+                value: model.value
+                onValueChanged: view.model.setProperty(index, "value", value)
             }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
         }
     }
 
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    ListView {
+        id: view
+        anchors.fill: parent
+        model: root.model
+        delegate: editDelegate
+        interactive: false
+    }
 }

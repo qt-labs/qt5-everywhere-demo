@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -40,56 +40,36 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+ShaderEffect {
+    property variant source
+    property ListModel parameters: ListModel { }
+    property bool divider: false
+    property real dividerValue: 1.0
+    property real targetWidth: 0
+    property real targetHeight: 0
+    property string fragmentShaderFilename
+    property string vertexShaderFilename
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
-
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+    QtObject {
+        id: d
+        property string fragmentShaderCommon: "
+            #ifdef GL_ES
+                precision mediump float;
+            #else
+            #   define lowp
+            #   define mediump
+            #   define highp
+            #endif // GL_ES
+        "
     }
 
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
+    // The following is a workaround for the fact that ShaderEffect
+    // doesn't provide a way for shader programs to be read from a file,
+    // rather than being inline in the QML file
 
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
-        }
-    }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    onFragmentShaderFilenameChanged:
+        fragmentShader = d.fragmentShaderCommon + shaderFileReader.readFile("qml/QtDemo/demos/shaders/" + fragmentShaderFilename)
+    onVertexShaderFilenameChanged:
+        vertexShader = shaderFileReader.readFile("qml/QtDemo/demos/shaders/" + vertexShaderFilename)
 }

@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,45 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
+// Based on "Graphics Shaders: Theory and Practice" (http://cgeducation.org/ShadersBook/)
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+uniform float dividerValue;
+uniform float mixLevel;
+uniform float resS;
+uniform float resT;
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+uniform sampler2D source;
+uniform lowp float qt_Opacity;
+varying vec2 qt_TexCoord0;
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+void main()
+{
+    vec2 uv = qt_TexCoord0.xy;
+    vec4 c = vec4(0.0);
+    if (uv.x < dividerValue) {
+        vec2 st = qt_TexCoord0.st;
+        vec3 irgb = texture2D(source, st).rgb;
+        vec2 stp0 = vec2(1.0 / resS, 0.0);
+        vec2 st0p = vec2(0.0       , 1.0 / resT);
+        vec2 stpp = vec2(1.0 / resS, 1.0 / resT);
+        vec2 stpm = vec2(1.0 / resS, -1.0 / resT);
+        const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+        float i00   = dot(texture2D(source, st).rgb, W);
+        float im1m1 = dot(texture2D(source, st-stpp).rgb, W);
+        float ip1p1 = dot(texture2D(source, st+stpp).rgb, W);
+        float im1p1 = dot(texture2D(source, st-stpm).rgb, W);
+        float ip1m1 = dot(texture2D(source, st+stpm).rgb, W);
+        float im10  = dot(texture2D(source, st-stp0).rgb, W);
+        float ip10  = dot(texture2D(source, st+stp0).rgb, W);
+        float i0m1  = dot(texture2D(source, st-st0p).rgb, W);
+        float i0p1  = dot(texture2D(source, st+st0p).rgb, W);
+        float h = -1.0*im1p1 - 2.0*i0p1 - 1.0*ip1p1 + 1.0*im1m1 + 2.0*i0m1 + 1.0*ip1m1;
+        float v = -1.0*im1m1 - 2.0*im10 - 1.0*im1p1 + 1.0*ip1m1 + 2.0*ip10 + 1.0*ip1p1;
+        float mag = 1.0 - length(vec2(h, v));
+        vec3 target = vec3(mag, mag, mag);
+        c = vec4(target, 1.0);
+    } else {
+        c = texture2D(source, qt_TexCoord0);
     }
-
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
-        }
-    }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    gl_FragColor = qt_Opacity * c;
 }

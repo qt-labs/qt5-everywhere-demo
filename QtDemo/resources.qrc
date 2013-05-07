@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/QtDemo/demos/shaders/shaders/billboard.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/blackandwhite.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/emboss.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/gaussianblur_h.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/gaussianblur_v.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/glow.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/isolate.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/pixelate.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/posterize.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/ripple.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/selectionpanel.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/sepia.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/sharpen.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/shockwave.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/sobeledgedetection1.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/toon.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/vignette.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/warhol.fsh</file>
+        <file>qml/QtDemo/demos/shaders/shaders/wobble.fsh</file>
+    </qresource>
+</RCC>

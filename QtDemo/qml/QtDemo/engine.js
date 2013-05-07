@@ -6,7 +6,8 @@ var positions = [{x:-800, y:-800, angle: 0, borderColor: "green", url: "demos/ca
                  {x:-1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo surface"},
                  {x:1600, y:1100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
                  {x:-200, y:1600, angle: 3, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 7, name: "Slide puzzle"},
-                 {x:3000, y:2000, angle: 3, borderColor: "orange", url: "demos/canvasclock/canvasClock.qml", device: 7, name: "Canvas clock"}]
+                 {x:3000, y:2000, angle: 3, borderColor: "orange", url: "demos/canvasclock/canvasClock.qml", device: 7, name: "Canvas clock"},
+                 {x:700, y:1900, angle: -3, borderColor: "orange", url: "demos/shaders/main.qml", device: 7, name: "Shaders"}]
 
 var imageSources = ["phone1","phone2", "phone3","tablet1", "medical_device", "laptop1", "laptop2", "tv"]
 var widths = [358, 361, 366, 758, 600, 888, 888, 708]

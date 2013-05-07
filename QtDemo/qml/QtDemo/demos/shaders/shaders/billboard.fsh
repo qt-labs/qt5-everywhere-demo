@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,36 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
+// Based on http://kodemongki.blogspot.com/2011/06/kameraku-custom-shader-effects-example.html
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+uniform float grid;
+uniform float dividerValue;
+uniform float step_x;
+uniform float step_y;
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
+uniform sampler2D source;
+uniform lowp float qt_Opacity;
+varying vec2 qt_TexCoord0;
 
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
-    }
-
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
-        }
-    }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+void main()
+{
+    vec2 uv = qt_TexCoord0.xy;
+    float offx = floor(uv.x  / (grid * step_x));
+    float offy = floor(uv.y  / (grid * step_y));
+    vec3 res = texture2D(source, vec2(offx * grid * step_x , offy * grid * step_y)).rgb;
+    vec2 prc = fract(uv / vec2(grid * step_x, grid * step_y));
+    vec2 pw = pow(abs(prc - 0.5), vec2(2.0));
+    float  rs = pow(0.45, 2.0);
+    float gr = smoothstep(rs - 0.1, rs + 0.1, pw.x + pw.y);
+    float y = (res.r + res.g + res.b) / 3.0;
+    vec3 ra = res / y;
+    float ls = 0.3;
+    float lb = ceil(y / ls);
+    float lf = ls * lb + 0.3;
+    res = lf * res;
+    vec3 col = mix(res, vec3(0.1, 0.1, 0.1), gr);
+    if (uv.x < dividerValue)
+        gl_FragColor = qt_Opacity * vec4(col, 1.0);
+    else
+        gl_FragColor = qt_Opacity * texture2D(source, uv);
 }

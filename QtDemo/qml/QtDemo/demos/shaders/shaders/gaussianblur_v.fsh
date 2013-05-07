@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,57 +39,30 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
+uniform float dividerValue;
+uniform float blurSize;
 
-Rectangle {
-    id: window
-    anchors.fill: parent
+uniform sampler2D source;
+uniform lowp float qt_Opacity;
+varying vec2 qt_TexCoord0;
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
-
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+void main()
+{
+    vec2 uv = qt_TexCoord0.xy;
+    vec4 c = vec4(0.0);
+    if (uv.x < dividerValue) {
+        c += texture2D(source, uv - vec2(0.0, 4.0*blurSize)) * 0.05;
+        c += texture2D(source, uv - vec2(0.0, 3.0*blurSize)) * 0.09;
+        c += texture2D(source, uv - vec2(0.0, 2.0*blurSize)) * 0.12;
+        c += texture2D(source, uv - vec2(0.0, 1.0*blurSize)) * 0.15;
+        c += texture2D(source, uv) * 0.18;
+        c += texture2D(source, uv + vec2(0.0, 1.0*blurSize)) * 0.15;
+        c += texture2D(source, uv + vec2(0.0, 2.0*blurSize)) * 0.12;
+        c += texture2D(source, uv + vec2(0.0, 3.0*blurSize)) * 0.09;
+        c += texture2D(source, uv + vec2(0.0, 4.0*blurSize)) * 0.05;
+    } else {
+        c = texture2D(source, qt_TexCoord0);
     }
-
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
-
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
-        }
-    }
-
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    // First pass we don't apply opacity
+    gl_FragColor = c;
 }

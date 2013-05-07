@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the Qt Mobility Components.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -40,56 +40,62 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.XmlListModel 2.0
-import "content"
 
 Rectangle {
-    id: window
-    anchors.fill: parent
+    id: applicationWindow
+    focus: true
+    anchors.fill:parent
+    color: "black"
 
-    property int listWidth: window.width*0.35
-    property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
-    property bool loading: feedModel.status == XmlListModel.Loading
-
-    RssFeeds { id: rssFeeds }
-
-    XmlListModel {
-        id: feedModel
-        source: "http://" + window.currentFeed
-        query: "/rss/channel/item"
-
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "link"; query: "link/string()" }
-        XmlRole { name: "description"; query: "description/string()" }
+    Content {
+        id: content
+        anchors.fill: parent
+        anchors.bottomMargin: controlBar.height
     }
 
-    Row {
-        Rectangle {
-            width: window.listWidth; height: window.height
-            color: "#efefef"
+    ControlBar {
+        id: controlBar
+        anchors.left: applicationWindow.left
+        anchors.right: applicationWindow.right
+        anchors.bottom: applicationWindow.bottom
 
-            ListView {
-                focus: true
-                id: categories
-                anchors.fill: parent
-                model: rssFeeds
-                delegate: CategoryDelegate {}
-                highlight: Rectangle { color: "steelblue" }
-                highlightMoveVelocity: 9999999
-            }
-            ScrollBar {
-                scrollArea: categories; height: categories.height; width: 8
-                anchors.right: categories.right
-            }
-        }
-        ListView {
-            id: list
-            width: window.width - window.listWidth; height: window.height
-            model: feedModel
-            delegate: NewsDelegate {}
+        onToggleFX: effectSelectionPanel.visible = !effectSelectionPanel.visible;
+        onPlay: content.play();
+        onPause: content.pause();
+    }
+
+    ParameterPanel {
+        id: parameterPanel
+        opacity: controlBar.opacity
+        visible: effectSelectionPanel.visible && model.count !== 0
+        width: applicationWindow.width * 0.5
+        sliderHeight: applicationWindow.height * 0.15
+        anchors {
+            bottom: effectSelectionPanel.bottom
+            right: effectSelectionPanel.left
         }
     }
 
-    ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
-    Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }
+    EffectSelectionPanel {
+        id: effectSelectionPanel
+        visible: false
+        opacity: controlBar.opacity
+        anchors {
+            bottom: controlBar.top
+            right: applicationWindow.right
+        }
+        width: applicationWindow.width * 0.3
+        height: applicationWindow.height - controlBar.height
+        itemHeight: applicationWindow.height*0.08
+        color: controlBar.color
+
+        onClicked: {
+            content.effectSource = effectSource
+            parameterPanel.model = content.effect.parameters
+        }
+    }
+
+    Component.onCompleted: {
+        content.init()
+    }
 }
