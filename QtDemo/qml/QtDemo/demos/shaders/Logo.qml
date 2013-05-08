@@ -1,17 +1,20 @@
 import QtQuick 2.0
+import QtQuick.Particles 2.0
 
 Rectangle {
     id: root
     color: "transparent"
     property int logoSize: Math.min(parent.height, parent.width) / 2
+    property int logoSizeDivider: 1
     property int logoState: 1
-
-    property double posX: parent.width / 2 - logoSize
-    property double posY: parent.height / 2 - logoSize
+    property bool running: parent.running
+    property double posX: parent.width / 2
+    property double posY: parent.height / 2
     property double rot: 0
     property double dx: 10
     property double dy: 10
     property double drot: 1
+    property string explodeColor: "#ff3333"
 
     function play() {
         randomValues();
@@ -22,14 +25,38 @@ Rectangle {
         animationTimer.stop();
     }
 
-    function end() {
-        parent.decreaseCounter(root.posX,root.posY)
-        root.visible = false
-        destroy()
-    }
-
     function logoClicked() {
-        parent.createNewLogos(root.posX,root.posY,root.logoState)
+        switch(root.logoState) {
+        case 1: {
+            parent.createNewLogos(root.posX,root.posY,logoSize,2)
+            parent.decreaseCounter();
+            logo.visible = false;
+            root.logoState = 2;
+            root.explodeColor = "#33ff33"
+            explodeAnimation.restart()
+            break;
+        }
+        default: {
+            // return true if we must destroy this logo
+            if (parent.decreaseCounter(root.posX,root.posY) === true) {
+                logo.visible = false;
+                root.logoState = 2;
+                root.dx = 0;
+                root.dy = 0;
+                root.drot = 0;
+                root.explodeColor = "#ff3333"
+                explodeAnimation.restart()
+            }
+            else { // It was last logo, we will keep it
+                root.logoState = 1
+                root.logoSizeDivider = 1
+                root.explodeColor = "#3333ff"
+                explodeAnimation.restart()
+            }
+            break;
+        }
+        }
+
     }
 
     function randomValues() {
@@ -68,6 +95,30 @@ Rectangle {
         root.rot = root.rot + root.drot
     }
 
+    ParticleSystem{
+        id: particleSystem;
+        anchors.fill: logo
+
+        Emitter {
+            id: emitter
+            anchors.fill: particleSystem
+            enabled: false
+            emitRate: 1000
+            lifeSpan: 500
+            size: logo.height * .5
+            endSize: logo.height * .1
+            velocity: AngleDirection { angleVariation: 360; magnitudeVariation: 160 }
+        }
+
+        ImageParticle {
+            id: smokeParticle
+            source: "images/particle-smoke.png"
+            alpha: 0.3
+            alphaVariation: 0.1
+            color: root.explodeColor
+        }
+    }
+
     Timer {
         id: animationTimer
         interval: 20
@@ -78,8 +129,8 @@ Rectangle {
 
     Image {
         id: logo
-        width: (logoSize / logoState)
-        height: (logoSize / logoState)
+        width: (logoSize / logoSizeDivider)
+        height: (logoSize / logoSizeDivider)
         x: root.posX
         y: root.posY
         rotation: root.rot
@@ -89,12 +140,22 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                logoState++;
-                if (logoState >= 3)
-                    end();
-                else
+                if (root.running) {
                     logoClicked();
+                }
             }
         }
     }
+
+    SequentialAnimation {
+        id: explodeAnimation
+        running: false
+        ScriptAction { script: emitter.pulse(100); }
+        PauseAnimation { duration: 600 }
+        onRunningChanged: {
+            if (!explodeAnimation.running && root.logoState > 1)
+                root.destroy();
+        }
+    }
+
 }

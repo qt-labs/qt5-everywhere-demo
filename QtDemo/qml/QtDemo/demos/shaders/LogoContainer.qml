@@ -36,25 +36,33 @@ Rectangle {
         logoCount++;
         var component = Qt.createComponent("Logo.qml")
         if (component.status === Component.Ready) {
-            var logo = component.createObject(root, {"posX": x, "posY": y, "logoState": logoState, "objectName": "logo"});
+            var logo = component.createObject(root, {"posX": x, "posY": y, "logoState": logoState, "logoSizeDivider" : logoState, "objectName": "logo"});
             if (running)
                 logo.play();
         }
     }
 
-    function createNewLogos(x, y, logoState) {
-        for (var i=0; i<5; i++) {
-            createNewLogo(x, y, logoState)
-        }
+    function createNewLogos(x, y, logoSize, logoState) {
+        var newSize = logoSize / logoState;
+        var temp = logoSize - newSize;
+
+        createNewLogo(x, y, logoState);
+        createNewLogo(x+temp, y, logoState);
+        createNewLogo(x+temp, y+temp, logoState);
+        createNewLogo(x, y+temp, logoState);
+        createNewLogo(x+logoSize/2-newSize/2, y+logoSize/2-newSize/2, logoState);
     }
 
-    function decreaseCounter(x,y) {
-        logoCount--;
-        if (logoCount <= 0)
-            createNewLogo(x,y,1)
+    function decreaseCounter() {
+        if (logoCount > 1) {
+            logoCount--;
+            return true;
+        }
+        return false;
     }
 
     Component.onCompleted: {
-        createNewLogo(root.width/2, root.height/2, 1)
+        var logoSize = Math.min(parent.height, parent.width) / 2;
+        createNewLogo(root.width/2 - logoSize/2, root.height/2 - logoSize/2, 1)
     }
 }
