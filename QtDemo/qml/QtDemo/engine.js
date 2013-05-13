@@ -5,7 +5,7 @@ var positions = [{x:-100, y:-850, angle: 0, url: "demos/calqlatr/Calqlatr.qml", 
                  {x:-1900, y:0, angle: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
                  {x:1700, y:200, angle: 0, url: "demos/boot/BootScreen.qml", device: 4, name: "Particles"},
                  {x:-2000, y:800, angle: 0, url: "demos/slidepuzzle/slidepuzzle.qml", device: 5, name: "Slide puzzle"},
-                 {x:1600, y:1100, angle: 0, url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
+                 {x:1600, y:1100, angle: 0, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particles"},
                  {x:1100, y:2000, angle: 0, url: "demos/photosurface/photosurface.qml", device: 7, name: "Photo surface"},
                  {x:-1100, y:1700, angle: 0, url: "demos/shaders/main.qml", device: 7, name: "Shaders"}]
 
