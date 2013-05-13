@@ -5,6 +5,7 @@ import "style.js" as Style
 Rectangle{
     id: app
     clip: true
+    focus: true
     color: "white"
     property real homeScaleFactor: .2
     property int homeCenterX: 0
@@ -13,6 +14,7 @@ Rectangle{
     property real maxScaleFactor: 1
     property real tapLimitX : 2
     property real tapLimitY : 1
+    property int navigationState: 0 //home, slide, dirty
 
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
@@ -25,7 +27,7 @@ Rectangle{
             app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;
             app.maxScaleFactor = app.homeScaleFactor * 20;
-            Engine.updateObjectScales(app.width*0.8, app.width*0.8); //app.width, app.height);
+            Engine.updateObjectScales(app.width*0.9, app.height*0.9); //app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 
@@ -75,6 +77,13 @@ Rectangle{
         spacing: app.height * 0.05
     }
 
+    QuitDialog {
+        id: quitDialog
+        visible: false
+
+        onYes: Qt.quit()
+        onNo: visible = false
+    }
 
     NumberAnimation {
         id: zoomAnimation
@@ -116,7 +125,7 @@ Rectangle{
 
         onRunningChanged: {
             if (!running) {
-                if (canvas.zoomInTarget !== app.homeScaleFactor)
+                if (navigationState === 1)
                     Engine.loadCurrentDemo();
                 else
                     Engine.releaseDemos();
@@ -124,10 +133,21 @@ Rectangle{
         }
     }
 
+    Keys.onPressed: {
+        // Handle back-key
+        if (event.key === Qt.Key_MediaPrevious) {
+            if (app.navigationState !== 0) {
+                event.accepted = true;
+                canvas.goHome();
+            }
+            else {
+                quitDialog.visible = true
+            }
+        }
+    }
+
     Component.onCompleted: {
-        print("START TO INITIALIZE SLIDES")
         Engine.initSlides()
-        print("SLIDES READY")
         cloud1.start();
         cloud2.start();
         cloud3.start();

@@ -1,39 +1,39 @@
-var positions = [{x:-800, y:-800, angle: 0, borderColor: "green", url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
-                 {x:700, y:-900, angle: 0, borderColor: "blue", url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
-                 {x:1400, y:-500, angle:5, borderColor: "grey", url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
-                 {x:-1800, y:-100, angle: -4, borderColor: "orange", url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
-                 {x:1700, y:200, angle: -3, borderColor: "orange", url: "demos/boot/BootScreen.qml", device: 4, name: "Particles"},
-                 {x:-1700, y: 800, angle: 5, borderColor: "red", url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo surface"},
-                 {x:1600, y:1100, angle: -4, borderColor: "red", url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
-                 {x:-200, y:1600, angle: 3, borderColor: "orange", url: "demos/slidepuzzle/slidepuzzle.qml", device: 7, name: "Slide puzzle"},
-                 {x:3000, y:2000, angle: 3, borderColor: "orange", url: "demos/canvasclock/canvasClock.qml", device: 7, name: "Canvas clock"},
-                 {x:700, y:1900, angle: -3, borderColor: "orange", url: "demos/shaders/main.qml", device: 7, name: "Shaders"}]
+var positions = [{x:-100, y:-850, angle: 0, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+                 {x:700, y:-900, angle: 0, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
+                 {x:1400, y:-500, angle:0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
+                 {x:-1200, y:-600, angle: 0, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas clock"},
+                 {x:-1900, y:0, angle: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
+                 {x:1700, y:200, angle: 0, url: "demos/boot/BootScreen.qml", device: 4, name: "Particles"},
+                 {x:-2000, y:800, angle: 0, url: "demos/slidepuzzle/slidepuzzle.qml", device: 5, name: "Slide puzzle"},
+                 {x:1600, y:1100, angle: 0, url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
+                 {x:1100, y:2000, angle: 0, url: "demos/photosurface/photosurface.qml", device: 7, name: "Photo surface"},
+                 {x:-1100, y:1700, angle: 0, url: "demos/shaders/main.qml", device: 7, name: "Shaders"}]
 
-var imageSources = ["phone1","phone2", "phone3","tablet1", "medical_device", "laptop1", "laptop2", "tv"]
+var imageSources = ["phone1.svg","phone2.svg", "phone3.svg","tablet1.svg", "medical_device.svg", "laptop1.svg", "laptop2.svg", "tv.svg"]
 var widths = [358, 361, 366, 758, 600, 888, 888, 708]
 var heights = [723, 707, 721, 565, 489, 513, 513, 565]
-var scales = [0.6, 0.6, 0.6, 0.8, 1.4, 1.4, 1.5, 2]
-var demoWidths = [324, 324, 324, 644, 484, 644, 644, 644]
-var demoHeights = [484, 484, 484, 404, 324, 404, 404, 404]
+var scales = [0.6, 0.6, 0.6, 1.0, 1.2, 1.2, 1.2, 1.5]
+var demoWidths = [322, 322, 322, 642, 482, 642, 642, 642]
+var demoHeights = [482, 482, 482, 402, 322, 402, 402, 402]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
-var maskVerticalOffsets = [27, 33, 16, 25, 46, 34, 34, 50]
-var targetAngles = [-90, -90, -90, 0, 0, 0, 0, 0]
+var maskVerticalOffsets = [26, 32, 15, 24, 45, 33, 33, 49]
+var targetAngles = [-90, -90, 0, 0, 0, 0, 0, 0]
 
 var currentDemoId = -1
 var objects = []
 
 function initSlides(){
     positions.forEach(function(pos){
-        createNew(pos.x,pos.y,pos.angle, pos.borderColor, pos.url, pos.device, pos.name)
+        createNew(pos.x,pos.y,pos.angle, pos.url, pos.device, pos.name)
     })
 }
 
-function createNew(x,y,angle,borderColor,url,device,name){
+function createNew(x,y,angle,url,device,name){
     var component = Qt.createComponent("Slide.qml")
     if (component.status === Component.Ready){
         var object=component.createObject(canvas)
         object.device = device
-        object.imageSource = "images/" + imageSources[device] + ".svg"
+        object.imageSource = "images/" + imageSources[device]
         object.width = widths[device]
         object.height = heights[device]
         object.scale = scales[device]
@@ -41,9 +41,9 @@ function createNew(x,y,angle,borderColor,url,device,name){
         object.demoHeight = demoHeights[device]
         object.maskVerticalOffset = maskVerticalOffsets[device]
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
+        object.targetAngle = targetAngles[device]
         object.rotation = angle
         object.uid = objects.length
-        object.borderColor = borderColor
         object.name = name
         object.x = x-object.width/2
         object.y = y-object.height/2
@@ -52,7 +52,6 @@ function createNew(x,y,angle,borderColor,url,device,name){
         if (url){
             object.url = url;
         }
-        print ("object.url: "+object.url)
         objects.push(object)
     }
 }

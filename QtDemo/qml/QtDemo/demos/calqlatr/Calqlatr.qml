@@ -46,10 +46,8 @@ import "content/calculator.js" as CalcEngine
 Rectangle {
     id: window
     anchors.fill: parent
-    focus: true
+    //focus: true
     color: "#272822"
-
-    //onWidthChanged: controller.reload()
 
     function operatorPressed(operator) { CalcEngine.operatorPressed(operator) }
     function digitPressed(digit) { CalcEngine.digitPressed(digit) }

@@ -46,6 +46,12 @@ import "content"
 Rectangle {
     id: window
     anchors.fill: parent
+    gradient: Gradient {
+        GradientStop { position: 0.0; color: "#eeeeee" }
+        GradientStop { position: 0.1; color: "#ffffff" }
+        GradientStop { position: 0.9; color: "#ffffff" }
+        GradientStop { position: 1.0; color: "#bbbbbb" }
+    }
 
     property int listWidth: window.width*0.35
     property string currentFeed: "feeds.bbci.co.uk/news/rss.xml"
@@ -65,11 +71,11 @@ Rectangle {
 
     Row {
         Rectangle {
+            id: categoryContent
             width: window.listWidth; height: window.height
             color: "#efefef"
 
             ListView {
-                focus: true
                 id: categories
                 anchors.fill: parent
                 model: rssFeeds

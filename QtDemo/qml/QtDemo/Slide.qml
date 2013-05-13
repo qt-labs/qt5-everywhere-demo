@@ -1,61 +1,59 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: slide
     objectName: "slide"
 
-    width: 867
-    height: 520
-    scale: 2
-
-    color: "transparent"
-    border {color: app.showDebugRects ? borderColor : "transparent"; width:3}
-
     property int uid: 0
-    property color borderColor: "black"
     property string url: ""
     property int device: 0
     property string imageSource: ""
     property bool loaded: false
     property bool loading: false
     property real targetScale: 1
-    property real targetAngle: device <= 2 ? -90 : 0
-
+    property real targetAngle: 0
+    property bool animationRunning: navigationAnimation.running || zoomAnimation.running
     property int demoWidth: 603
     property int demoHeight: 378
-
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
-
     property string name: ""
 
     function targetWidth()
     {
-        return device <= 2 ? demoHeight*scale: demoWidth*scale;
+        return device <= 1 ? demoHeight*scale: demoWidth*scale;
     }
 
     function targetHeight()
     {
-        return device <= 2 ? demoWidth*scale : demoHeight*scale;
+        return device <= 1 ? demoWidth*scale : demoHeight*scale;
     }
 
-    Rectangle{
-        id: demoContainer
+    Rectangle {
+        id: demoBackground
         anchors.centerIn: parent
-        width: demoWidth
-        height: demoHeight
-        color: "#111111"
-        clip: true
+        width: demoContainer.width * 1.03
+        height: demoContainer.height * 1.03
+        color: "black"
         z: (slide.loading || slide.loaded) ? 1:-1
 
-        Text {
-            id: splashScreenText
-            color: 'white'
-            font.pixelSize: parent.height *.1
-            text: slide.name
+        Rectangle{
+            id: demoContainer
             anchors.centerIn: parent
-            smooth: true
-            visible: false
+            width: demoWidth
+            height: demoHeight
+            color: "#111111"
+            clip: true
+
+            Text {
+                id: splashScreenText
+                color: 'white'
+                font.pixelSize: parent.height *.1
+                text: slide.name
+                anchors.centerIn: parent
+                smooth: true
+                visible: false
+            }
         }
     }
 
@@ -67,7 +65,6 @@ Rectangle {
         sourceItem: demoContainer
         live: (slide.loading || slide.loaded)
         visible: true
-        smooth: false
         hideSource: true
         clip: true
         z: (slide.loading || slide.loaded) ? 1:-1
@@ -78,7 +75,8 @@ Rectangle {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: maskVerticalOffset
         anchors.horizontalCenterOffset: maskHorizontalOffset
-        smooth: true
+        smooth: !animationRunning
+        antialiasing: !animationRunning
         source: slide.imageSource
         width: slide.width
         height: slide.height
@@ -165,6 +163,8 @@ Rectangle {
     }
 
     function releaseDemo(){
+        app.forceActiveFocus();
+
         if (!slide.loaded)
             return;
 

@@ -74,7 +74,7 @@ Item {
 
         front: Rectangle {
             width: container.ListView.view ? container.ListView.view.width : 0
-            height: Math.max(72, tweet.y + tweet.height + 10)
+            height: parent.height; //Math.max(72, tweet.y + tweet.height + 10)
             color: "#2699bf"
 
             Rectangle { color: "#33ccff"; width: parent.width; height: 1 }

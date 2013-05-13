@@ -43,13 +43,15 @@ import QtQuick 2.0
 
 Item {
     id: delegate
-    height: column.height + 40
+    height: column.height + 2*margin
     width: delegate.ListView.view.width
+
+    property double margin: width * 0.03
 
     Column {
         id: column
-        x: 20; y: 20
-        width: parent.width - 40
+        x: margin; y: margin
+        width: parent.width - 2*margin
 
         Text {
             id: titleText

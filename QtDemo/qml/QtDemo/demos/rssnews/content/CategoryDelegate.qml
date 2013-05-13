@@ -43,15 +43,17 @@ import QtQuick 2.0
 
 Item {
     id: delegate
-
-    width: delegate.ListView.view.width; height: 60
+    property double margin: delegate.height * 0.2;
+    width: delegate.ListView.view.width;
+    height: 60
 
     Text {
         text: name
         color: delegate.ListView.isCurrentItem ? "white" : "black"
-        font { family: "Helvetica"; pixelSize: 18; bold: true }
+        font { family: "Helvetica"; pixelSize: delegate.height * 0.25; bold: true }
         anchors {
-            left: parent.left; leftMargin: 15
+            left: parent.left;
+            leftMargin: margin
             verticalCenter: parent.verticalCenter
         }
     }
@@ -59,7 +61,7 @@ Item {
     BusyIndicator {
         scale: 0.6
         on: delegate.ListView.isCurrentItem && window.loading
-        anchors { right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
+        anchors { right: parent.right; rightMargin: margin; verticalCenter: parent.verticalCenter }
     }
 
     Rectangle {

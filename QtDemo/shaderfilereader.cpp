@@ -32,6 +32,7 @@ QString ShaderFileReader::readFile(const QString &fileName)
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);
         content = stream.readAll();
+        file.close();
     }
     return content;
 }

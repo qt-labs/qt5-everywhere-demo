@@ -28,7 +28,8 @@ Item{
         rotationOriginY = 0;
         angle = 0;
         zoomInTarget = app.homeScaleFactor;
-
+        app.navigationState = 0 //home
+        app.forceActiveFocus()
         navigationPanel.rotateButtons(0);
         zoomAnimation.restart();
     }
@@ -43,6 +44,7 @@ Item{
             rotationOriginY = target.y;
             angle = -target.angle + target.targetAngle;
             zoomInTarget = target.targetScale;
+            app.navigationState = 1 //slide
             navigationPanel.rotateButtons(target.targetAngle);
         }
     }

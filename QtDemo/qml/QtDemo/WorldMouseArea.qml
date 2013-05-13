@@ -55,6 +55,7 @@ MouseArea{
             panning = true;
             canvas.xOffset += dx;
             canvas.yOffset += dy;
+            app.navigationState = 2 //dirty
         }
     }
 

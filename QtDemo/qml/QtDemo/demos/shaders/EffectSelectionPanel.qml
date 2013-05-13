@@ -127,7 +127,7 @@ Rectangle {
         clip: true
         anchors.margins: root.width * 0.05
         model: sources
-        focus: root.visible && root.opacity
+        //focus: root.visible && root.opacity
 
         currentIndex: 0
 

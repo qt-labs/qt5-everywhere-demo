@@ -37,6 +37,4 @@ Rectangle {
         }
         //fadeOutAnimation.restart()
     }
-
-    Component.onDestruction: print ("BootScreen released!")
 }

@@ -91,7 +91,6 @@ Rectangle {
     }
 
     function init() {
-        print("Content init()")
         theSource.sourceItem = logoContainer
         root.effectSource = "Effects/EffectPassThrough.qml"
         effectLoader.source = root.effectSource

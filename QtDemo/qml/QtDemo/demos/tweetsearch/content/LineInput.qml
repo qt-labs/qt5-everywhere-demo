@@ -84,14 +84,26 @@ FocusScope {
             onAccepted: wrapper.accepted()
         }
 
-        Image {
-            source: "resources/icon-search.png"
+        Rectangle {
+            id: searchRect
             anchors.right: parent.right
-            anchors.rightMargin: 12
+            anchors.margins: parent.height * 0.1
             anchors.verticalCenter: parent.verticalCenter
-            MouseArea {
-                anchors { fill: parent; margins: -10 }
-                onClicked: wrapper.accepted()
+            height: parent.height * 0.8
+            width: height
+            color: "transparent"
+            radius: 4
+
+            Image {
+                source: "resources/icon-search.png"
+                anchors.fill: parent
+                anchors.margins: 5
+                MouseArea {
+                    anchors { fill: parent; margins: -10 }
+                    onPressed: searchRect.color = "#ff9999"
+                    onReleased: searchRect.color = "transparent"
+                    onClicked: wrapper.accepted()
+                }
             }
         }
     }

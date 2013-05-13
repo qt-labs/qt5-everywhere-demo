@@ -8,7 +8,7 @@ PinchArea{
     pinch.maximumScale: app.maxScaleFactor
     pinch.maximumRotation: 360
     pinch.minimumRotation: -360
-    enabled: !zoomAnimation.running
+    enabled: !zoomAnimation.running && !navigationAnimation.running
 
     property bool pinching: false
 

@@ -43,7 +43,6 @@ import QtQuick 2.0
 
 Rectangle {
     id: applicationWindow
-    focus: true
     anchors.fill:parent
     color: "black"
 
