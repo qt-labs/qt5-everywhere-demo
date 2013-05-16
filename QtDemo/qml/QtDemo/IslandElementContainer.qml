@@ -16,11 +16,11 @@ Rectangle {
 
     function createElements()
     {
-        var count = Math.floor(Math.random()*2.9)
-        var itemId = place == 2 ? Math.floor(Math.random()*2.9) : Math.floor(Math.random()*1.9);
+        var count = Math.floor(Math.random()*4.9)
         var step = place == 2 ? elementContainer.width / Math.max(count,1) : elementContainer.height / Math.max(count,1);
 
         for (var i=0; i<count; i++) {
+            var itemId = place == 2 ? Math.floor(Math.random()*2.9) : Math.floor(Math.random()*1.9);
             var component = Qt.createComponent("Element.qml")
             if (component.status === Component.Ready)
                 component.createObject(elementContainer,

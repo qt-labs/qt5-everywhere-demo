@@ -56,8 +56,10 @@ Rectangle{
 
     Cloud { id: cloud1; sourceImage: "images/cloud1.svg"}
     Cloud { id: cloud2; sourceImage: "images/cloud1.svg"}
-    Cloud { id: cloud3; sourceImage: "images/cloud2.svg"}
+    Cloud { id: cloud3; sourceImage: "images/cloud1.svg"}
     Cloud { id: cloud4; sourceImage: "images/cloud2.svg"}
+    Cloud { id: cloud5; sourceImage: "images/cloud2.svg"}
+    Cloud { id: cloud6; sourceImage: "images/cloud2.svg"}
 
     Item{
         id: pinchProxy
@@ -76,6 +78,17 @@ Rectangle{
         anchors.rightMargin: app.width * 0.02
         spacing: app.height * 0.05
     }
+
+    /*Image{
+        id: logo
+        source: "QtLogo.png"
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: parent.height * 0.02
+        width: parent.height * 0.1
+        height: width
+        opacity: 1.0
+    }*/
 
     QuitDialog {
         id: quitDialog
@@ -152,5 +165,7 @@ Rectangle{
         cloud2.start();
         cloud3.start();
         cloud4.start();
+        cloud5.start();
+        cloud6.start();
     }
 }

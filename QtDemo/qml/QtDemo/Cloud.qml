@@ -13,7 +13,7 @@ Rectangle {
     property string sourceImage: ""
     property real deltaY: 0
     property real randomY: app.height*0.3
-    property real amplitudeY: app.height*0.1
+    property real amplitudeY: app.height*0.2
 
     function start() {
         recalculate()
@@ -38,8 +38,8 @@ Rectangle {
 
     SequentialAnimation{
         id: cloudYAnimation
-        NumberAnimation { target: cloudRoot; property: "deltaY"; duration: cloudRoot.duration*0.5; from: 0; to:cloudRoot.amplitudeY; easing.type: Easing.InOutQuad }
-        NumberAnimation { target: cloudRoot; property: "deltaY"; duration: cloudRoot.duration*0.5; from: cloudRoot.amplitudeY; to:0; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: cloudRoot; property: "deltaY"; duration: cloudRoot.duration*0.3; from: 0; to:cloudRoot.amplitudeY; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: cloudRoot; property: "deltaY"; duration: cloudRoot.duration*0.3; from: cloudRoot.amplitudeY; to:0; easing.type: Easing.InOutQuad }
         running: true
         onRunningChanged: {
             if (!running) {

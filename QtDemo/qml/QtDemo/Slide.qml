@@ -3,6 +3,9 @@ import QtQuick 2.0
 Item {
     id: slide
     objectName: "slide"
+    x: startX
+    y: startY + deltaY
+    rotation: deltaRot
 
     property int uid: 0
     property string url: ""
@@ -12,12 +15,17 @@ Item {
     property bool loading: false
     property real targetScale: 1
     property real targetAngle: 0
+    property real startX: 0
+    property real startY: 0
     property bool animationRunning: navigationAnimation.running || zoomAnimation.running
     property int demoWidth: 603
     property int demoHeight: 378
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
     property string name: ""
+    property double deltaRot: 0
+    property double deltaY: 0
+    property double swing: 5
 
     function targetWidth()
     {
@@ -48,11 +56,11 @@ Item {
             Text {
                 id: splashScreenText
                 color: 'white'
-                font.pixelSize: parent.height *.1
+                font.pixelSize: parent.width *.1
                 text: slide.name
                 anchors.centerIn: parent
                 smooth: true
-                visible: false
+                visible: true
             }
         }
     }
@@ -82,8 +90,8 @@ Item {
         height: slide.height
         z: 2
 
-        IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
-        IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        //IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        //IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
         IslandElementContainer { id: bottomElementcontainer;place: 2; islandHeight: islandImage.height; islandWidth: islandImage.width }
     }
 
@@ -98,6 +106,21 @@ Item {
         z: -3
     }
 
+    SequentialAnimation{
+        id: rotationAnimation
+        NumberAnimation { target: slide; property: "deltaRot"; duration: 3000; to:swing; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: slide; property: "deltaRot"; duration: 3000; to:-swing; easing.type: Easing.InOutQuad }
+        loops: Animation.Infinite
+    }
+
+    SequentialAnimation{
+        id: yAnimation
+        NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:10*swing; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:-10*swing; easing.type: Easing.InOutQuad }
+        loops: Animation.Infinite
+    }
+
+
     // Load timer
     Timer {
         id: loadTimer
@@ -110,9 +133,28 @@ Item {
         }
     }
 
+    // Starter timer
+    Timer {
+        id: yStarter
+        interval: Math.random()*5000
+        running: true
+        onTriggered: yAnimation.start()
+    }
+    // Starter timer
+    Timer {
+        id: rotStarter
+        interval: Math.random()*2000
+        running: true
+        onTriggered: rotationAnimation.start()
+    }
+
     function loadDemo(){
         if (!slide.loaded)
         {
+            yAnimation.stop()
+            rotationAnimation.stop()
+            deltaY = 0
+            deltaRot = 0
             splashScreenText.visible = true
             demo.scheduleUpdate()
             loadTimer.start();
@@ -165,6 +207,9 @@ Item {
     function releaseDemo(){
         app.forceActiveFocus();
 
+        yAnimation.restart()
+        rotationAnimation.restart()
+
         if (!slide.loaded)
             return;
 
@@ -179,8 +224,8 @@ Item {
 
     function createElements()
     {
-        leftElementcontainer.createElements()
-        rightElementcontainer.createElements()
+        //leftElementcontainer.createElements()
+        //rightElementcontainer.createElements()
         bottomElementcontainer.createElements()
     }
 

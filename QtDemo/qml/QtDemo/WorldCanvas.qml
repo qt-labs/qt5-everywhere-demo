@@ -23,7 +23,7 @@ Item{
     {
         worldMouseArea.panning = false
         xOffset = 0; //(app.homeCenterX * app.homeScaleFactor);
-        yOffset = (-app.homeCenterY * app.homeScaleFactor);
+        yOffset = 0; //(-app.homeCenterY * app.homeScaleFactor);
         rotationOriginX = 0;
         rotationOriginY = 0;
         angle = 0;
@@ -42,7 +42,7 @@ Item{
             yOffset = -target.y;
             rotationOriginX = target.x;
             rotationOriginY = target.y;
-            angle = -target.angle + target.targetAngle;
+            angle = target.targetAngle;
             zoomInTarget = target.targetScale;
             app.navigationState = 1 //slide
             navigationPanel.rotateButtons(target.targetAngle);
@@ -91,7 +91,7 @@ Item{
         enabled: !worldPinchArea.pinching
     }
 
-    Image{
+    /*Image{
         id: logo
         source: "QtLogo.png"
         anchors.centerIn: parent
@@ -101,9 +101,9 @@ Item{
         smooth: !zoomAnimation.running
         opacity: 1.0
         z: 2
-    }
+    }*/
 
-    Image {
+    /*Image {
         id: logoIsland
         anchors.top: logo.bottom
         anchors.topMargin: -logo.height*0.4
@@ -112,7 +112,7 @@ Item{
         width: logo.width*1.5
         height: logo.height
         z: -2
-    }
+    }*/
 
     transform: [
 

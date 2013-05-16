@@ -58,7 +58,8 @@ Rectangle {
 //            showDirs: false
 //            nameFilters: ["*.png", "*.jpg", "*.gif"]
 //        }
-        model: 4
+        id: repeater
+        model: 5
         anchors.fill: parent
 
         clip: true
@@ -77,7 +78,7 @@ Rectangle {
                 id: image
                 anchors.centerIn: parent
                 fillMode: Image.PreserveAspectFit
-                source: "images/qml-photosurface-example-small.png"
+                source: "images/image"+index+".png"
                 scale: defaultSize / Math.max(sourceSize.width, sourceSize.height)
                 antialiasing: true
             }
