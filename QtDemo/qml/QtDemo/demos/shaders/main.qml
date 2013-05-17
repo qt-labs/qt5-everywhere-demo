@@ -45,29 +45,44 @@ Rectangle {
     id: applicationWindow
     anchors.fill:parent
     color: "black"
+    property int margin: applicationWindow.height * 0.02
 
     Content {
         id: content
         anchors.fill: parent
-        anchors.bottomMargin: controlBar.height
     }
 
-    ControlBar {
-        id: controlBar
-        anchors.left: applicationWindow.left
+    Rectangle {
+        id: fx
         anchors.right: applicationWindow.right
         anchors.bottom: applicationWindow.bottom
+        anchors.margins: applicationWindow.margin
+        width: applicationWindow.width * 0.25
+        height: applicationWindow.height * 0.08
+        color: "#333333"
+        border.color: "#777777"
+        opacity: 0.5
 
-        onToggleFX: effectSelectionPanel.visible = !effectSelectionPanel.visible;
-        onPlay: content.play();
-        onPause: content.pause();
+        Text {
+            anchors.centerIn: fx
+            color: "#ffffff"
+            text: effectSelectionPanel.effectName
+            font.pixelSize: fx.height * 0.5
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onPressed: fx.color = "#555555"
+            onReleased: fx.color = "#333333"
+            onClicked: effectSelectionPanel.visible = !effectSelectionPanel.visible;
+        }
     }
 
     ParameterPanel {
         id: parameterPanel
-        opacity: controlBar.opacity
+        opacity: 0.7
         visible: effectSelectionPanel.visible && model.count !== 0
-        width: applicationWindow.width * 0.5
+        width: applicationWindow.width * 0.4
         sliderHeight: applicationWindow.height * 0.15
         anchors {
             bottom: effectSelectionPanel.bottom
@@ -78,15 +93,16 @@ Rectangle {
     EffectSelectionPanel {
         id: effectSelectionPanel
         visible: false
-        opacity: controlBar.opacity
+        opacity: 0.7
         anchors {
-            bottom: controlBar.top
+            top: applicationWindow.top
             right: applicationWindow.right
+            margins: applicationWindow.margin
         }
-        width: applicationWindow.width * 0.3
-        height: applicationWindow.height - controlBar.height
-        itemHeight: applicationWindow.height*0.08
-        color: controlBar.color
+        width: fx.width
+        height: applicationWindow.height - fx.height - 2*applicationWindow.margin
+        itemHeight: fx.height
+        color: fx.color
 
         onClicked: {
             content.effectSource = effectSource

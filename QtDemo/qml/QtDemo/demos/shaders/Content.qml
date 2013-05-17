@@ -96,12 +96,4 @@ Rectangle {
         effectLoader.source = root.effectSource
         updateSource()
     }
-
-    function play() {
-        logoContainer.play()
-    }
-
-    function pause() {
-        logoContainer.pause()
-    }
 }

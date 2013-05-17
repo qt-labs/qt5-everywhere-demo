@@ -6,7 +6,6 @@ Rectangle {
     anchors.fill: parent
 
     property int logoCount: 0
-    property bool running: false
 
     Image {
         id: background
@@ -14,31 +13,12 @@ Rectangle {
         anchors.fill: root
     }
 
-    function play() {
-        running = true
-        for (var i =0; i<root.children.length; i++){
-            if (root.children[i].objectName === "logo"){
-                root.children[i].play();
-            }
-        }
-    }
-
-    function pause() {
-        running = false
-        for (var i =0; i<root.children.length; i++){
-            if (root.children[i].objectName === "logo"){
-                root.children[i].pause();
-            }
-        }
-    }
-
     function createNewLogo(x,y,logoState) {
         logoCount++;
         var component = Qt.createComponent("Logo.qml")
         if (component.status === Component.Ready) {
             var logo = component.createObject(root, {"posX": x, "posY": y, "logoState": logoState, "logoSizeDivider" : logoState, "objectName": "logo"});
-            if (running)
-                logo.play();
+            logo.play();
         }
     }
 
@@ -62,7 +42,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        var logoSize = Math.min(parent.height, parent.width) / 2;
+        var logoSize = Math.min(root.height, root.width) / 2;
         createNewLogo(root.width/2 - logoSize/2, root.height/2 - logoSize/2, 1)
     }
 }

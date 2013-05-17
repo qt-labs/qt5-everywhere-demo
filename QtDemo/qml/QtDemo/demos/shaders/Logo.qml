@@ -7,7 +7,6 @@ Rectangle {
     property int logoSize: Math.min(parent.height, parent.width) / 2
     property int logoSizeDivider: 1
     property int logoState: 1
-    property bool running: parent.running
     property double posX: parent.width / 2
     property double posY: parent.height / 2
     property double rot: 0
@@ -19,10 +18,6 @@ Rectangle {
     function play() {
         randomValues();
         animationTimer.restart()
-    }
-
-    function pause() {
-        animationTimer.stop();
     }
 
     function logoClicked() {
@@ -135,15 +130,10 @@ Rectangle {
         y: root.posY
         rotation: root.rot
         source: "images/qt-logo.png"
-        opacity: 1.0
 
         MouseArea {
             anchors.fill: parent
-            onClicked: {
-                if (root.running) {
-                    logoClicked();
-                }
-            }
+            onClicked: logoClicked();
         }
     }
 

@@ -127,7 +127,6 @@ Rectangle {
         clip: true
         anchors.margins: root.width * 0.05
         model: sources
-        //focus: root.visible && root.opacity
 
         currentIndex: 0
 
@@ -146,7 +145,7 @@ Rectangle {
                 border.color: index == list.currentIndex ? "#44ffffff" : "transparent"
                 color: index == list.currentIndex ? "#22ffffff" : "transparent"
                 radius: 3
-                Text { color: "white" ; text: name ; anchors.centerIn: parent; font.pixelSize: item.height * 0.7  }
+                Text { color: "white" ; text: name ; anchors.centerIn: parent; font.pixelSize: item.height * 0.5  }
                 MouseArea {
                     anchors.fill: parent
                     onClicked:  list.currentIndex = index

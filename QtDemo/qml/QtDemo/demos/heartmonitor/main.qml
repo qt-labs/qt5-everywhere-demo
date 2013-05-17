@@ -12,7 +12,9 @@ Rectangle {
     property int beatDifference: 1200
     property var previousTime: 0
     property string curveColor: "#22ff22"
+    property string alarmColor: "#ff2222"
     property string textColor: "#22ff22"
+    property string gridColor: "#333333"
 
     function pulse() {
         if (!heartAnimation.running) {
@@ -70,12 +72,58 @@ Rectangle {
         Data.heartData[app.heartDataIndex] = Math.random()*0.05-0.025
     }
 
-    onWidthChanged: Data.fillHeartData(Math.floor(app.width*0.5))
+    onWidthChanged: {
+        Data.fillHeartData(Math.floor(app.width*0.5))
+        gridCanvas.requestPaint();
+    }
+    onHeightChanged: gridCanvas.requestPaint()
+
+    Rectangle {
+        id: grid
+        anchors.fill: parent
+        color: "transparent"
+
+        Canvas {
+            id: gridCanvas
+            anchors.fill: parent
+            antialiasing: true
+            renderTarget: Canvas.Image
+            onPaint: {
+                var ctx = gridCanvas.getContext('2d')
+
+                ctx.clearRect(0,0,grid.width,grid.height)
+                var step = 1000 / updateTimer.interval * (app.width / Data.heartData.length)
+                var xCount = app.width / step
+                var yCount = app.height / step
+                ctx.strokeStyle = app.gridColor;
+
+                var x=0;
+                ctx.beginPath()
+                for (var i=0; i<xCount; i++) {
+                    x = i*step
+                    ctx.moveTo(x,0)
+                    ctx.lineTo(x,app.height)
+                }
+                ctx.stroke()
+                ctx.closePath()
+
+                var y=0;
+                ctx.beginPath()
+                for (var j=0; j<yCount; j++) {
+                    y = j*step
+                    ctx.moveTo(0, y)
+                    ctx.lineTo(app.width,y)
+                }
+                ctx.stroke()
+                ctx.closePath()
+            }
+        }
+    }
 
     Rectangle {
         id: canvasBackground
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
-        height: 0.7 * parent.height
+        height: 0.75 * parent.height
 
         gradient: Gradient {
             GradientStop {position: .0; color :"black"}
@@ -83,6 +131,19 @@ Rectangle {
             GradientStop {position: 1.0; color :"black"}
         }
         opacity: .3
+    }
+
+    Rectangle {
+        id: scanner
+        width: canvasBackground.height * 0.7
+        height: canvasBackground.width * 0.2
+        anchors.verticalCenter: canvasBackground.verticalCenter
+        gradient: Gradient {
+            GradientStop {position: .0; color :"transparent"}
+            GradientStop {position: 1.0; color :"#00ff00"}
+        }
+        opacity: 0.5
+        rotation: 90
     }
 
     Rectangle {
@@ -105,8 +166,8 @@ Rectangle {
                 var step = (heartCanvas.width-5) / length;
                 var yFactor = heartCanvas.height * 0.35;
                 var heartIndex = (heartDataIndex+1) % length;
+                ctx.strokeStyle = app.curveColor;
 
-                ctx.strokeStyle = app.curveColor
                 ctx.beginPath()
                 ctx.moveTo(0,baseY)
                 var i=0, x=0, y=0;
@@ -131,7 +192,9 @@ Rectangle {
         id: heart
         anchors { left: parent.left; top: parent.top }
         anchors.margins: app.width * 0.05
-        source: "heart.png"
+        height: parent.height * 0.2
+        width: height*1.2
+        source: "heart.svg"
         MouseArea {
             anchors.fill: parent
             onPressed: pulse()
@@ -144,7 +207,7 @@ Rectangle {
         anchors.margins: app.width * 0.05
         antialiasing: true
         text: app.frequency
-        color: app.textColor
+        color: app.frequency > 100 ? app.alarmColor : app.textColor
         font { pixelSize: app.width * .1; bold: true }
     }
 
@@ -169,17 +232,15 @@ Rectangle {
     SequentialAnimation{
         id: heartAnimation
         NumberAnimation { target: heart; property: "scale"; duration: 100; from: 1.0; to:1.2; easing.type: Easing.Linear }
-        NumberAnimation { target: heart; property: "scale"; duration: 100; from: 1.2; to:0.8; easing.type: Easing.Linear }
-        NumberAnimation { target: heart; property: "scale"; duration: 100; from: 0.8; to:1.0; easing.type: Easing.Linear }
+        NumberAnimation { target: heart; property: "scale"; duration: 100; from: 1.2; to:1.0; easing.type: Easing.Linear }
     }
 
-    /*SequentialAnimation{
-        id: textAnimation
+    SequentialAnimation{
+        id: scannerAnimation
         running: true
         loops: Animation.Infinite
-        NumberAnimation { target: pulseText; property: "scale"; duration: 100; from: 1.0; to:1.1; easing.type: Easing.Linear }
-        NumberAnimation { target: pulseText; property: "scale"; duration: 100; from: 1.1; to:1.0; easing.type: Easing.Linear }
-    }*/
+        NumberAnimation { target: scanner; property: "x"; duration: 2000; from: app.width*1.2; to:-0.2*app.width; easing.type: Easing.Linear }
+    }
 
     Component.onCompleted: {
         Data.fillHeartData(Math.max(100,Math.floor(app.width*0.5)))
