@@ -43,8 +43,8 @@ Item {
             height: parent.height*.6
 
             Image {
-                anchors.fill: parent
-                source: !root.playing ? "images/play.png" : "images/pause.png"
+                anchors {fill: parent; margins: parent.height*.3}
+                source: !root.playing ? "images/radio_btn_play.svg" : "images/radio_btn_pause.svg"
             }
 
             MouseArea {
@@ -81,8 +81,8 @@ Item {
             border {width:1; color: "#888888"}
 
             Image {
-                anchors.fill: parent
-                source: "images/volume.png"
+                anchors {fill: parent; margins: parent.height*.2}
+                source: "images/radio_sound_icon.svg"
                 rotation: -volumeRotation.angle
             }
         }
