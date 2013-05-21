@@ -149,15 +149,23 @@ Item {
     }
 
     function loadDemo(){
+        yAnimation.stop()
+        rotationAnimation.stop()
+        deltaY = 0
+        deltaRot = 0
+
+
         if (!slide.loaded)
         {
-            yAnimation.stop()
-            rotationAnimation.stop()
-            deltaY = 0
-            deltaRot = 0
             splashScreenText.visible = true
             demo.scheduleUpdate()
             loadTimer.start();
+        } else if (slide.name==="Internet Radio"){
+            for (var i =0; i<demoContainer.children.length; i++){
+                if (demoContainer.children[i].objectName === "demoApp"){
+                    demoContainer.children[i].focus = true;
+                }
+            }
         }
     }
 
@@ -205,10 +213,13 @@ Item {
     }
 
     function releaseDemo(){
-        app.forceActiveFocus();
 
         yAnimation.restart()
         rotationAnimation.restart()
+
+        if (slide.name === "Internet Radio") return; //Always alive
+
+        app.forceActiveFocus();
 
         if (!slide.loaded)
             return;

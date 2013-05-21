@@ -11,14 +11,14 @@ var positions = [
 
             {x:0, y:0, url: "demos/description/main.qml", device: 7, name: "Qt Description"},
 
-            {x:-1500, y:-100, url: "demos/boot/BootScreen.qml", device: 4, name: "Particles"},
+            {x:-1500, y:-100, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
             {x:-2400, y:100, url: "demos/slidepuzzle/slidepuzzle.qml", device: 5, name: "Slide puzzle"},
 
             {x:2000, y:700, url: "demos/particledemo/particledemo.qml", device: 6, name: "Multitouch"},
             {x:1000, y:1100, url: "demos/photosurface/photosurface.qml", device: 7, name: "Photo surface"},
 
             {x:-1100, y:1150, url: "demos/shaders/main.qml", device: 7, name: "Shaders"}
-            ]
+        ]
 
 var imageSources = ["phone1.svg","phone2.svg", "phone3.svg","tablet1.svg", "medical_device.svg", "laptop1.svg", "laptop2.svg", "tv.svg"]
 var widths = [358, 361, 366, 758, 600, 888, 888, 708]
@@ -30,7 +30,7 @@ var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
 var maskVerticalOffsets = [26, 32, 15, 24, 45, 33, 33, 49]
 var targetAngles = [-90, -90, 0, 0, 0, 0, 0, 0]
 
-var navigationList = [7,3,4,2,0,1,5,6,10,11,12,9,8]
+var navigationList = [7,3,4,2,0,1,5,6,10,11,12,9,8,13]
 var currentDemoIndex = -1
 var objects = []
 
