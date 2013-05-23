@@ -45,7 +45,7 @@ Rectangle {
         clip: false
         focus: true
         model: videoModel
-        delegate: VideoDelegate { onVideoSelected: videoSelector.selectVideo("http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4") }
+        delegate: VideoDelegate { onVideoSelected: videoSelector.selectVideo("http://download.qt-project.org/learning/videos/Qt5-Jens-Bache-Wiig-Qt-Quick.mp4"); }
 
         // Only show the scrollbars when the view is moving.
         states: State {

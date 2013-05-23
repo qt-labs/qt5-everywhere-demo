@@ -18,16 +18,13 @@ Rectangle{
 
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
-            var appWidth = app.width*0.9;
-            var appHeight = app.height*0.9;
-
             var bbox = Engine.boundingBox();
-            app.homeScaleFactor = Engine.scaleToBox(appWidth, appHeight, bbox.width, bbox.height);
+            app.homeScaleFactor = Engine.scaleToBox(app.width*0.8, app.height*0.8, bbox.width, bbox.height);
             app.homeCenterX = bbox.centerX;
             app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;
             app.maxScaleFactor = app.homeScaleFactor * 20;
-            Engine.updateObjectScales(app.width*0.9, app.height*0.9); //app.width, app.height);
+            Engine.updateObjectScales(app.width*0.9, app.height*0.9);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 

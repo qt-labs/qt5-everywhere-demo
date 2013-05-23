@@ -6,21 +6,17 @@ Rectangle {
     anchors.fill: parent
     color: appBackground
 
+    property int tileHeight: parseInt(grid.height / 3)
+    property int tileFontSize: tileHeight * 0.05
     property int horizontalMargin: height * 0.08
     property int topBarsize: height * 0.2
     property int bottomBarSize: height * 0.08
     property int tileMargin: height * 0.01
-    property int tileHeaderFontSize: height * 0.012
-    property int tileDateFontSize: height * 0.012
-    property int appHeaderFontSize: height * 0.05
-    property string appBackground: "#262626"
+    property int appHeaderFontSize: topBarsize * 0.4
+    property string appBackground: "transparent"
     property string tileBackground: "#86bc24"
     property string textColor: "white"
     property string uiFont: "Segoe UI"
-
-    SplashScreen {
-        id: splashScreen
-    }
 
     XmlListModel {
         id: feedModel
@@ -37,7 +33,6 @@ Rectangle {
 
         onStatusChanged: {
             if (status == XmlListModel.Ready) {
-                splashScreen.state = "hide";
                 playbanner.start();
             }
         }
@@ -59,8 +54,9 @@ Rectangle {
             anchors.left: parent.left
             text: qsTr("Yahoo Technology")
             font.family: uiFont;
-            font.pointSize: appHeaderFontSize;
+            font.pixelSize: appHeaderFontSize;
             color: textColor
+            smooth: true
         }
     }
 
@@ -74,8 +70,8 @@ Rectangle {
         anchors.rightMargin: horizontalMargin
         opacity: 0
         flow: GridView.TopToBottom
-        cellHeight: parseInt(grid.height / 3)
-        cellWidth: parseInt(cellHeight * 1.5)
+        cellHeight: tileHeight
+        cellWidth: parseInt(tileHeight * 1.5)
         cacheBuffer: cellWidth
         clip: false
         focus: true

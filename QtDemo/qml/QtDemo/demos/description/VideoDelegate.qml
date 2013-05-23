@@ -65,6 +65,7 @@ Rectangle {
             text: title
             width: parent.width;
             wrapMode: Text.WordWrap;
+            smooth: true
             font { family: videoSelector.uiFont; pointSize: videoSelector.tileFontSize }
         }
     }

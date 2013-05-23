@@ -63,7 +63,8 @@ Rectangle {
             text: title
             width: parent.width;
             wrapMode: Text.WordWrap;
-            font { family: mainWindow.uiFont; pointSize: mainWindow.tileDateFontSize }
+            smooth: true
+            font { family: mainWindow.uiFont; pointSize: mainWindow.tileFontSize }
         }
     }
 }

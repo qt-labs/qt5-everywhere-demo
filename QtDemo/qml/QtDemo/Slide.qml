@@ -7,6 +7,8 @@ Item {
     y: startY + deltaY
     rotation: deltaRot
 
+    property bool rotAnimationEnabled: false
+    property bool yAnimationEnabled: false
     property int uid: 0
     property string url: ""
     property int device: 0
@@ -15,26 +17,28 @@ Item {
     property bool loading: false
     property real targetScale: 1
     property real targetAngle: 0
-    property real startX: 0
-    property real startY: 0
+    property int startX: 0
+    property int startY: 0
     property bool animationRunning: navigationAnimation.running || zoomAnimation.running
     property int demoWidth: 603
     property int demoHeight: 378
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
     property string name: ""
-    property double deltaRot: 0
-    property double deltaY: 0
-    property double swing: 5
+    property real deltaRot: 0
+    property int deltaY: 0
+    property int swing: 5
 
     function targetWidth()
     {
-        return device <= 1 ? demoHeight*scale: demoWidth*scale;
+        return demoWidth*scale;
+        //return device <= 1 ? demoHeight*scale: demoWidth*scale;
     }
 
     function targetHeight()
     {
-        return device <= 1 ? demoWidth*scale : demoHeight*scale;
+        return demoHeight*scale;
+        //return device <= 1 ? demoWidth*scale : demoHeight*scale;
     }
 
     Rectangle {
@@ -50,7 +54,7 @@ Item {
             anchors.centerIn: parent
             width: demoWidth
             height: demoHeight
-            color: "#111111"
+            color: "#262626"
             clip: true
 
             Text {
@@ -72,8 +76,8 @@ Item {
         height: demoHeight
         sourceItem: demoContainer
         live: (slide.loading || slide.loaded)
-        visible: true
-        hideSource: true
+        visible: !slide.loaded
+        hideSource: visible
         clip: true
         z: (slide.loading || slide.loaded) ? 1:-1
     }
@@ -101,6 +105,8 @@ Item {
         anchors.topMargin: -height * 0.3
         anchors.horizontalCenter: deviceMaskImage.horizontalCenter
         source: "images/island.svg"
+        smooth: !animationRunning
+        antialiasing: !animationRunning
         width: Math.max(deviceMaskImage.width, deviceMaskImage.height) * 1.6
         height: width/2
         z: -3
@@ -137,14 +143,12 @@ Item {
     Timer {
         id: yStarter
         interval: Math.random()*5000
-        running: true
         onTriggered: yAnimation.start()
     }
     // Starter timer
     Timer {
         id: rotStarter
         interval: Math.random()*2000
-        running: true
         onTriggered: rotationAnimation.start()
     }
 
@@ -180,14 +184,12 @@ Item {
             incubator.onStatusChanged = function(status) {
                 if (status === Component.Ready) {
                     print ("Object", incubator.object, "is now ready!");
-                    //disabledImage.scheduleUpdate()
                     slide.loaded = true
                     releaseSplashScreen()
                 }
             }
         } else {
             print ("Object", incubator.object, "is ready immediately!");
-            //disabledImage.scheduleUpdate()
             slide.loaded = true
             releaseSplashScreen()
         }
@@ -214,8 +216,10 @@ Item {
 
     function releaseDemo(){
 
-        yAnimation.restart()
-        rotationAnimation.restart()
+        if (yAnimationEnabled)
+            yAnimation.restart()
+        if (rotAnimationEnabled)
+            rotationAnimation.restart()
 
         if (slide.name === "Internet Radio") return; //Always alive
 
@@ -242,5 +246,9 @@ Item {
 
     Component.onCompleted: {
         print ("new slide created!")
+        if (yAnimationEnabled)
+            yStarter.start()
+        if (rotAnimationEnabled)
+            rotStarter.start()
     }
 }

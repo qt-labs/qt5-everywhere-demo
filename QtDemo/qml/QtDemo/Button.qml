@@ -23,6 +23,7 @@ Rectangle {
         id: buttonMouseArea
         anchors.fill: root
         anchors.margins: -20
+        hoverEnabled: true
         onClicked: root.clicked()
         onEntered: buttonImage.anchors.margins = -(root.width * 0.1)
         onExited: buttonImage.anchors.margins = 0

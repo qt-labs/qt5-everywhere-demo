@@ -61,6 +61,10 @@ VideoOutput {
             else
                 videoOutput.isPlaying = false;
         }
+
+        Component.onDestruction: {
+            mediaPlayer.stop()
+        }
     }
     function play() { mediaPlayer.play() }
     function stop() { mediaPlayer.stop() }

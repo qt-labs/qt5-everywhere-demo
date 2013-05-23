@@ -134,19 +134,6 @@ Rectangle {
     }
 
     Rectangle {
-        id: scanner
-        width: canvasBackground.height * 0.7
-        height: canvasBackground.width * 0.2
-        anchors.verticalCenter: canvasBackground.verticalCenter
-        gradient: Gradient {
-            GradientStop {position: .0; color :"transparent"}
-            GradientStop {position: 1.0; color :"#00ff00"}
-        }
-        opacity: 0.5
-        rotation: 90
-    }
-
-    Rectangle {
         id: canvasContainer
         anchors.fill: canvasBackground
         color: "transparent"
@@ -223,7 +210,7 @@ Rectangle {
     // Update timer
     Timer {
         id: updateTimer
-        interval: 50
+        interval: 30
         running: true
         repeat: true
         onTriggered: updateData()
@@ -233,13 +220,6 @@ Rectangle {
         id: heartAnimation
         NumberAnimation { target: heart; property: "scale"; duration: 100; from: 1.0; to:1.2; easing.type: Easing.Linear }
         NumberAnimation { target: heart; property: "scale"; duration: 100; from: 1.2; to:1.0; easing.type: Easing.Linear }
-    }
-
-    SequentialAnimation{
-        id: scannerAnimation
-        running: true
-        loops: Animation.Infinite
-        NumberAnimation { target: scanner; property: "x"; duration: 2000; from: app.width*1.2; to:-0.2*app.width; easing.type: Easing.Linear }
     }
 
     Component.onCompleted: {
