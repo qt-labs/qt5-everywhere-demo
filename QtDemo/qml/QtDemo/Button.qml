@@ -27,7 +27,7 @@ Rectangle {
         onClicked: root.clicked()
         onEntered: buttonImage.anchors.margins = -(root.width * 0.1)
         onExited: buttonImage.anchors.margins = 0
-        onPressed: buttonImage.opacity = 1.0
-        onReleased: buttonImage.opacity = 0.7
+        onPressed: {buttonImage.opacity = 1.0; buttonImage.anchors.margins = -(root.width * 0.1)}
+        onReleased: { buttonImage.opacity = 0.7; buttonImage.anchors.margins = 0}
     }
 }

@@ -1,7 +1,7 @@
 var positions = [
             {x:-500, y:-1180, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
             {x:-1550, y:-1040, url: "demos/gridrssnews/main.qml", device: 5, name: "Rss Reader"},
-            {x:-1050, y:-800, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
+            {x:-1000, y:-820, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
 
             {x:1500, y:-1100, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
             {x:800, y:-1000, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
@@ -16,7 +16,7 @@ var positions = [
             {x:-1900, y:200, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
 
             {x:-800, y:900, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
-            {x:-1500, y:1100, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"}
+            {x:-1400, y:1000, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"}
         ]
 
 var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
@@ -83,6 +83,14 @@ function releaseDemos()
 {
     for (var i=0; i < objects.length; i++)
         objects[i].releaseDemo();
+}
+
+function getCurrent()
+{
+    if (currentDemoIndex < 0 || currentDemoIndex >= objects.length)
+        return null;
+
+    return selectTarget(navigationList[currentDemoIndex]);
 }
 
 function getNext()

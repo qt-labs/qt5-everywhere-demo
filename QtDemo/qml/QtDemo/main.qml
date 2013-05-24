@@ -28,9 +28,16 @@ Rectangle{
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 
-            canvas.goHome()
+            var target = Engine.getCurrent();
+            if (navigationState == 1 && target !== null) {
+                canvas.goTo(target);
+                zoomAnimation.restart()
+            }
+            else
+                canvas.goHome()
         }
     }
+
     function selectTarget(uid) {
         return Engine.selectTarget(uid)
     }

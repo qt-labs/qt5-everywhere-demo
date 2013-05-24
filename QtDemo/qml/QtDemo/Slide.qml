@@ -8,7 +8,7 @@ Item {
     rotation: deltaRot
 
     property bool rotAnimationEnabled: false
-    property bool yAnimationEnabled: true
+    property bool yAnimationEnabled: false
     property int uid: 0
     property string url: ""
     property int device: 0
