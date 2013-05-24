@@ -28,6 +28,7 @@ Item {
     property real deltaRot: 0
     property int deltaY: 0
     property int swing: 5
+    property bool dirty: targetAngle !== parent.angle || rotation !==0
 
     function targetWidth()
     {
@@ -47,7 +48,7 @@ Item {
         width: demoContainer.width * 1.03
         height: demoContainer.height * 1.03
         color: "black"
-        z: (slide.loading || slide.loaded) ? 1:-1
+        z: !slide.dirty && (slide.loading || slide.loaded) ? 1:-1
 
         Rectangle{
             id: demoContainer
@@ -75,11 +76,16 @@ Item {
         width: demoWidth
         height: demoHeight
         sourceItem: demoContainer
-        live: (slide.loading || slide.loaded)
-        visible: !slide.loaded
-        hideSource: visible
+        live: visible && (slide.loading || slide.loaded)
+        visible: slide.dirty || !slide.loaded || updating
+        hideSource: visible && !updating && !loading
         clip: true
-        z: (slide.loading || slide.loaded) ? 1:-1
+
+        property bool updating: false
+
+        onScheduledUpdateCompleted: {
+            updating = false
+        }
     }
 
     Image {
@@ -126,6 +132,14 @@ Item {
         loops: Animation.Infinite
     }
 
+    Timer{
+        id: snapShot
+        interval: 2000
+        onTriggered: {
+            demo.scheduleUpdate()
+            demo.updating= true
+        }
+    }
 
     // Load timer
     Timer {
@@ -162,7 +176,6 @@ Item {
         if (!slide.loaded)
         {
             splashScreenText.visible = true
-            demo.scheduleUpdate()
             loadTimer.start();
         } else if (slide.name==="Internet Radio"){
             for (var i =0; i<demoContainer.children.length; i++){
@@ -212,15 +225,14 @@ Item {
                 demoContainer.children[i].explode();
             }
         }
+        snapShot.restart()
     }
 
     function releaseDemo(){
-
         if (yAnimationEnabled)
             yAnimation.restart()
         if (rotAnimationEnabled)
             rotationAnimation.restart()
-
         if (slide.name === "Internet Radio") return; //Always alive
 
         app.forceActiveFocus();
