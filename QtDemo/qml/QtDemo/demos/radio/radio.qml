@@ -181,8 +181,11 @@ FocusScope {
             playing: playMusic.playbackState === Audio.PlayingState
             onClicked: {
                 if (!playMusic.source) return;
-                if (!playing) playMusic.play()
-                if (playing) playMusic.stop()
+                if (!playing) {
+                    playMusic.play()
+                }else {
+                    playMusic.stop()
+                }
             }
         }
 
