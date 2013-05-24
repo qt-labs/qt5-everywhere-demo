@@ -85,6 +85,7 @@ Item {
 
         onScheduledUpdateCompleted: {
             updating = false
+            releaseDemo(true)
         }
     }
 
@@ -130,15 +131,6 @@ Item {
         NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:10*swing; easing.type: Easing.InOutQuad }
         NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:-10*swing; easing.type: Easing.InOutQuad }
         loops: Animation.Infinite
-    }
-
-    Timer{
-        id: snapShot
-        interval: 2000
-        onTriggered: {
-            demo.scheduleUpdate()
-            demo.updating= true
-        }
     }
 
     // Load timer
@@ -225,10 +217,17 @@ Item {
                 demoContainer.children[i].explode();
             }
         }
-        snapShot.restart()
     }
 
-    function releaseDemo(){
+    function releaseDemo(snapShotCreated){
+        if (!slide.loaded) return;
+
+        if (!snapShotCreated){
+            demo.updating = true
+            demo.scheduleUpdate()
+            return;
+        }
+
         if (yAnimationEnabled)
             yAnimation.restart()
         if (rotAnimationEnabled)
