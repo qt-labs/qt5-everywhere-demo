@@ -12,7 +12,7 @@ var positions = [
             {x:2000, y:600, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
             {x:900, y:1000, url: "demos/shaders/main.qml", device: 7, name: "Shaders"},
 
-            {x:-1300, y:0, url: "demos/slidepuzzle/slidepuzzle.qml", device: 5, name: "Slide Puzzle"},
+            {x:-1300, y:0, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
             {x:-1900, y:200, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
 
             {x:-800, y:900, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
