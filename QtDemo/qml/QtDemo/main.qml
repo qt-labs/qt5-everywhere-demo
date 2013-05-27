@@ -77,17 +77,6 @@ Rectangle{
     WorldCanvas { id:canvas }
     NavigationPanel{ id: navigationPanel }
 
-    /*Image{
-        id: logo
-        source: "QtLogo.png"
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.margins: parent.height * 0.02
-        width: parent.height * 0.1
-        height: width
-        opacity: 1.0
-    }*/
-
     QuitDialog {
         id: quitDialog
         visible: false

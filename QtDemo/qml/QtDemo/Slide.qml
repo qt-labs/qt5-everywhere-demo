@@ -16,7 +16,6 @@ Item {
     property bool loaded: false
     property bool loading: false
     property real targetScale: 1
-    property real targetAngle: 0
     property int startX: 0
     property int startY: 0
     property bool animationRunning: navigationAnimation.running || zoomAnimation.running
@@ -28,7 +27,7 @@ Item {
     property real deltaRot: 0
     property int deltaY: 0
     property int swing: 5
-    property bool dirty: targetAngle !== parent.angle || rotation !==0
+    property bool dirty: parent.angle !== 0 || rotation !==0
 
     function targetWidth()
     {

@@ -27,7 +27,6 @@ var demoWidths = [322, 322, 322, 642, 482, 642, 642, 726]
 var demoHeights = [482, 482, 482, 402, 322, 402, 402, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
 var maskVerticalOffsets = [26, 32, 15, 24, 45, 33, 33, 56]
-var targetAngles = [0, 0, 0, 0, 0, 0, 0, 0]
 
 var navigationList = [5,1,2,0,4,3,6,7,8,11,12,10,9]
 var currentDemoIndex = -1
@@ -52,7 +51,6 @@ function createNew(x,y,url,device,name){
         object.demoHeight = demoHeights[device]
         object.maskVerticalOffset = maskVerticalOffsets[device]
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
-        object.targetAngle = targetAngles[device]
         object.uid = objects.length
         object.name = name
         object.startX = x-object.width/2
@@ -126,8 +124,7 @@ function selectTarget(uid){
         currentDemoIndex = navigationList.indexOf(idx)
         return {"x": positions[idx].x,
             "y":  positions[idx].y,
-            "targetScale": objects[idx].targetScale,
-            "targetAngle": objects[idx].targetAngle}
+            "targetScale": objects[idx].targetScale}
     }
 
     return null;

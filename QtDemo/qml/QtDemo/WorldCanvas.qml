@@ -41,7 +41,7 @@ Item{
             yOffset = -target.y;
             rotationOriginX = target.x;
             rotationOriginY = target.y;
-            angle = target.targetAngle;
+            angle = 0
             zoomInTarget = target.targetScale;
             if (updateScalingFactor)
                 scalingFactor = zoomInTarget
