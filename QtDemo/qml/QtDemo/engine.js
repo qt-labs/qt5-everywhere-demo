@@ -16,7 +16,8 @@ var positions = [
             {x:-1900, y:200, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
 
             {x:-800, y:900, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
-            {x:-1400, y:1000, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"}
+            {x:-1400, y:1000, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+            {x:-1100, y:1200, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"}
         ]
 
 var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
@@ -28,7 +29,7 @@ var demoHeights = [482, 482, 482, 402, 322, 402, 402, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
 var maskVerticalOffsets = [26, 32, 15, 24, 45, 33, 33, 56]
 
-var navigationList = [5,1,2,0,4,3,6,7,8,11,12,10,9]
+var navigationList = [5,1,2,0,4,3,6,7,8,11,12,10,9,13]
 var currentDemoIndex = -1
 var objects = []
 
