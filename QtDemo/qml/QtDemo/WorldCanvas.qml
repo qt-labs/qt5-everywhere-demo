@@ -30,10 +30,9 @@ Item{
         zoomInTarget = app.homeScaleFactor;
         app.navigationState = 0 //home
         app.forceActiveFocus()
-        navigationPanel.rotateButtons(0);
         zoomAnimation.restart();
     }
-    function goTo(target)
+    function goTo(target, updateScalingFactor)
     {
         if (target)
         {
@@ -44,17 +43,18 @@ Item{
             rotationOriginY = target.y;
             angle = target.targetAngle;
             zoomInTarget = target.targetScale;
+            if (updateScalingFactor)
+                scalingFactor = zoomInTarget
             app.navigationState = 1 //slide
-            navigationPanel.rotateButtons(target.targetAngle);
         }
     }
 
     function goNext() {
-        goTo(app.getNext());
+        goTo(app.getNext(), false);
         navigationAnimation.restart()
     }
     function goPrevious() {
-        goTo(app.getPrevious());
+        goTo(app.getPrevious(), false);
         navigationAnimation.restart()
     }
 

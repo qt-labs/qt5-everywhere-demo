@@ -27,7 +27,7 @@ MouseArea{
 
             // If we found target, go to the target
             if (target) {
-                canvas.goTo(target)
+                canvas.goTo(target, false)
                 zoomAnimation.restart()
             }
             else // If not target under mouse -> go home

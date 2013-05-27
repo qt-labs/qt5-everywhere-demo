@@ -6,7 +6,7 @@ Rectangle{
     id: app
     clip: true
     focus: true
-    color: "white"
+
     property real homeScaleFactor: .2
     property int homeCenterX: 0
     property int homeCenterY: 0
@@ -29,12 +29,12 @@ Rectangle{
             tapLimitY = Math.max(1,app.height * 0.02);
 
             var target = Engine.getCurrent();
-            if (navigationState == 1 && target !== null) {
-                canvas.goTo(target);
-                zoomAnimation.restart()
-            }
+            if (navigationState == 1 && target !== null)
+                canvas.goTo(target, true);
             else
                 canvas.goHome()
+
+            navigationPanel.checkOrientation()
         }
     }
 
@@ -75,13 +75,7 @@ Rectangle{
     WorldMouseArea { id: worldMouseArea }
     WorldPinchArea { id: worldPinchArea }
     WorldCanvas { id:canvas }
-    NavigationPanel{
-        id: navigationPanel
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.rightMargin: app.width * 0.02
-        spacing: app.height * 0.05
-    }
+    NavigationPanel{ id: navigationPanel }
 
     /*Image{
         id: logo
@@ -111,7 +105,7 @@ Rectangle{
 
         onRunningChanged: {
             if (!running) {
-                if (canvas.zoomInTarget !== app.homeScaleFactor)
+                if (app.navigationState === 1)
                     Engine.loadCurrentDemo();
                 else
                     Engine.releaseDemos();
