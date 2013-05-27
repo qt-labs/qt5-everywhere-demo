@@ -58,12 +58,12 @@ Rectangle{
         GradientStop { position: 1.0; color: "#f3fbff" }
     }
 
-    Cloud { id: cloud1; sourceImage: "images/cloud1.svg"}
-    Cloud { id: cloud2; sourceImage: "images/cloud1.svg"}
-    Cloud { id: cloud3; sourceImage: "images/cloud1.svg"}
-    Cloud { id: cloud4; sourceImage: "images/cloud2.svg"}
-    Cloud { id: cloud5; sourceImage: "images/cloud2.svg"}
-    Cloud { id: cloud6; sourceImage: "images/cloud2.svg"}
+    Cloud { id: cloud1; sourceImage: "images/cloud1.png"}
+    Cloud { id: cloud2; sourceImage: "images/cloud1.png"}
+    Cloud { id: cloud3; sourceImage: "images/cloud1.png"}
+    Cloud { id: cloud4; sourceImage: "images/cloud2.png"}
+    Cloud { id: cloud5; sourceImage: "images/cloud2.png"}
+    Cloud { id: cloud6; sourceImage: "images/cloud2.png"}
 
     Item{
         id: pinchProxy
@@ -127,8 +127,6 @@ Rectangle{
             if (!running) {
                 if (navigationState === 1)
                     Engine.loadCurrentDemo();
-                else
-                    Engine.releaseDemos();
             }
         }
     }

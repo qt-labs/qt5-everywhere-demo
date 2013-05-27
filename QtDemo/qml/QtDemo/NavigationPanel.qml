@@ -28,19 +28,19 @@ Grid {
 
     Button {
         id: nextButton
-        imageSource: "images/btn_next.svg"
+        imageSource: "images/btn_next.png"
         onClicked: canvas.goNext()
     }
 
     Button {
         id: prevButton
-        imageSource: "images/btn_previous.svg"
+        imageSource: "images/btn_previous.png"
         onClicked: canvas.goPrevious()
     }
 
     Button {
         id: homeButton
-        imageSource: "images/btn_home.svg"
+        imageSource: "images/btn_home.png"
         onClicked: canvas.goHome()
     }
 }

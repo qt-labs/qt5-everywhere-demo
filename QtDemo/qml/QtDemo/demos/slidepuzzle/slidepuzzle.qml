@@ -198,5 +198,4 @@ Rectangle {
         clockTimer.start();
         checkGameOver();
     }
-
 }

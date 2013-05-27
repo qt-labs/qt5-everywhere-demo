@@ -44,7 +44,7 @@ Item {
 
             Image {
                 anchors {fill: parent; margins: parent.height*.3}
-                source: !root.playing ? "images/radio_btn_play.svg" : "images/radio_btn_pause.svg"
+                source: !root.playing ? "images/radio_btn_play.png" : "images/radio_btn_pause.png"
             }
 
             MouseArea {
@@ -82,7 +82,7 @@ Item {
 
             Image {
                 anchors {fill: parent; margins: parent.height*.2}
-                source: "images/radio_sound_icon.svg"
+                source: "images/radio_sound_icon.png"
                 rotation: -volumeRotation.angle
             }
         }

@@ -20,9 +20,9 @@ Rectangle {
         root.height = root.itemId == 2 ? root.itemWidth*0.8 : root.itemWidth*1.3
         root.x = root.posX - root.width/2
         root.y = root.posY - root.height/2
-        elementImage.source = root.itemId === 0 ? "images/tree1.svg" :
-                              root.itemId === 1 ? "images/tree2.svg" :
-                              root.itemId === 2 ? "images/stones.svg" :
+        elementImage.source = root.itemId === 0 ? "images/tree1.png" :
+                              root.itemId === 1 ? "images/tree2.png" :
+                              root.itemId === 2 ? "images/stones.png" :
                               ""
     }
 }

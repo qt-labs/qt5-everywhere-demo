@@ -13,7 +13,7 @@ Rectangle {
     property int bottomBarSize: height * 0.08
     property int tileMargin: height * 0.01
     property int appHeaderFontSize: topBarsize * 0.4
-    property string appBackground: "transparent"
+    property string appBackground: "#262626"
     property string tileBackground: "#86bc24"
     property string textColor: "white"
     property string uiFont: "Segoe UI"

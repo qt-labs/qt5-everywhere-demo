@@ -2,18 +2,19 @@ import QtQuick 2.0
 import QtQuick.Particles 2.0
 
 Rectangle {
-    id: root
+    id: particleRoot
     color: "#000000"
     anchors.fill: parent
 
-    property real distance: parent.height*.5
+    property real distance: parent.height*.4
     property real angle: 0
     property real movement: 0
     property alias running: angleAnimation.running
+    property int pointCount: mouseArea.pointCount + multiPointTouchArea.pointCount
 
     BootScreenDemo {
-        width: 500
-        height: 500
+        width: Math.min(parent.width,parent.height)
+        height: width
         anchors.centerIn: parent
         onFinished: {
             distanceAnimation.restart()
@@ -39,13 +40,13 @@ Rectangle {
 
         NumberAnimation {
             from: 0
-            to: parent.height*.5
+            to: parent.height*.4
             duration: distanceAnimation.delay/2
             easing.type: distanceAnimation.easingType
         }
 
         NumberAnimation {
-            from: parent.height*.5
+            from: parent.height*.4
             to: 0
             duration: distanceAnimation.delay/2
             easing.type: distanceAnimation.easingType
@@ -89,7 +90,7 @@ Rectangle {
 
                 distanceAnimation.delay = 500 + Math.floor(Math.random()*1500)
                 angleAnimation.from = 180 + Math.random()*90 - 45
-                root.movement = Math.random()*2
+                particleRoot.movement = Math.random()*2
                 angleAnimation.restart()
                 distanceAnimation.restart()
             }
@@ -100,16 +101,16 @@ Rectangle {
      * Create five ParticleSysComponents for drawing particles
      * in the place of multitouch points with the given color.
      */
-    ParticleSysComponent{ id: p1; point: point1; particleColor: "#ff0000"; angle: root.angle; startAngle: 1*360/(5-multiPointTouchArea.pointCount); pointCount: multiPointTouchArea.pointCount; radius: root.distance; movement: root.movement; emitting: root.running }
-    ParticleSysComponent{ id: p2; point: point2; particleColor: "#00ff00"; angle: root.angle; startAngle: 2*360/(5-multiPointTouchArea.pointCount); pointCount: multiPointTouchArea.pointCount; radius: root.distance; movement: root.movement; emitting: root.running }
-    ParticleSysComponent{ id: p3; point: point3; particleColor: "#0000ff"; angle: root.angle; startAngle: 3*360/(5-multiPointTouchArea.pointCount); pointCount: multiPointTouchArea.pointCount; radius: root.distance; movement: root.movement; emitting: root.running }
-    ParticleSysComponent{ id: p4; point: point4; particleColor: "#ffff00"; angle: root.angle; startAngle: 4*360/(5-multiPointTouchArea.pointCount); pointCount: multiPointTouchArea.pointCount; radius: root.distance; movement: root.movement; emitting: root.running }
-    ParticleSysComponent{ id: p5; point: point5; particleColor: "#ff00ff"; angle: root.angle; startAngle: 5*360/(5-multiPointTouchArea.pointCount); pointCount: multiPointTouchArea.pointCount; radius: root.distance; movement: root.movement; emitting: root.running }
+    ParticleSysComponent{ id: p1; particleColor: "#ff0000"; startAngle: 1*360/(5-particleRoot.pointCount); }
+    ParticleSysComponent{ id: p2; particleColor: "#00ff00"; startAngle: 2*360/(5-particleRoot.pointCount); }
+    ParticleSysComponent{ id: p3; particleColor: "#0000ff"; startAngle: 3*360/(5-particleRoot.pointCount); }
+    ParticleSysComponent{ id: p4; particleColor: "#ffff00"; startAngle: 4*360/(5-particleRoot.pointCount); }
+    ParticleSysComponent{ id: p5; particleColor: "#ff00ff"; startAngle: 5*360/(5-particleRoot.pointCount); }
 
     /**
      * In this demo we only support five touch point at the same time.
+     * One from mouseArea (because of Desktop-support) and four from MultiPointTouchArea.
      */
-
     MultiPointTouchArea {
         id: multiPointTouchArea
         anchors.fill: parent
@@ -122,20 +123,50 @@ Rectangle {
             TouchPoint { id: point1 },
             TouchPoint { id: point2 },
             TouchPoint { id: point3 },
-            TouchPoint { id: point4 },
-            TouchPoint { id: point5 }
+            TouchPoint { id: point4 }
         ]
 
         onPressed: updatePointCount()
-
         onReleased: updatePointCount()
+        onTouchUpdated: {
+            p2.touchX = point1.x; p2.touchY = point1.y; p2.pressed = point1.pressed;
+            p3.touchX = point2.x; p3.touchY = point2.y; p3.pressed = point2.pressed;
+            p4.touchX = point3.x; p4.touchY = point3.y; p4.pressed = point3.pressed;
+            p5.touchX = point4.x; p5.touchY = point4.y; p5.pressed = point4.pressed;
+        }
 
         function updatePointCount(){
             var tmp = 0
-            for (var i=0; i<5; i++){
-                if (touchPoints[i].pressed) tmp++
+            for (var i=0; i<4; i++) {
+                if (touchPoints[i].pressed)
+                    tmp++
             }
             pointCount = tmp
+        }
+    }
+
+    /**
+     * For desktop.
+     */
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+
+        property int pointCount:0
+
+        onPressed: {
+            pointCount = 1;
+            p1.touchX = mouse.x;
+            p1.touchY = mouse.y;
+            p1.pressed = true;
+        }
+        onReleased: {
+            pointCount = 0;
+            p1.pressed = false;
+        }
+        onPositionChanged: {
+            p1.touchX = mouse.x;
+            p1.touchY = mouse.y;
         }
     }
 }

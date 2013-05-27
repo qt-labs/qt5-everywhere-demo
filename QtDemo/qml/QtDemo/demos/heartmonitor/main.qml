@@ -181,7 +181,7 @@ Rectangle {
         anchors.margins: app.width * 0.05
         height: parent.height * 0.2
         width: height*1.2
-        source: "heart.svg"
+        source: "heart.png"
         MouseArea {
             anchors.fill: parent
             onPressed: pulse()

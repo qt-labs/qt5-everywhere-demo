@@ -23,6 +23,7 @@ Item {
     property int demoHeight: 378
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
+    property string demoColor: "#883322"
     property string name: ""
     property real deltaRot: 0
     property int deltaY: 0
@@ -54,7 +55,7 @@ Item {
             anchors.centerIn: parent
             width: demoWidth
             height: demoHeight
-            color: "#262626"
+            color: demoColor
             clip: true
 
             Text {
@@ -110,7 +111,7 @@ Item {
         anchors.top: deviceMaskImage.bottom
         anchors.topMargin: -height * 0.3
         anchors.horizontalCenter: deviceMaskImage.horizontalCenter
-        source: "images/island.svg"
+        source: "images/island.png"
         smooth: !animationRunning
         antialiasing: !animationRunning
         width: Math.max(deviceMaskImage.width, deviceMaskImage.height) * 1.6
@@ -219,25 +220,31 @@ Item {
     }
 
     function releaseDemo(snapShotCreated){
+        print("releaseDemo 1 " + slide.url)
         if (!slide.loaded) return;
-
+        print("releaseDemo 2")
         if (!snapShotCreated){
             demo.updating = true
             demo.scheduleUpdate()
             return;
         }
+        print("releaseDemo 3")
 
         if (yAnimationEnabled)
             yAnimation.restart()
         if (rotAnimationEnabled)
             rotationAnimation.restart()
+        print("releaseDemo 4")
         if (slide.name === "Internet Radio") return; //Always alive
+        print("releaseDemo 5")
 
         app.forceActiveFocus();
 
+        print("releaseDemo 6")
         if (!slide.loaded)
             return;
 
+        print("releaseDemo 7")
         slide.loaded = false;
 
         for (var i =0; i<demoContainer.children.length; i++){
@@ -245,6 +252,7 @@ Item {
                 demoContainer.children[i].destroy();
             }
         }
+        print("releaseDemo 8")
     }
 
     function createElements()
@@ -255,7 +263,6 @@ Item {
     }
 
     Component.onCompleted: {
-        print ("new slide created!")
         if (yAnimationEnabled)
             yStarter.start()
         if (rotAnimationEnabled)

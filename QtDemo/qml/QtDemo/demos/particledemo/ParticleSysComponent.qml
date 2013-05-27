@@ -2,8 +2,7 @@ import QtQuick 2.0
 import QtQuick.Particles 2.0
 
 /**
- * ParticleSystem component draw particles with the given color. The
- * location of the particles depends on the given TouchPoint 'point'.
+ * ParticleSystem component draw particles with the given color.
  */
 
 ParticleSystem {
@@ -12,16 +11,18 @@ ParticleSystem {
     running: true
 
     property color particleColor: "#ff0000"
-    property TouchPoint point: null;
-    property int angle: 0
-    property int pointCount: 0
+    property real angle: particleRoot.angle;
+    property int pointCount: particleRoot.pointCount;
+    property real radius: particleRoot.distance;
+    property real movement: particleRoot.movement;
+    property bool emitting: particleRoot.running;
+    property int touchX: 0
+    property int touchY: 0
     property int startAngle: 0
-    property real radius: 0
-    property int movement: 1
-    property real targetX: root.point.pressed ? root.point.x : width/2+radius * Math.cos(targetAngle*(Math.PI/180))
-    property real targetY: root.point.pressed ? root.point.y : height/2+radius * Math.sin(targetAngle*(Math.PI/180))
+    property bool pressed: false
+    property real targetX: pressed ? touchX : width/2+radius * Math.cos(targetAngle*(Math.PI/180))
+    property real targetY: pressed ? touchY : height/2+radius * Math.sin(targetAngle*(Math.PI/180))
     property real targetAngle: angle+startAngle
-    property bool emitting: false
 
     Emitter {
         id: emitter
@@ -41,9 +42,9 @@ ParticleSystem {
     ImageParticle {
         id: imageParticle
         source: "images/particle.png"
-        color: root.pointCount >0 && root.point.pressed ? root.particleColor: "#444444"
+        color: root.pointCount >0 && root.pressed ? root.particleColor: "#444444"
         alpha: .0
-        colorVariation: root.pointCount >0 && root.point.pressed  ? 0.3: .0
+        colorVariation: root.pointCount >0 && root.pressed ? 0.3: .0
 
         Behavior on color{
             enabled: root.pointCount != 0

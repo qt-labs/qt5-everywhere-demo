@@ -77,6 +77,7 @@ function drawPointer(context, angle, len, thickness, color){
 }"
 
         Timer{
+            id: textTimer
             interval: 10
             onTriggered: {
                 codeText.pos++

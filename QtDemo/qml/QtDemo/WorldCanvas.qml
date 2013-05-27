@@ -91,29 +91,6 @@ Item{
         enabled: !worldPinchArea.pinching
     }
 
-    /*Image{
-        id: logo
-        source: "QtLogo.png"
-        anchors.centerIn: parent
-        width: Style.LOGO_WIDTH
-        height: Style.LOGO_HEIGHT
-        sourceSize: Qt.size(Style.LOGO_WIDTH, Style.LOGO_HEIGHT)
-        smooth: !zoomAnimation.running
-        opacity: 1.0
-        z: 2
-    }*/
-
-    /*Image {
-        id: logoIsland
-        anchors.top: logo.bottom
-        anchors.topMargin: -logo.height*0.4
-        anchors.horizontalCenter: logo.horizontalCenter
-        source: "images/island.svg"
-        width: logo.width*1.5
-        height: logo.height
-        z: -2
-    }*/
-
     transform: [
 
         Scale{

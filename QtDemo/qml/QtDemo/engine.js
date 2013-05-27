@@ -1,6 +1,6 @@
 var positions = [
-            {x:-500, y:-1180, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
-            {x:-1550, y:-1040, url: "demos/gridrssnews/main.qml", device: 5, name: "Rss Reader"},
+            {x:-500, y:-1250, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
+            {x:-1550, y:-1200, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
             {x:-1000, y:-820, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
 
             {x:1500, y:-1100, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
@@ -8,9 +8,9 @@ var positions = [
 
             {x:0, y:0, url: "demos/description/main.qml", device: 7, name: "Qt Description"},
 
-            {x:1300, y:-200, url: "demos/photosurface/photosurface.qml", device: 7, name: "Photo Surface"},
+            {x:1300, y:-200, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
             {x:2000, y:600, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
-            {x:900, y:1000, url: "demos/shaders/main.qml", device: 7, name: "Shaders"},
+            {x:900, y:1000, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
 
             {x:-1300, y:0, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
             {x:-1900, y:200, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
@@ -21,13 +21,13 @@ var positions = [
         ]
 
 var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
-var widths = [358, 360, 366, 758, 600, 888, 888, 800]
-var heights = [722, 706, 720, 564, 488, 512, 512, 638]
-var scales = [0.8, 0.8, 0.6, 0.9, 1.0, 0.9, 0.9, 1.0]
-var demoWidths = [322, 322, 322, 642, 482, 642, 642, 726]
-var demoHeights = [482, 482, 482, 402, 322, 402, 402, 456]
+var widths = [600, 360, 366, 758, 600, 918, 923, 800]
+var heights = [1210, 706, 720, 564, 488, 600, 600, 638]
+var scales = [0.6, 0.8, 0.6, 0.9, 1.0, 0.9, 1.0, 1.0]
+var demoWidths = [538, 322, 322, 642, 482, 688, 691, 726]
+var demoHeights = [808, 482, 482, 402, 322, 431, 432, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
-var maskVerticalOffsets = [26, 32, 15, 24, 45, 33, 33, 56]
+var maskVerticalOffsets = [41, 32, 15, 24, 45, 59, 57, 56]
 
 var navigationList = [5,1,2,0,4,3,6,7,8,11,12,10,9,13]
 var currentDemoIndex = -1
@@ -80,8 +80,10 @@ function loadCurrentDemo(){
 
 function releaseDemos()
 {
+    print("releaseDemos!!!")
     for (var i=0; i < objects.length; i++)
         objects[i].releaseDemo();
+    print("releaseDemos!!! done")
 }
 
 function getCurrent()
