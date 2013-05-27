@@ -33,13 +33,11 @@ Item {
     function targetWidth()
     {
         return demoWidth*scale;
-        //return device <= 1 ? demoHeight*scale: demoWidth*scale;
     }
 
     function targetHeight()
     {
         return demoHeight*scale;
-        //return device <= 1 ? demoWidth*scale : demoHeight*scale;
     }
 
     Rectangle {
@@ -220,31 +218,24 @@ Item {
     }
 
     function releaseDemo(snapShotCreated){
-        print("releaseDemo 1 " + slide.url)
         if (!slide.loaded) return;
-        print("releaseDemo 2")
         if (!snapShotCreated){
             demo.updating = true
             demo.scheduleUpdate()
             return;
         }
-        print("releaseDemo 3")
 
         if (yAnimationEnabled)
             yAnimation.restart()
         if (rotAnimationEnabled)
             rotationAnimation.restart()
-        print("releaseDemo 4")
         if (slide.name === "Internet Radio") return; //Always alive
-        print("releaseDemo 5")
 
         app.forceActiveFocus();
 
-        print("releaseDemo 6")
         if (!slide.loaded)
             return;
 
-        print("releaseDemo 7")
         slide.loaded = false;
 
         for (var i =0; i<demoContainer.children.length; i++){
@@ -252,7 +243,6 @@ Item {
                 demoContainer.children[i].destroy();
             }
         }
-        print("releaseDemo 8")
     }
 
     function createElements()

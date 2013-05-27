@@ -3,20 +3,20 @@ var positions = [
             {x:-1550, y:-1200, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
             {x:-1000, y:-820, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
 
-            {x:1500, y:-1100, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
-            {x:800, y:-1000, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
+            {x:1450, y:-1050, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
+            {x:800, y:-900, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
 
             {x:0, y:0, url: "demos/description/main.qml", device: 7, name: "Qt Description"},
 
             {x:1300, y:-200, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
-            {x:2000, y:600, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
+            {x:1800, y:700, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
             {x:900, y:1000, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
 
             {x:-1300, y:0, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
-            {x:-1900, y:200, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
+            {x:-1900, y:100, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
 
-            {x:-800, y:900, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
-            {x:-1400, y:1000, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+            {x:-700, y:800, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
+            {x:-1500, y:850, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
             {x:-1100, y:1200, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"}
         ]
 
@@ -28,7 +28,7 @@ var demoWidths = [538, 322, 322, 642, 482, 688, 691, 726]
 var demoHeights = [808, 482, 482, 402, 322, 431, 432, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
 var maskVerticalOffsets = [41, 32, 15, 24, 45, 59, 57, 56]
-
+var colors = ["#1274cc", "#1274cc", "#1274cc", "#4353c3", "#1274cc", "#4353c3", "#4353c3", "#4353c3", "#4353c3"]
 var navigationList = [5,1,2,0,4,3,6,7,8,11,12,10,9,13]
 var currentDemoIndex = -1
 var objects = []
@@ -50,6 +50,7 @@ function createNew(x,y,url,device,name){
         object.scale = scales[device]
         object.demoWidth = demoWidths[device]
         object.demoHeight = demoHeights[device]
+        object.demoColor = colors[device]
         object.maskVerticalOffset = maskVerticalOffsets[device]
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
         object.uid = objects.length
@@ -80,10 +81,8 @@ function loadCurrentDemo(){
 
 function releaseDemos()
 {
-    print("releaseDemos!!!")
     for (var i=0; i < objects.length; i++)
         objects[i].releaseDemo();
-    print("releaseDemos!!! done")
 }
 
 function getCurrent()

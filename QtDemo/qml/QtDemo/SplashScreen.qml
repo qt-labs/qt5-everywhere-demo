@@ -12,7 +12,7 @@ Item {
     Rectangle{
         id: background
         anchors.fill:parent
-        color: "#111111"
+        color: "black"
     }
 
     ParticleSystem{
