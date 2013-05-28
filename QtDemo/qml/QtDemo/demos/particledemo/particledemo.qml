@@ -16,6 +16,7 @@ Rectangle {
         width: Math.min(parent.width,parent.height)
         height: width
         anchors.centerIn: parent
+        z: 1
         onFinished: {
             distanceAnimation.restart()
             angleAnimation.restart()
