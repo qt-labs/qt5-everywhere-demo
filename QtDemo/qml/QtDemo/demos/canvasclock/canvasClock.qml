@@ -3,13 +3,13 @@ import QtQuick 2.0
 Rectangle {
     id: root
     anchors.fill: parent
-    property color rimColor: '#ff0000'
-    property color dialColor: '#333333'
+    property color rimColor: Qt.rgba(1,0,0,1) //'#ff0000'
+    property color dialColor: Qt.rgba(0.2,0.2,0.2,1) //'#333333'
     color: "#333333"
 
     Text{
         id: codeText
-        anchors {fill:parent} //; leftMargin: parent.width*.05; rightMargin: parent.width*.05}
+        anchors {fill:parent}
         text: ""
         rotation: 10
         color: "#666666"
@@ -105,8 +105,9 @@ function drawPointer(context, angle, len, thickness, color){
 
     Item {
         id: clockContainer
-        width: Math.min(root.width*.8, root.height*.8)
+        width: 2* Math.min(root.width*.8, root.height*.8)
         height: width
+        scale: 0.5
         anchors.centerIn: parent
         property int clockRadius: width
 
@@ -174,9 +175,10 @@ function drawPointer(context, angle, len, thickness, color){
 
             function drawDials(context){
 
+
                 context.strokeStyle = "#888888"
                 context.fillStyle = root.dialColor
-                context.lineWidth = 1
+                context.lineWidth = 2
                 context.beginPath()
                 for (var i=1; i<=60; i++){
                     var x1=Math.cos(((i)*6)*0.01745)*clockContainer.clockRadius*.4
@@ -193,14 +195,16 @@ function drawPointer(context, angle, len, thickness, color){
 
                 for (i=1; i<=12; i++){
 
-                    x1=Math.cos((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35
-                    y1=Math.sin((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35
+                    x1=Math.cos((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35-clockContainer.width*0.03
+                    y1=Math.sin((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35+clockContainer.height*0.04
                     context.font = 'bold '+Math.floor(clockContainer.width*.1)+'px Arial'
 
+                    if (i >= 10)
+                        x1 -= clockContainer.width*0.02
                     context.textAlign = 'center';
                     context.textBaseline  = 'middle'
 
-                    context.text(i,clockContainer.clockRadius/2+x1-12,clockContainer.clockRadius/2+y1+12)
+                    context.text(i,clockContainer.clockRadius/2+x1,clockContainer.clockRadius/2+y1)
 
                     context.fill()
                     context.stroke()
@@ -211,13 +215,22 @@ function drawPointer(context, angle, len, thickness, color){
         Canvas {
             id: clockPointers
             anchors.fill: parent
+            antialiasing: true
+            renderTarget: Canvas.Image
             onPaint: {
                 var ctx = clockPointers.getContext('2d')
                 ctx.clearRect(0,0,clockContainer.clockRadius,clockContainer.clockRadius)
                 ctx.lineCap = 'round'
                 drawPointer(ctx, -90+clock.hours*30, clockContainer.clockRadius*.25, clockContainer.clockRadius*.05, "#000000")
                 drawPointer(ctx, -90+clock.minutes*6, clockContainer.clockRadius*.375, clockContainer.clockRadius*.025, "#333333")
-                drawPointer(ctx, -90+clock.seconds*6, clockContainer.clockRadius*.40, 2, "#aa0000")
+                drawPointer(ctx, -90+clock.seconds*6, clockContainer.clockRadius*.40, 4, "#aa0000")
+
+                // Draw nail
+                ctx.beginPath()
+                ctx.fillStyle = "#535353"
+                ctx.ellipse(clockContainer.clockRadius/2-16,clockContainer.clockRadius/2-16,32,32)
+                ctx.fill()
+                ctx.closePath()
             }
 
             function drawPointer(context, angle, len, thickness, color){
@@ -244,9 +257,6 @@ function drawPointer(context, angle, len, thickness, color){
             property int seconds: 0
 
             onTriggered: {
-                //var d = new Date()
-                //seconds = d.getSeconds()
-
                 seconds ++
                 if (seconds == 60) seconds = 0
 
@@ -270,7 +280,8 @@ function drawPointer(context, angle, len, thickness, color){
 
         onPressed: {
 
-            var ang = (90+Math.atan2((mouseY-clockContainer.clockRadius/2), (mouseX-clockContainer.clockRadius/2))*57.2957795)
+            var temp = clockContainer.clockRadius/2
+            var ang = (90+Math.atan2((mouseY-temp), (mouseX-temp))*57.2957795)
             if (ang <0) ang+=360
 
             if (ang/6 > clock.minutes-2 && ang/6<clock.minutes+2){
@@ -278,15 +289,15 @@ function drawPointer(context, angle, len, thickness, color){
                 grabbed = true
                 return;
             } else {
-                var y = mouseY-clockContainer.clockRadius/2
-                var x = mouseX-clockContainer.clockRadius/2
+                var y = mouseY-temp
+                var x = mouseX-temp
                 var dist = Math.sqrt(y*y+x*x)
 
-                if (dist>clockContainer.clockRadius*.42){
+                if (dist>clockContainer.clockRadius*.42*clockContainer.scale){
                     root.rimColor = newColor()
                     clockCanvas.requestPaint()
                     return;
-                }else if (dist>clockContainer.clockRadius*.32) {
+                }else if (dist>clockContainer.clockRadius*.32*clockContainer.scale) {
                     root.dialColor = newColor()
                     clockCanvas.requestPaint()
                 }
@@ -295,7 +306,8 @@ function drawPointer(context, angle, len, thickness, color){
 
         onPositionChanged: {
             if (grabbed) {
-                var ang = (90+Math.atan2((mouseY-clockContainer.clockRadius/2), (mouseX-clockContainer.clockRadius/2))*57.2957795)
+                var temp = clockContainer.clockRadius/2
+                var ang = (90+Math.atan2((mouseY-temp), (mouseX-temp))*57.2957795)
                 if (ang <0) ang+=360
 
                 var oldMinutes = clock.minutes
