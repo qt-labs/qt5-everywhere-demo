@@ -85,11 +85,12 @@ Rectangle{
         onNo: visible = false
     }
 
-    NumberAnimation {
+    SmoothedAnimation {
         id: zoomAnimation
         target: canvas;
         property: "scalingFactor";
         duration: Style.APP_ANIMATION_DELAY;
+        velocity: -1
         to:canvas.zoomInTarget
 
         onRunningChanged: {
