@@ -5,6 +5,8 @@ Rectangle {
     anchors.fill: parent
     property color rimColor: Qt.rgba(1,0,0,1) //'#ff0000'
     property color dialColor: Qt.rgba(0.2,0.2,0.2,1) //'#333333'
+    property color bgcolor: Qt.rgba(1,1,1,1)
+    property int dialStyle: 0
     color: "#333333"
 
     Text{
@@ -128,8 +130,13 @@ function drawPointer(context, angle, len, thickness, color){
                 ctx.clearRect(0,0,clockContainer.clockRadius,clockContainer.clockRadius)
 
                 var gradient = ctx.createRadialGradient(clockContainer.clockRadius/4, clockContainer.clockRadius/4, 0, clockContainer.clockRadius/4, clockContainer.clockRadius/4, clockContainer.clockRadius)
-                gradient.addColorStop(0, '#ffffff')
-                gradient.addColorStop(1, '#888888')
+
+                ctx.fillStyle = root.bgcolor
+                ctx.arc(clockContainer.clockRadius/2, clockContainer.clockRadius/2, clockContainer.clockRadius*.475, 0, 360, false)
+                ctx.fill()
+
+                gradient.addColorStop(0, Qt.rgba(0,0,0,0))
+                gradient.addColorStop(1, Qt.rgba(0,0,0,.5))
 
                 ctx.fillStyle = gradient
                 ctx.arc(clockContainer.clockRadius/2, clockContainer.clockRadius/2, clockContainer.clockRadius*.475, 0, 360, false)
@@ -175,7 +182,6 @@ function drawPointer(context, angle, len, thickness, color){
 
             function drawDials(context){
 
-
                 context.strokeStyle = "#888888"
                 context.fillStyle = root.dialColor
                 context.lineWidth = 2
@@ -193,22 +199,33 @@ function drawPointer(context, angle, len, thickness, color){
                 }
                 context.closePath()
 
-                for (i=1; i<=12; i++){
+                context.beginPath()
 
-                    x1=Math.cos((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35-clockContainer.width*0.03
-                    y1=Math.sin((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35+clockContainer.height*0.04
+                var romans = ['I','II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
+
+                for (i=1; i<=12; i++){
+                    x1=Math.cos((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35 -clockContainer.width*0.03
+                    y1=Math.sin((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35 +clockContainer.height*0.04
+
+                    if (root.dialStyle === 1) x1-=clockContainer.width*0.01
+
                     context.font = 'bold '+Math.floor(clockContainer.width*.1)+'px Arial'
+
 
                     if (i >= 10)
                         x1 -= clockContainer.width*0.02
                     context.textAlign = 'center';
                     context.textBaseline  = 'middle'
 
-                    context.text(i,clockContainer.clockRadius/2+x1,clockContainer.clockRadius/2+y1)
+                    var dial = i
+
+                    if (root.dialStyle === 1) dial = romans[i-1]
+                    context.text(dial,clockContainer.clockRadius/2+x1,clockContainer.clockRadius/2+y1)
 
                     context.fill()
                     context.stroke()
                 }
+                context.closePath()
             }
         }
 
@@ -298,7 +315,11 @@ function drawPointer(context, angle, len, thickness, color){
                     clockCanvas.requestPaint()
                     return;
                 }else if (dist>clockContainer.clockRadius*.32*clockContainer.scale) {
+                    root.dialStyle = Math.round(Math.random())
                     root.dialColor = newColor()
+                    clockCanvas.requestPaint()
+                }else{
+                    root.bgcolor = newColor()
                     clockCanvas.requestPaint()
                 }
             }

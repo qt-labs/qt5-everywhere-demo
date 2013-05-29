@@ -194,7 +194,7 @@ Item {
 
         for (var i =0; i<demoContainer.children.length; i++){
             if (demoContainer.children[i].objectName === "demoApp"){
-                demoContainer.children[i].destroy();
+                demoContainer.children[i].destroy(500);
             }
         }
     }
