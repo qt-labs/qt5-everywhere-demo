@@ -48,14 +48,6 @@ Rectangle {
 
     color: "black"
 
-    /*Rectangle {
-        id: videoContent
-        anchors.fill: root
-        color: "#262626"
-        function play() { print("fake play") }
-        function stop() { print("fake stop") }
-    }*/
-
     ContentVideo {
         id: videoContent
         anchors.fill: root

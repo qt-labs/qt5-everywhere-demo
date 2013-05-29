@@ -7,7 +7,7 @@ Rectangle {
     color: "transparent"
     property int tileMargin: videoSelector.tileMargin
 
-    signal videoSelected(string url)
+    signal videoSelected(string link)
 
     Rectangle {
         anchors.left: parent.left
@@ -21,7 +21,6 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 grid.currentIndex = index
-                console.log(link)
                 delegate.videoSelected(link)
             }
         }
@@ -36,15 +35,15 @@ Rectangle {
 
         Image {
             id: iconImage
-            source: url
+            source: thumbnail
             width: parent.width
             height: parent.height
         }
 
         Rectangle{
             width: parent.width
-            height: dateText.height + tileMargin
-            anchors.top: dateText.top
+            height: titleText.height + tileMargin
+            anchors.top: titleText.top
             anchors.bottom: parent.bottom
             color: "Black"
             opacity: 0.5
@@ -53,7 +52,7 @@ Rectangle {
         }
 
         Text {
-            id: dateText
+            id: titleText
             anchors.left: parent.left
             anchors.leftMargin: tileMargin
             anchors.bottom: parent.bottom

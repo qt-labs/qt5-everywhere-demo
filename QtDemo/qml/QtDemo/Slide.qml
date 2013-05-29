@@ -3,12 +3,7 @@ import QtQuick 2.0
 Item {
     id: slide
     objectName: "slide"
-    x: startX
-    y: startY + deltaY
-    rotation: deltaRot
 
-    property bool rotAnimationEnabled: false
-    property bool yAnimationEnabled: false
     property int uid: 0
     property string url: ""
     property int device: 0
@@ -16,8 +11,6 @@ Item {
     property bool loaded: false
     property bool loading: false
     property real targetScale: 1
-    property int startX: 0
-    property int startY: 0
     property bool animationRunning: navigationAnimation.running || zoomAnimation.running
     property int demoWidth: 603
     property int demoHeight: 378
@@ -25,9 +18,6 @@ Item {
     property int maskHorizontalOffset: 1
     property string demoColor: "#883322"
     property string name: ""
-    property real deltaRot: 0
-    property int deltaY: 0
-    property int swing: 5
     property bool dirty: parent.angle !== 0 || rotation !==0
 
     function targetWidth()
@@ -99,8 +89,8 @@ Item {
         height: slide.height
         z: 2
 
-        //IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
-        //IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { id: leftElementcontainer; place: 0; islandHeight: islandImage.height; islandWidth: islandImage.width }
+        IslandElementContainer { id: rightElementcontainer;place: 1; islandHeight: islandImage.height; islandWidth: islandImage.width }
         IslandElementContainer { id: bottomElementcontainer;place: 2; islandHeight: islandImage.height; islandWidth: islandImage.width }
     }
 
@@ -117,20 +107,6 @@ Item {
         z: -3
     }
 
-    SequentialAnimation{
-        id: rotationAnimation
-        NumberAnimation { target: slide; property: "deltaRot"; duration: 3000; to:swing; easing.type: Easing.InOutQuad }
-        NumberAnimation { target: slide; property: "deltaRot"; duration: 3000; to:-swing; easing.type: Easing.InOutQuad }
-        loops: Animation.Infinite
-    }
-
-    SequentialAnimation{
-        id: yAnimation
-        NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:10*swing; easing.type: Easing.InOutQuad }
-        NumberAnimation { target: slide; property: "deltaY"; duration: 4000; to:-10*swing; easing.type: Easing.InOutQuad }
-        loops: Animation.Infinite
-    }
-
     // Load timer
     Timer {
         id: loadTimer
@@ -143,26 +119,7 @@ Item {
         }
     }
 
-    // Starter timer
-    Timer {
-        id: yStarter
-        interval: Math.random()*5000
-        onTriggered: yAnimation.start()
-    }
-    // Starter timer
-    Timer {
-        id: rotStarter
-        interval: Math.random()*2000
-        onTriggered: rotationAnimation.start()
-    }
-
     function loadDemo(){
-        yAnimation.stop()
-        rotationAnimation.stop()
-        deltaY = 0
-        deltaRot = 0
-
-
         if (!slide.loaded)
         {
             splashScreenText.visible = true
@@ -225,11 +182,8 @@ Item {
             return;
         }
 
-        if (yAnimationEnabled)
-            yAnimation.restart()
-        if (rotAnimationEnabled)
-            rotationAnimation.restart()
-        if (slide.name === "Internet Radio") return; //Always alive
+        if (slide.name === "Internet Radio")
+            return; //Always alive
 
         app.forceActiveFocus();
 
@@ -247,15 +201,8 @@ Item {
 
     function createElements()
     {
-        //leftElementcontainer.createElements()
-        //rightElementcontainer.createElements()
+        leftElementcontainer.createElements()
+        rightElementcontainer.createElements()
         bottomElementcontainer.createElements()
-    }
-
-    Component.onCompleted: {
-        if (yAnimationEnabled)
-            yStarter.start()
-        if (rotAnimationEnabled)
-            rotStarter.start()
     }
 }

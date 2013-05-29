@@ -4,7 +4,7 @@ import QtQuick 2.0
 Item {
     id: root
 
-    height: parent.height
+    height: parent.height * 0.8
     width: image.width * image.scale
 
     property alias enabled: mouseArea.enabled
@@ -22,7 +22,7 @@ Item {
     Image {
         id: image
         anchors.centerIn: parent
-        scale: root.height / height * 0.9
+        scale: root.height / height
         visible: true
         opacity: pressed ? 0.6 : 1
         smooth: true

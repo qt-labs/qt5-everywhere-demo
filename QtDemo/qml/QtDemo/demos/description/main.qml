@@ -81,7 +81,7 @@ Rectangle {
         visible: true
         onSelectVideo: {
             videoSelector.hide()
-            content.openVideo(url)
+            content.openVideo(link)
             content.videoPlayer.play()
         }
         onVisibleChanged: {

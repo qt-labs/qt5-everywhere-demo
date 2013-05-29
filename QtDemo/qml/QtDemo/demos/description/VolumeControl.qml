@@ -8,6 +8,7 @@ Item {
     //Volume Controls
     ImageButton {
         id: volumeDown
+        height: parent.height * 0.5
         imageSource: "images/VolumeDown.png"
         anchors.verticalCenter: root.verticalCenter
         anchors.left: root.left
@@ -28,6 +29,7 @@ Item {
 
     ImageButton {
         id: volumeUp
+        height: parent.height * 0.5
         imageSource: "images/VolumeUp.png"
         anchors.verticalCenter: root.verticalCenter
         anchors.verticalCenterOffset: 1

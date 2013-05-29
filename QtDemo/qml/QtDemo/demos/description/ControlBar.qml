@@ -1,16 +1,13 @@
 import QtQuick 2.0
 import QtMultimedia 5.0
 
-Rectangle {
+Item {
     id: controlBar
-    height: parent.height * 0.2
-    color: "#88333333"
+    anchors.fill: parent
 
     property MediaPlayer mediaPlayer: null
     property bool isMouseAbove: false
-    property int margin: parent.width * 0.01
-    property double playBackHeight: height*0.48
-    property double seekHeight: height*0.48
+    property int margin: applicationWindow.width * 0.01
 
     signal openURL()
 
@@ -39,136 +36,150 @@ Rectangle {
         statusText.text = strText;
     }
 
-    VolumeControl {
-        id: volumeControl
-        anchors.verticalCenter: playbackControl.verticalCenter
-        anchors.left: controlBar.left
-        anchors.leftMargin: controlBar.margin
-        height: controlBar.playBackHeight
-        width: parent.width * 0.3
-        onVolumeChanged: {
-            if (mediaPlayer !== null)
-                mediaPlayer.volume = volume
+    Rectangle {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        width: applicationWindow.height * 0.12
+        height: width
+        color: "#88333333"
+
+        Image {
+            id: closeImage
+            source: "images/CloseButton.png"
+            anchors.centerIn: parent
+            width: 0.5*parent.height
+            height: width
+            opacity: closeMouseArea.pressed ? 0.6 : 1
+            smooth: true
+        }
+
+        MouseArea {
+            id: closeMouseArea
+            anchors.fill: parent
+            onClicked: {
+                if (mediaPlayer !== null)
+                    mediaPlayer.stop();
+
+                videoSelector.show();
+            }
+        }
+    }
+
+    Rectangle {
+        id: bottomBar
+        height: parent.height * 0.2
+        color: "#88333333"
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+
+        property double playBackHeight: height*0.48
+        property double seekHeight: height*0.48
+
+        VolumeControl {
+            id: volumeControl
+            anchors.verticalCenter: playbackControl.verticalCenter
+            anchors.left: bottomBar.left
+            anchors.leftMargin: bottomBar.margin
+            height: bottomBar.playBackHeight
+            width: parent.width * 0.3
+            onVolumeChanged: {
+                if (mediaPlayer !== null)
+                    mediaPlayer.volume = volume
+            }
+
+            Connections {
+                target: mediaPlayer
+                onVolumeChanged: volumeControl.volume = mediaPlayer.volume
+            }
+        }
+
+        //Playback Controls
+        PlaybackControl {
+            id: playbackControl
+            anchors.horizontalCenter: bottomBar.horizontalCenter
+            anchors.top: bottomBar.top
+            anchors.topMargin: bottomBar.margin
+            height: bottomBar.playBackHeight
+
+            onPlayButtonPressed: {
+                if (mediaPlayer === null)
+                    return;
+
+                if (isPlaying) {
+                    mediaPlayer.pause();
+                } else {
+                    mediaPlayer.play();
+                }
+            }
+        }
+
+        Text {
+            id: statusText
+            anchors.right: parent.right
+            anchors.verticalCenter: playbackControl.verticalCenter
+            anchors.rightMargin: bottomBar.margin
+            verticalAlignment: Text.AlignVCenter
+            height: bottomBar.playBackHeight
+            font.pixelSize: playbackControl.height * 0.5
+            color: "white"
+        }
+
+        //Seek controls
+        SeekControl {
+            id: seekControl
+            anchors.bottom: bottomBar.bottom
+            anchors.right: bottomBar.right
+            anchors.left: bottomBar.left
+            height: bottomBar.seekHeight
+            anchors.leftMargin: bottomBar.margin
+            anchors.rightMargin: bottomBar.margin
+
+            enabled: playbackControl.isPlaybackEnabled
+            duration: mediaPlayer !== null ? mediaPlayer.duration : 0
+
+            onSeekValueChanged: {
+                if (mediaPlayer !== null) {
+                    mediaPlayer.seek(newPosition);
+                    position = mediaPlayer.position;
+                }
+            }
+
+            Component.onCompleted: {
+                if (mediaPlayer !== null)
+                    seekable = mediaPlayer.seekable;
+            }
         }
 
         Connections {
             target: mediaPlayer
-            onVolumeChanged: volumeControl.volume = mediaPlayer.volume
-        }
-    }
-
-    //Playback Controls
-    PlaybackControl {
-        id: playbackControl
-        anchors.horizontalCenter: controlBar.horizontalCenter
-        anchors.top: controlBar.top
-        anchors.topMargin: controlBar.margin
-        height: controlBar.playBackHeight
-
-        onPlayButtonPressed: {
-            if (mediaPlayer === null)
-                return;
-
-            if (isPlaying) {
-                mediaPlayer.pause();
-            } else {
-                mediaPlayer.play();
+            onPositionChanged: {
+                if (!seekControl.pressed) seekControl.position = mediaPlayer.position;
             }
-        }
-
-        onReverseButtonPressed: {
-            if (mediaPlayer === null)
-                return;
-
-            if (mediaPlayer.seekable) {
-                //Subtract 10 %
-                mediaPlayer.seek(normalizeSeek(Math.round(-mediaPlayer.duration * 0.1)));
+            onStatusChanged: {
+                if ((mediaPlayer.status == MediaPlayer.Loaded) || (mediaPlayer.status == MediaPlayer.Buffered) || mediaPlayer.status === MediaPlayer.Buffering || mediaPlayer.status === MediaPlayer.EndOfMedia)
+                    playbackControl.isPlaybackEnabled = true;
+                else
+                    playbackControl.isPlaybackEnabled = false;
+                updateStatusText();
             }
-        }
-
-        onForwardButtonPressed: {
-            if (mediaPlayer === null)
-                return;
-
-            if (mediaPlayer.seekable) {
-                //Add 10 %
-                mediaPlayer.seek(normalizeSeek(Math.round(mediaPlayer.duration * 0.1)));
+            onErrorChanged: {
+                updateStatusText();
             }
-        }
 
-        onStopButtonPressed: {
-            if (mediaPlayer !== null)
-                mediaPlayer.stop();
-
-            videoSelector.show();
-        }
-    }
-
-    Text {
-        id: statusText
-        anchors.right: parent.right
-        anchors.verticalCenter: playbackControl.verticalCenter
-        anchors.rightMargin: controlBar.margin
-        verticalAlignment: Text.AlignVCenter
-        height: controlBar.playBackHeight
-        font.pixelSize: playbackControl.height * 0.5
-        color: "white"
-    }
-
-    //Seek controls
-    SeekControl {
-        id: seekControl
-        anchors.bottom: controlBar.bottom
-        anchors.right: controlBar.right
-        anchors.left: controlBar.left
-        height: controlBar.seekHeight
-        anchors.leftMargin: controlBar.margin
-        anchors.rightMargin: controlBar.margin
-
-        enabled: playbackControl.isPlaybackEnabled
-        duration: mediaPlayer !== null ? mediaPlayer.duration : 0
-
-        onSeekValueChanged: {
-            if (mediaPlayer !== null) {
-                mediaPlayer.seek(newPosition);
-                position = mediaPlayer.position;
+            onPlaybackStateChanged: {
+                if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+                    playbackControl.isPlaying = true;
+                    applicationWindow.resetTimer();
+                } else {
+                    show();
+                    playbackControl.isPlaying = false;
+                }
             }
-        }
 
-        Component.onCompleted: {
-            if (mediaPlayer !== null)
-                seekable = mediaPlayer.seekable;
-        }
-    }
-
-    Connections {
-        target: mediaPlayer
-        onPositionChanged: {
-            if (!seekControl.pressed) seekControl.position = mediaPlayer.position;
-        }
-        onStatusChanged: {
-            if ((mediaPlayer.status == MediaPlayer.Loaded) || (mediaPlayer.status == MediaPlayer.Buffered) || mediaPlayer.status === MediaPlayer.Buffering || mediaPlayer.status === MediaPlayer.EndOfMedia)
-                playbackControl.isPlaybackEnabled = true;
-            else
-                playbackControl.isPlaybackEnabled = false;
-            updateStatusText();
-        }
-        onErrorChanged: {
-            updateStatusText();
-        }
-
-        onPlaybackStateChanged: {
-            if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
-                playbackControl.isPlaying = true;
-                applicationWindow.resetTimer();
-            } else {
-                show();
-                playbackControl.isPlaying = false;
+            onSeekableChanged: {
+                seekControl.seekable = mediaPlayer.seekable;
             }
-        }
-
-        onSeekableChanged: {
-            seekControl.seekable = mediaPlayer.seekable;
         }
     }
 

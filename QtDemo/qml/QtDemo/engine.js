@@ -55,9 +55,8 @@ function createNew(x,y,url,device,name){
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
         object.uid = objects.length
         object.name = name
-        object.startX = x-object.width/2
-        object.startY = y-object.height/2
-        object.swing = Math.random()*(objects.length/2)+1
+        object.x = x-object.width/2
+        object.y = y-object.height/2
         object.createElements();
 
         if (url){

@@ -11,7 +11,7 @@ Rectangle {
     property string textColor: "white"
     property string uiFont: "Segoe UI"
 
-    signal selectVideo(string url)
+    signal selectVideo(string link)
 
     state: "VISIBLE"
 
@@ -22,15 +22,10 @@ Rectangle {
 
     XmlListModel {
         id: videoModel
-        //source: "http://blog.qt.digia.com/feed/"
-        source: "http://news.yahoo.com/rss/tech"
-        //query: "/rss/channel/item"
-        // Filter out items that don't have images
-        query: "/rss/channel/item[exists(child::media:content)]"
-        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-        XmlRole  { name: "url"; query: "media:content/@url/string()" }
+        source: "videos.xml"
+        query: "/videolist/item"
+        XmlRole  { name: "thumbnail"; query: "thumbnail/string()" }
         XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "pubDate"; query: "pubDate/string()" }
         XmlRole { name: "link"; query: "link/string()" }
     }
 
@@ -45,7 +40,7 @@ Rectangle {
         clip: false
         focus: true
         model: videoModel
-        delegate: VideoDelegate { onVideoSelected: videoSelector.selectVideo("http://download.qt-project.org/learning/videos/Qt5-Jens-Bache-Wiig-Qt-Quick.mp4"); }
+        delegate: VideoDelegate { onVideoSelected: videoSelector.selectVideo(link); }
 
         // Only show the scrollbars when the view is moving.
         states: State {
