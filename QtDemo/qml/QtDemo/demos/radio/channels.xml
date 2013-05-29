@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <radio>
+        <channel>
+            <title>BBC World Service</title>
+            <url>http://vpr.streamguys.net/vpr24.mp3</url>
+        </channel>
+        <channel>
+            <title>CBC Music Hard Rock</title>
+            <url>http://2903.live.streamtheworld.com:80/CBC_HAROCK_H_SC.mp3</url>
+        </channel>
+        <channel>
+            <title>"JPR Classics"</title>
+            <url>http://jpr.streamguys.org:80/jpr-classics</url>
+        </channel>
+        <channel>
+            <title>VPR Classical</title>
+            <url>http://vprclassical.streamguys.net/vprclassical24.mp3</url>
+        </channel>
+        <channel>
+            <title>VPR Jazz24</title>
+            <url>http://vprjazz.streamguys.net/vprjazz24.mp3</url>
+        </channel>
+        <channel>
+            <title>Radio Paradise</title>
+            <url>http://scfire-m26.websys.aol.com:80/radio_paradise_mp3_128kbps.mp3</url>
+        </channel>
+    </radio>

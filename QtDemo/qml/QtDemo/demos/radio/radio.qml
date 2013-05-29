@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtMultimedia 5.0
+import QtQuick.XmlListModel 2.0
 
 FocusScope {
     id: scope
@@ -118,7 +119,7 @@ FocusScope {
                             id: delegateText
                             anchors.left: parent.left
                             anchors.top: parent.top
-                            text: (index+1) +". " +name
+                            text: (index+1) +". " +title
                             font.pixelSize: stationDelegate.opened? stationList.height*.15 : stationList.height*.1
                             font.weight: stationDelegate.opened? Font.Bold: Font.Normal
                             color: stationList.openedIndex ===-1 || opened? "white": "#0e82b8"
@@ -152,7 +153,7 @@ FocusScope {
                                     stationList.openedIndex=-1
                                 }else {
                                     stationList.openedIndex= index
-                                    browseTimer.source = source
+                                    browseTimer.source = url
                                     browseTimer.restart()
                                 }
                             }
@@ -162,14 +163,12 @@ FocusScope {
             }
         }
 
-        ListModel {
+        XmlListModel {
             id: stationModel
-            ListElement{name: "BBC World Service"; source: "http://vpr.streamguys.net/vpr24.mp3"}
-            ListElement{name: "CBC Music Hard Rock"; source: "http://2903.live.streamtheworld.com:80/CBC_HAROCK_H_SC.mp3"}
-            ListElement{name: "JPR Classics & News"; source: "http://jpr.streamguys.org:80/jpr-classics"}
-            ListElement{name: "VPR Classical"; source: "http://vprclassical.streamguys.net/vprclassical24.mp3"}
-            ListElement{name: "VPR Jazz24"; source: "http://vprjazz.streamguys.net/vprjazz24.mp3"}
-            ListElement{name: "Radio Paradise"; source: "http://scfire-m26.websys.aol.com:80/radio_paradise_mp3_128kbps.mp3"}
+            source: "channels.xml"
+            query: "/radio/channel"
+            XmlRole {name: "title"; query: "title/string()"}
+            XmlRole {name: "url"; query: "url/string()"}
         }
 
         VolumeButton {
