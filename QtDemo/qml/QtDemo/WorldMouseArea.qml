@@ -58,5 +58,15 @@ MouseArea{
             app.navigationState = 2 //dirty
         }
     }
-
+    onWheel: {
+        var newScalingFactor = canvas.scalingFactor
+        if (wheel.angleDelta.y > 0){
+            newScalingFactor+=canvas.scalingFactor*.05
+        }else{
+            newScalingFactor-=canvas.scalingFactor*.05
+        }
+        if (newScalingFactor < app.minScaleFactor) newScalingFactor = app.minScaleFactor
+        if (newScalingFactor > app.maxScaleFactor) newScalingFactor = app.maxScaleFactor
+        canvas.scalingFactor = newScalingFactor
+    }
 }
