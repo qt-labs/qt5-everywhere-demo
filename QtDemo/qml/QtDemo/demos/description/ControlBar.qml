@@ -57,8 +57,10 @@ Item {
             id: closeMouseArea
             anchors.fill: parent
             onClicked: {
-                if (mediaPlayer !== null)
+                if (mediaPlayer !== null) {
                     mediaPlayer.stop();
+                    mediaPlayer.source = "";
+                }
 
                 videoSelector.show();
             }

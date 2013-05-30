@@ -41,6 +41,6 @@ Grid {
     Button {
         id: homeButton
         imageSource: "images/btn_home.png"
-        onClicked: canvas.goHome()
+        onClicked: canvas.goBack()
     }
 }

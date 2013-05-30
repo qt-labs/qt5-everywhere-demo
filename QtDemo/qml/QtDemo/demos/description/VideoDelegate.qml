@@ -54,11 +54,11 @@ Rectangle {
         Text {
             id: titleText
             anchors.left: parent.left
-            anchors.leftMargin: tileMargin
+            anchors.leftMargin: tileMargin/3
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: tileMargin
+            anchors.bottomMargin: tileMargin/3
             anchors.right: parent.right
-            anchors.rightMargin: tileMargin
+            anchors.rightMargin: tileMargin/3
 
             color: videoSelector.textColor
             text: title

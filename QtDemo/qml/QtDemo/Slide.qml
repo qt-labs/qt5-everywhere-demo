@@ -5,6 +5,7 @@ Item {
     objectName: "slide"
 
     property int uid: 0
+    property int gid: 0
     property string url: ""
     property int device: 0
     property string imageSource: ""

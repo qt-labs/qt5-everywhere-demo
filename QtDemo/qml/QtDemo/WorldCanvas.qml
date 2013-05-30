@@ -45,7 +45,7 @@ Item{
             zoomInTarget = target.targetScale;
             if (updateScalingFactor)
                 scalingFactor = zoomInTarget
-            app.navigationState = 1 //slide
+            app.navigationState = target.navState
         }
     }
 
@@ -56,6 +56,16 @@ Item{
     function goPrevious() {
         goTo(app.getPrevious(), false);
         navigationAnimation.restart()
+    }
+
+    function goBack()
+    {
+        if (app.navigationState == 2) {
+            goTo(app.getCurrentGroup(), false)
+            zoomAnimation.restart()
+        }
+        else
+            canvas.goHome()
     }
 
     Behavior on angle {

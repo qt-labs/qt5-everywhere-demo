@@ -14,7 +14,7 @@ Rectangle{
     property real maxScaleFactor: 1
     property real tapLimitX : 2
     property real tapLimitY : 1
-    property int navigationState: 0 //home, slide, dirty
+    property int navigationState: 0 //home, group, slide, dirty
 
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
@@ -25,12 +25,24 @@ Rectangle{
             app.minScaleFactor = app.homeScaleFactor / 10;
             app.maxScaleFactor = app.homeScaleFactor * 20;
             Engine.updateObjectScales(app.width*0.9, app.height*0.9);
+            Engine.updateGroupScales(app.width, app.height);
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 
-            var target = Engine.getCurrent();
-            if (navigationState == 1 && target !== null)
-                canvas.goTo(target, true);
+            var target = Engine.getCurrentGroup()
+            if (navigationState == 1) {
+                if (target !== null)
+                    canvas.goTo(target, true)
+                else
+                    canvas.goHome()
+            }
+            else if (navigationState == 2) {
+                target = Engine.getCurrent()
+                if (target !== null)
+                    canvas.goTo(target, true)
+                else
+                    canvas.goHome()
+            }
             else
                 canvas.goHome()
 
@@ -42,12 +54,26 @@ Rectangle{
         return Engine.selectTarget(uid)
     }
 
+    function selectGroup(uid) {
+        return Engine.selectGroup(uid)
+    }
+
+    function getCurrentGroup() {
+        return Engine.getCurrentGroup()
+    }
+
     function getNext() {
-        return Engine.getNext()
+        if (app.navigationState == 1)
+            return Engine.getNextGroup()
+        else
+            return Engine.getNext()
     }
 
     function getPrevious() {
-        return Engine.getPrevious()
+        if (app.navigationState == 1)
+            return Engine.getPreviousGroup()
+        else
+            return Engine.getPrevious()
     }
 
     onWidthChanged: calculateScales();
@@ -95,7 +121,7 @@ Rectangle{
 
         onRunningChanged: {
             if (!running) {
-                if (app.navigationState === 1)
+                if (app.navigationState === 2)
                     Engine.loadCurrentDemo();
                 else
                     Engine.releaseDemos();
@@ -111,7 +137,7 @@ Rectangle{
             target: canvas;
             property: "scalingFactor";
             duration: Style.APP_ANIMATION_DELAY/2;
-            to: app.homeScaleFactor
+            to: app.homeScaleFactor*1.3
             easing.type: Easing.OutCubic
         }
 
@@ -126,7 +152,7 @@ Rectangle{
 
         onRunningChanged: {
             if (!running) {
-                if (navigationState === 1)
+                if (navigationState === 2)
                     Engine.loadCurrentDemo();
             }
         }
@@ -137,7 +163,7 @@ Rectangle{
         if (event.key === Qt.Key_MediaPrevious) {
             if (app.navigationState !== 0) {
                 event.accepted = true;
-                canvas.goHome();
+                canvas.goBack();
             }
             else {
                 quitDialog.visible = true
@@ -146,6 +172,7 @@ Rectangle{
     }
 
     Component.onCompleted: {
+        Engine.initGroups()
         Engine.initSlides()
         cloud1.start();
         cloud2.start();

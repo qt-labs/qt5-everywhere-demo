@@ -5,7 +5,7 @@ Rectangle {
     id: videoSelector
     color: "transparent"
     property int tileHeight: parseInt(grid.height / 2)
-    property int tileMargin: tileHeight * 0.05
+    property int tileMargin: tileHeight * 0.1
     property int tileFontSize: tileHeight * 0.05
     property string tileBackground: "#262626"
     property string textColor: "white"
@@ -22,7 +22,7 @@ Rectangle {
 
     XmlListModel {
         id: videoModel
-        source: "videos.xml"
+        source: "qt5_videos.xml"
         query: "/videolist/item"
         XmlRole  { name: "thumbnail"; query: "thumbnail/string()" }
         XmlRole { name: "title"; query: "title/string()" }

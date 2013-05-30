@@ -21,13 +21,16 @@ MouseArea{
             var target = null;
             var object = mapToItem(canvas, mouse.x, mouse.y)
             var item = canvas.childAt(object.x,object.y)
-            if (item && item.objectName === 'slide') {
-                target = app.selectTarget(item.uid)
+            if (item) {
+                if (item.objectName === 'slide')
+                    target = app.selectTarget(item.uid)
+                else if (item.objectName === 'group')
+                    target = app.selectGroup(item.uid)
             }
 
             // If we found target, go to the target
             if (target) {
-                canvas.goTo(target, false)
+                canvas.goTo(target, false, item.objectName === 'slide' ? 2 : 1)
                 zoomAnimation.restart()
             }
             else // If not target under mouse -> go home
@@ -55,7 +58,7 @@ MouseArea{
             panning = true;
             canvas.xOffset += dx;
             canvas.yOffset += dy;
-            app.navigationState = 2 //dirty
+            app.navigationState = 3 //dirty
         }
     }
     onWheel: {
