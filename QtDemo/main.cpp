@@ -1,7 +1,7 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
 #include <QQmlContext>
-#include <shaderfilereader.h>
+#include "shaderfilereader.h"
 
 int main(int argc, char *argv[])
 {
