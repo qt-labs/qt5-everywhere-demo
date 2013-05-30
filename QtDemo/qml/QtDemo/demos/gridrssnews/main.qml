@@ -7,7 +7,7 @@ Rectangle {
     color: appBackground
 
     property int tileHeight: parseInt(grid.height / 3)
-    property int tileFontSize: tileHeight * 0.05
+    property int tileFontSize: tileHeight * 0.08
     property int horizontalMargin: height * 0.08
     property int topBarsize: height * 0.2
     property int bottomBarSize: height * 0.08

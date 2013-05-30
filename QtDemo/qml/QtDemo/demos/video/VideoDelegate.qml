@@ -64,7 +64,7 @@ Item {
             width: parent.width;
             wrapMode: Text.WordWrap;
             smooth: true
-            font { family: videoSelector.uiFont; pointSize: videoSelector.tileFontSize }
+            font { family: videoSelector.uiFont; pixelSize: videoSelector.tileFontSize }
         }
     }
 }

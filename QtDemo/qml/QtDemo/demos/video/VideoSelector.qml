@@ -6,7 +6,7 @@ Item {
 
     property int tileHeight: parseInt(grid.height / 2)
     property int tileMargin: tileHeight * 0.1
-    property int tileFontSize: tileHeight * 0.05
+    property int tileFontSize: tileHeight * 0.08
     property string tileBackground: "#262626"
     property string textColor: "white"
     property string uiFont: "Segoe UI"

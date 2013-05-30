@@ -64,7 +64,7 @@ Rectangle {
             width: parent.width;
             wrapMode: Text.WordWrap;
             smooth: true
-            font { family: mainWindow.uiFont; pointSize: mainWindow.tileFontSize }
+            font { family: mainWindow.uiFont; pixelSize: mainWindow.tileFontSize }
         }
     }
 }
