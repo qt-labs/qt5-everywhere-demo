@@ -19,7 +19,7 @@ Rectangle{
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
             var bbox = Engine.boundingBox();
-            app.homeScaleFactor = Engine.scaleToBox(app.width*0.8, app.height*0.8, bbox.width, bbox.height);
+            app.homeScaleFactor = Engine.scaleToBox(app.width*0.85, app.height*0.85, bbox.width, bbox.height);
             app.homeCenterX = bbox.centerX;
             app.homeCenterY = bbox.centerY;
             app.minScaleFactor = app.homeScaleFactor / 10;

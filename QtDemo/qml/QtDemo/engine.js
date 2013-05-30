@@ -3,11 +3,12 @@ var positions = [
             {x:-1800, y:-1400, gid: 0, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
             {x:-1200, y:-1050, gid: 0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
 
-            {x:1750, y:-1650, gid: 1, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
+            {x:1800, y:-1700, gid: 1, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
             {x:1100, y:-1500, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
 
-            {x:900, y:-300, gid: 2, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
-            {x:-100, y:-100, gid: 2, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
+            {x:1600, y:-500, gid: 2, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+            {x:700, y:-300, gid: 2, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
+            {x:-100, y:-50, gid: 2, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
 
             {x:-1500, y:0, gid: 3, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},
             {x:-2200, y:100, gid: 3, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
@@ -15,19 +16,17 @@ var positions = [
             {x:2200, y:1100, gid: 5, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
             {x:1000, y:1280, gid: 5, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
 
-            {x:-400, y:1000, gid: 4, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
-            {x:-1300, y:1200, gid: 4, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
-            {x:-2100, y:1450, gid: 4, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
-
+            {x:-800, y:1200, gid: 4, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
+            {x:-1800, y:1400, gid: 4, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"}
         ]
 
 var groupPositions = [
-            {x:-2400, y:-1900, width: 2200, height: 1150, textX: 20, textY: 20, name: "Feeds"},
-            {x:600, y:-2000, width: 1700, height: 1000, textX: 20, textY: 20, name: "Canvas"},
-            {x:-600, y:-750, width: 2100, height: 1250, textX: 20, textY: 20, name: "Multimedia"},
-            {x:-2600, y:-450, width: 1600, height: 1100, textX: 20, textY: 20, name: "Games"},
-            {x:-2400, y:700, width: 2400, height: 1200, textX: 50, textY: 50, name: "Applications"},
-            {x:500, y:600, width: 2500, height: 1400, textX: 50, textY: 50, name: "Particles & Shaders"}
+            {x:-2320, y:-1950, width: 2150, height: 1200, textX: 150, textY: 20, name: "Feeds"},
+            {x:650, y:-2000, width: 1600, height: 1000, textX: 150, textY: 20, name: "Canvas"},
+            {x:-350, y:-800, width: 2350, height: 1200, textX: 150, textY: 20, name: "Applications"},
+            {x:-2500, y:-500, width: 1500, height: 1150, textX: 150, textY: 20, name: "Games"},
+            {x:-2250, y:850, width: 2050, height: 1150, textX: 150, textY: 20, name: "Multimedia"},
+            {x:510, y:700, width: 2400, height: 1300, textX: 150, textY: 20, name: "Particles & Shaders"}
         ]
 
 var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
@@ -39,7 +38,7 @@ var demoHeights = [404, 482, 482, 402, 322, 431, 432, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
 var maskVerticalOffsets = [20, 32, 15, 24, 45, 59, 57, 56]
 var colors = ["#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3"]
-var navigationList = [1,2,0,4,3,5,6,7,8,13,12,11,10,9]
+var navigationList = [1,2,0,4,3,5,6,7,8,9,13,12,11,10]
 var groupNavigationList = [0,1,2,3,4,5]
 var currentDemoIndex = -1
 var currentGroupIndex = -1
