@@ -20,6 +20,7 @@ Item {
     property string demoColor: "#883322"
     property string name: ""
     property bool dirty: parent.angle !== 0 || rotation !==0
+    property bool preventShader: false
 
     function targetWidth()
     {
@@ -66,7 +67,7 @@ Item {
         height: demoHeight
         sourceItem: demoContainer
         live: visible && (slide.loading || slide.loaded)
-        visible: slide.dirty || !slide.loaded || updating
+        visible: (!slide.preventShader && slide.dirty) || !slide.loaded || updating
         hideSource: visible && !updating && !loading
         clip: true
 

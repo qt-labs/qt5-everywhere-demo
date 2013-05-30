@@ -99,7 +99,7 @@ Rectangle{
     }
 
     WorldMouseArea { id: worldMouseArea }
-    WorldPinchArea { id: worldPinchArea }
+    //WorldPinchArea { id: worldPinchArea }
     WorldCanvas { id:canvas }
     NavigationPanel{ id: navigationPanel }
 

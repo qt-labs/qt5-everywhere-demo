@@ -68,13 +68,13 @@ Item{
             canvas.goHome()
     }
 
-    Behavior on angle {
+    /*Behavior on angle {
         RotationAnimation{
             duration: Style.APP_ANIMATION_DELAY
             direction: RotationAnimation.Shortest
         }
         enabled: !worldPinchArea.pinching
-    }
+    }*/
 
     Behavior on xOffset {
         id: xOffsetBehaviour
@@ -92,13 +92,13 @@ Item{
         NumberAnimation{
             duration: Style.APP_ANIMATION_DELAY
         }
-        enabled: !worldPinchArea.pinching
+        //enabled: !worldPinchArea.pinching
     }
     Behavior on rotationOriginY {
         NumberAnimation{
             duration: Style.APP_ANIMATION_DELAY
         }
-        enabled: !worldPinchArea.pinching
+        //enabled: !worldPinchArea.pinching
     }
 
     transform: [
@@ -110,12 +110,12 @@ Item{
             xScale: canvas.scalingFactor
             yScale :canvas.scalingFactor
 
-        },
-        Rotation{
+        }
+        /*Rotation{
             id: canvasRotation
             origin.x: canvas.rotationOriginX
             origin.y: canvas.rotationOriginY
             angle: canvas.angle
-        }
+        }*/
     ]
 }
