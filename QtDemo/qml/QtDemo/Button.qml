@@ -1,10 +1,9 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: root
     width: (app.height + app.width) * 0.04
     height: width
-    color: "transparent"
 
     property string imageSource : ""
     property double rotation: 0

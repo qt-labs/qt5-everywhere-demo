@@ -6,7 +6,7 @@ var positions = [
             {x:1750, y:-1650, gid: 1, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
             {x:1100, y:-1500, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
 
-            {x:900, y:-300, gid: 2, url: "demos/description/main.qml", device: 7, name: "Qt Video"},
+            {x:900, y:-300, gid: 2, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
             {x:-100, y:-100, gid: 2, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"},
 
             {x:-1500, y:0, gid: 3, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},

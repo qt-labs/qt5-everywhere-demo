@@ -1,8 +1,7 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: root
-    color: "transparent"
 
     property int itemId : 1
     property int posX: 0

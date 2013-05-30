@@ -78,10 +78,9 @@ Rectangle {
     }
     onHeightChanged: gridCanvas.requestPaint()
 
-    Rectangle {
+    Item {
         id: grid
         anchors.fill: parent
-        color: "transparent"
 
         Canvas {
             id: gridCanvas
@@ -133,10 +132,9 @@ Rectangle {
         opacity: .3
     }
 
-    Rectangle {
+    Item {
         id: canvasContainer
         anchors.fill: canvasBackground
-        color: "transparent"
 
         Canvas {
             id: heartCanvas

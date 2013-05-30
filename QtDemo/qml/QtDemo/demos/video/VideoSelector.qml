@@ -1,9 +1,9 @@
 import QtQuick 2.0
 import QtQuick.XmlListModel 2.0
 
-Rectangle {
+Item {
     id: videoSelector
-    color: "transparent"
+
     property int tileHeight: parseInt(grid.height / 2)
     property int tileMargin: tileHeight * 0.1
     property int tileFontSize: tileHeight * 0.05

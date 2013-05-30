@@ -1,9 +1,9 @@
 import QtQuick 2.0
 import QtQuick.Particles 2.0
 
-Rectangle {
+Item {
     id: root
-    color: "transparent"
+
     property int logoSize: Math.min(parent.height, parent.width) / 2
     property int logoSizeDivider: 1
     property int logoState: 1

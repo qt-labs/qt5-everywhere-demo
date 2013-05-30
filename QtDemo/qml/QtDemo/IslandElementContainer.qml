@@ -1,13 +1,11 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: elementContainer
     width: place == 2 ? 0.8*parent.width : 0.1*islandWidth
     height: place == 2 ? 0.1*islandHeight : 0.15*islandHeight
     x: place == 0 ? (-width-0.02*islandWidth) : place == 1 ? (parent.width+0.02*islandWidth) : 0.1*parent.width
     y: place == 2 ? parent.height : (parent.height - height)
-    color: "transparent"
-    //border {width: 3; color: "red"}
 
     property int place : 0
     property int itemWidth : islandWidth * 0.07

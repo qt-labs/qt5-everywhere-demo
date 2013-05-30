@@ -1,13 +1,11 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: cloudRoot
     x: app.width
     y: randomY+deltaY
     width: app.width*0.2
     height: width*0.4
-
-    color: "transparent"
 
     property int duration: 20000
     property string sourceImage: ""

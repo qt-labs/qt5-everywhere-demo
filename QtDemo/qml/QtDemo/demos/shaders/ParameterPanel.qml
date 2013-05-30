@@ -61,11 +61,10 @@ Rectangle {
     Component {
         id: editDelegate
 
-        Rectangle {
+        Item {
             id: delegate
             width: root.width
             height: root.sliderHeight
-            color: "transparent"
 
             Text {
                 id: text

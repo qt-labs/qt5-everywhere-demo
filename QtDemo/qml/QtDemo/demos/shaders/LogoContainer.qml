@@ -1,8 +1,7 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: root
-    color: "transparent"
     anchors.fill: parent
 
     property int logoCount: 0

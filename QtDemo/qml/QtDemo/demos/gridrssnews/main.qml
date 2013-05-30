@@ -39,7 +39,7 @@ Rectangle {
     }
 
     // Top bar
-    Rectangle {
+    Item {
         id: topBar
         anchors.left: parent.left
         anchors.right: parent.right
@@ -47,7 +47,6 @@ Rectangle {
         anchors.leftMargin: horizontalMargin
         opacity: 0
         height: topBarsize
-        color: "transparent"
         Text {
             id: title
             anchors.verticalCenter: parent.verticalCenter

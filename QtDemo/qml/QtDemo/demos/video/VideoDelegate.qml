@@ -1,10 +1,9 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: delegate
     height: grid.cellHeight
     width: grid.cellWidth
-    color: "transparent"
     property int tileMargin: videoSelector.tileMargin
 
     signal videoSelected(string link)

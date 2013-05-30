@@ -27,11 +27,10 @@ Rectangle {
         radius: 10
         border { color: "#999999"; width: 1 }
 
-        Rectangle {
+        Item {
             id: content
             anchors { left: parent.left; right: parent.right; top: parent.top }
             height: dialog.height * 0.6
-            color: "transparent"
 
             Text {
                 anchors.centerIn: parent
