@@ -48,13 +48,13 @@ Item {
     signal clicked
 
     width: 0.33*pad.width
-    height: 50
+    height: pad.height/7
 
     Text {
         id: textItem
-        anchors.fill: parent
+        anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 48
+        font.pixelSize: parent.height * 0.6
         elide: Text.ElideLeft
         lineHeight: 0.75
         color: "white"

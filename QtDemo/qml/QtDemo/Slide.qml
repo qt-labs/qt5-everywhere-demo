@@ -60,13 +60,12 @@ Item {
 
     ShaderEffectSource{
         id: demo
-        //anchors.centerIn: parent
-        x: width/2
+        anchors.centerIn: parent
         width: demoWidth
         height: demoHeight
         sourceItem: demoContainer
         live: false
-        visible: hasSnapshot && (!slide.loaded || updating)
+        visible: (hasSnapshot && !slide.loaded) || updating
         hideSource: visible && !updating && !loading
         clip: true
 

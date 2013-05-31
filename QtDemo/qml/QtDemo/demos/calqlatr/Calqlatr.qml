@@ -46,7 +46,6 @@ import "content/calculator.js" as CalcEngine
 Rectangle {
     id: window
     anchors.fill: parent
-    //focus: true
     color: "#272822"
 
     function operatorPressed(operator) { CalcEngine.operatorPressed(operator) }
@@ -55,7 +54,8 @@ Rectangle {
     Item {
         id: pad
         width: window.width * 0.58
-        NumberPad { y: 10; anchors.horizontalCenter: parent.horizontalCenter }
+        height: window.height * 0.98
+        NumberPad { anchors.horizontalCenter: parent.horizontalCenter }
     }
 
     AnimationController {
