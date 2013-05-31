@@ -41,6 +41,12 @@ Grid {
     Button {
         id: homeButton
         imageSource: "images/btn_home.png"
-        onClicked: canvas.goBack()
+        onClicked: {
+            if (app.navigationState===0){
+                helpscreen.show()
+                return;
+            }
+            canvas.goBack()
+        }
     }
 }

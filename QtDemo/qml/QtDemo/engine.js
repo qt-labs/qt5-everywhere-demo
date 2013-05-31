@@ -170,6 +170,10 @@ function selectTarget(uid){
     return null;
 }
 
+function getPosition(idx){
+    return {"x": positions[idx].x, "y":  positions[idx].y}
+}
+
 function getCurrentGroup()
 {
     if (currentGroupIndex < 0 || currentGroupIndex >= groups.length)

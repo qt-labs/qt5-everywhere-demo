@@ -105,6 +105,14 @@ Rectangle{
     WorldCanvas { id:canvas }
     NavigationPanel{ id: navigationPanel }
 
+    HelpScreen {
+        id: helpscreen
+        visible: false
+    }
+    function getPosition(index){
+        return Engine.getPosition(index)
+    }
+
     QuitDialog {
         id: quitDialog
         visible: false
@@ -117,7 +125,7 @@ Rectangle{
         id: zoomAnimation
         target: canvas;
         property: "scalingFactor";
-        duration: Style.APP_ANIMATION_DELAY;
+        duration: Style.APP_ANIMATION_DELAY
         velocity: -1
         to:canvas.zoomInTarget
 
