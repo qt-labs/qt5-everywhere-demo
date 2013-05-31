@@ -1,23 +1,23 @@
 var positions = [
-            {x:-800,  y:-1500, gid: 0, preventShader: false, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
-            {x:-1800, y:-1400, gid: 0, preventShader: false, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
-            {x:-1200, y:-1050, gid: 0, preventShader: false, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "TweetSearch"},
+            {x:-800,  y:-1500, gid: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
+            {x:-1800, y:-1400, gid: 0, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
+            {x:-1200, y:-1050, gid: 0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "Tweet Search"},
 
-            {x:1800,  y:-1700, gid: 1, preventShader: true, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
-            {x:1100,  y:-1500, gid: 1, preventShader: false, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
+            {x:1800,  y:-1700, gid: 1, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
+            {x:1100,  y:-1500, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
 
-            {x:1600,  y:-500, gid: 2, preventShader: false, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
-            {x:700,   y:-300, gid: 2, preventShader: false, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
-            {x:-100,  y:-50,  gid: 2, preventShader: false, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
+            {x:1600,  y:-500, gid: 2, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+            {x:700,   y:-300, gid: 2, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
+            {x:-100,  y:-50,  gid: 2, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
 
-            {x:-1500, y:0,   gid: 3, preventShader: false, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},
-            {x:-2200, y:100, gid: 3, preventShader: false, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
+            {x:-1500, y:0,   gid: 3, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},
+            {x:-2200, y:100, gid: 3, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
 
-            {x:2200,  y:1100, gid: 5, preventShader: true, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
-            {x:1000,  y:1280, gid: 5, preventShader: false, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
+            {x:2200,  y:1100, gid: 5, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
+            {x:1000,  y:1280, gid: 5, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
 
-            {x:-800,  y:1200, gid: 4, preventShader: false, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
-            {x:-1800, y:1400, gid: 4, preventShader: false, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"}
+            {x:-800,  y:1200, gid: 4, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
+            {x:-1800, y:1400, gid: 4, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"}
         ]
 
 var groupPositions = [
@@ -47,11 +47,11 @@ var groups = []
 
 function initSlides(){
     positions.forEach(function(pos){
-        createSlide(pos.x,pos.y, pos.gid, pos.preventShader, pos.url, pos.device, pos.name)
+        createSlide(pos.x,pos.y, pos.gid, pos.url, pos.device, pos.name)
     })
 }
 
-function createSlide(x,y,gid,preventShader,url,device,name){
+function createSlide(x,y,gid,url,device,name){
     var component = Qt.createComponent("Slide.qml")
     if (component.status === Component.Ready){
         var object=component.createObject(canvas)
@@ -67,7 +67,6 @@ function createSlide(x,y,gid,preventShader,url,device,name){
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
         object.uid = objects.length
         object.gid = gid
-        object.preventShader = preventShader
         object.name = name
         object.x = x-object.width/2
         object.y = y-object.height/2

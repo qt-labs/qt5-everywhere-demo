@@ -93,15 +93,7 @@ Rectangle{
     Cloud { id: cloud5; sourceImage: "images/cloud2.png"}
     Cloud { id: cloud6; sourceImage: "images/cloud2.png"}
 
-    Item{
-        id: pinchProxy
-        scale:.2
-        onRotationChanged: canvas.angle=rotation
-        onScaleChanged: canvas.scalingFactor=scale
-    }
-
     WorldMouseArea { id: worldMouseArea }
-    //WorldPinchArea { id: worldPinchArea }
     WorldCanvas { id:canvas }
     NavigationPanel{ id: navigationPanel }
 

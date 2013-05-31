@@ -19,8 +19,6 @@ Item {
     property int maskHorizontalOffset: 1
     property string demoColor: "#883322"
     property string name: ""
-    property bool dirty: parent.angle !== 0 || rotation !==0
-    property bool preventShader: false
 
     function targetWidth()
     {
@@ -38,7 +36,7 @@ Item {
         width: demoContainer.width * 1.03
         height: demoContainer.height * 1.03
         color: "black"
-        z: !slide.dirty && (slide.loading || slide.loaded) ? 1:-1
+        z: slide.loading || slide.loaded ? 1:-1
 
         Rectangle{
             id: demoContainer
@@ -51,7 +49,7 @@ Item {
             Text {
                 id: splashScreenText
                 color: 'white'
-                font.pixelSize: parent.width *.1
+                font.pixelSize: parent.width *.12
                 text: slide.name
                 anchors.centerIn: parent
                 smooth: true
@@ -62,19 +60,22 @@ Item {
 
     ShaderEffectSource{
         id: demo
-        anchors.centerIn: parent
+        //anchors.centerIn: parent
+        x: width/2
         width: demoWidth
         height: demoHeight
         sourceItem: demoContainer
-        live: visible && (slide.loading || slide.loaded)
-        visible: (!slide.preventShader && slide.dirty) || !slide.loaded || updating
+        live: false
+        visible: hasSnapshot && (!slide.loaded || updating)
         hideSource: visible && !updating && !loading
         clip: true
 
         property bool updating: false
+        property bool hasSnapshot: false
 
         onScheduledUpdateCompleted: {
             updating = false
+            hasSnapshot = true
             releaseDemo(true)
         }
     }
