@@ -51,11 +51,11 @@ Item{
 
     function goNext() {
         goTo(app.getNext(), false);
-        navigationAnimation.restart()
+        navigationAnimation.restartAnimation()
     }
     function goPrevious() {
         goTo(app.getPrevious(), false);
-        navigationAnimation.restart()
+        navigationAnimation.restartAnimation()
     }
 
     function goBack()

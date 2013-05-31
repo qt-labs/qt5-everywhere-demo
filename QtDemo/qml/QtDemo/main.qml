@@ -132,6 +132,13 @@ Rectangle{
     SequentialAnimation {
         id: navigationAnimation
 
+        property int animCounter: 0
+
+        function restartAnimation() {
+            navigationAnimation.animCounter++;
+            restart();
+        }
+
         NumberAnimation {
             id: zoomOutAnimation
             target: canvas;
@@ -151,10 +158,11 @@ Rectangle{
         }
 
         onRunningChanged: {
-            if (!running) {
-                if (navigationState === 2)
-                    Engine.loadCurrentDemo();
-            }
+            if (!running)
+                animCounter--
+
+            if (animCounter === 0 && navigationState === 2)
+                Engine.loadCurrentDemo();
         }
     }
 
