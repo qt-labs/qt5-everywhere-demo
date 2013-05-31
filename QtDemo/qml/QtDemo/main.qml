@@ -168,16 +168,15 @@ Rectangle{
         }
     }
 
-    Keys.onPressed: {
+    Keys.onReleased: {
         // Handle back-key
-        if (event.key === Qt.Key_MediaPrevious) {
-            if (app.navigationState !== 0) {
-                event.accepted = true;
+        if (event.key === Qt.Key_Back) {
+            event.accepted = true;
+
+            if (app.navigationState !== 0)
                 canvas.goBack();
-            }
-            else {
+            else
                 quitDialog.visible = true
-            }
         }
     }
 
