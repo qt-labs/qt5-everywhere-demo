@@ -60,7 +60,7 @@ Item{
 
     function goBack()
     {
-        if (app.navigationState == 2) {
+        if (app.useGroups && app.navigationState == 2) {
             goTo(app.getCurrentGroup(), false)
             zoomAnimation.restart()
         }

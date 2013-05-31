@@ -15,6 +15,7 @@ Rectangle{
     property real tapLimitX : 2
     property real tapLimitY : 1
     property int navigationState: 0 //home, group, slide, dirty
+    property bool useGroups: true
 
     function calculateScales(){
         if (app.width > 0 && app.height > 0){
@@ -29,8 +30,9 @@ Rectangle{
             tapLimitX = Math.max(1,app.width * 0.02);
             tapLimitY = Math.max(1,app.height * 0.02);
 
+
             var target = Engine.getCurrentGroup()
-            if (navigationState == 1) {
+            if (app.useGroups && navigationState == 1) {
                 if (target !== null)
                     canvas.goTo(target, true)
                 else
@@ -63,14 +65,14 @@ Rectangle{
     }
 
     function getNext() {
-        if (app.navigationState == 1)
+        if (app.useGroups && app.navigationState == 1)
             return Engine.getNextGroup()
         else
             return Engine.getNext()
     }
 
     function getPrevious() {
-        if (app.navigationState == 1)
+        if (app.useGroups && app.navigationState == 1)
             return Engine.getPreviousGroup()
         else
             return Engine.getPrevious()
@@ -180,7 +182,9 @@ Rectangle{
     }
 
     Component.onCompleted: {
-        Engine.initGroups()
+        if (app.useGroups)
+            Engine.initGroups()
+
         Engine.initSlides()
         cloud1.start();
         cloud2.start();
