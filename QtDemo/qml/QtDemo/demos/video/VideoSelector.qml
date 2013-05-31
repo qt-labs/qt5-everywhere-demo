@@ -22,7 +22,7 @@ Item {
 
     XmlListModel {
         id: videoModel
-        source: "qt5_videos.xml"
+        source: "http://qt-project.org/uploads/videos/qt5_videos.xml"
         query: "/videolist/item"
         XmlRole  { name: "thumbnail"; query: "thumbnail/string()" }
         XmlRole { name: "title"; query: "title/string()" }
