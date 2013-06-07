@@ -49,7 +49,9 @@ Item {
             Text {
                 id: splashScreenText
                 color: 'white'
-                font.pixelSize: parent.width *.12
+                font.pixelSize: parent.width *.13
+                font.family: "Purisa"
+                font.bold: true
                 text: slide.name
                 anchors.centerIn: parent
                 smooth: true

@@ -22,7 +22,9 @@ Item {
         Text {
             id: txt
             color: 'white'
-            font.pixelSize: parent.width *.1
+            font.pixelSize: parent.width *.13
+            font.family: "Purisa"
+            font.bold: true
             anchors.centerIn: parent
             smooth: true
         }
