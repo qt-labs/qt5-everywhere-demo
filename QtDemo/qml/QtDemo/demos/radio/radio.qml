@@ -165,7 +165,7 @@ FocusScope {
 
         XmlListModel {
             id: stationModel
-            source: "channels.xml"
+            source: "http://qt-project.org/uploads/videos/qt5_radio_channels.xml"
             query: "/radio/channel"
             XmlRole {name: "title"; query: "title/string()"}
             XmlRole {name: "url"; query: "url/string()"}
