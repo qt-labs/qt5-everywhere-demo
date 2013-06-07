@@ -40,7 +40,7 @@ Grid {
 
     Button {
         id: homeButton
-        imageSource: app.navigationState === 0 ? "images/btn_help.png" : "images/btn_home.png"
+        imageSource: app.navigationState === 0 && !helpscreen.visible ? "images/btn_help.png" : "images/btn_home.png"
         onClicked: {
             if (app.navigationState===0){
                 helpscreen.show()
