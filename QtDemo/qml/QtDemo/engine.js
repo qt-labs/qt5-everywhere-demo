@@ -1,44 +1,43 @@
 var positions = [
-            {x:-800,  y:-1500, gid: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
-            {x:-1800, y:-1400, gid: 0, url: "demos/gridrssnews/main.qml", device: 6, name: "Rss Reader"},
-            {x:-1200, y:-1050, gid: 0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "Tweet Search"},
+            {x:-1100,  y:-1650, gid: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
+            {x:-2100, y:-1550, gid: 0, url: "demos/gridrssnews/main.qml", device: 7, name: "Rss Reader"},
+            {x:-1500, y:-1200, gid: 0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: "Tweet Search"},
 
-            {x:1800,  y:-1700, gid: 1, url: "demos/heartmonitor/main.qml", device: 4, name: "Heart Monitor"},
-            {x:1100,  y:-1500, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
+            {x:1300,  y:-1600, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas Clock"},
+            {x:2020,  y:-1520, gid: 1, url: "demos/heartmonitor/main.qml", device: 5, name: "Heart Monitor"},
 
-            {x:1600,  y:-500, gid: 2, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
-            {x:700,   y:-300, gid: 2, url: "demos/photosurface/photosurface.qml", device: 5, name: "Photo Surface"},
-            {x:-100,  y:-50,  gid: 2, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
+            {x:1000,  y:-300, gid: 2, url: "demos/calqlatr/Calqlatr.qml", device: 0, name: "Calqlatr"},
+            {x:-500,  y:-250,  gid: 2, url: "demos/touchgallery/main.qml", device: 2, name: "Widget Gallery"},
+            {x:200,   y:-200, gid: 2, url: "demos/photosurface/photosurface.qml", device: 6, name: "Photo Surface"},
 
-            {x:-1500, y:0,   gid: 3, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},
-            {x:-2200, y:100, gid: 3, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
+            {x:-1800, y:0,   gid: 3, url: "demos/maroon/Maroon.qml", device: 1, name: "Maroon in\n  Trouble"},
+            {x:-2500, y:100, gid: 3, url: "demos/samegame/samegame.qml", device: 1, name: "SameGame"},
 
-            {x:2200,  y:1100, gid: 5, url: "demos/particledemo/particledemo.qml", device: 6, name: "Particle Paint"},
-            {x:1000,  y:1280, gid: 5, url: "demos/shaders/main.qml", device: 5, name: "Shaders"},
+            {x:1200,  y:1200, gid: 5, url: "demos/shaders/main.qml", device: 6, name: "Shaders"},
+            {x:2200,  y:1400, gid: 5, url: "demos/particledemo/particledemo.qml", device: 7, name: "Particle Paint"},
 
-            {x:-800,  y:1200, gid: 4, url: "demos/video/main.qml", device: 7, name: "Qt Video"},
-            {x:-1800, y:1400, gid: 4, url: "demos/radio/radio.qml", device: 4, name: "Internet Radio"}
+            {x:-800,  y:1200, gid: 4, url: "demos/video/main.qml", device: 8, name: "Qt Video"},
+            {x:-1600, y:1500, gid: 4, url: "demos/radio/radio.qml", device: 5, name: "Internet Radio"}
         ]
 
 var groupPositions = [
-            {x:-2320, y:-1950, width: 2150, height: 1200, textX: 150, textY: 50, name: "Feeds"},
-            {x:650, y:-2000, width: 1600, height: 1000, textX: 150, textY: 50, name: "Canvas"},
-            {x:-350, y:-800, width: 2350, height: 1200, textX: 150, textY: 50, name: "Applications"},
-            {x:-2500, y:-500, width: 1500, height: 1150, textX: 150, textY: 50, name: "Games"},
-            {x:-2250, y:850, width: 2050, height: 1150, textX: 150, textY: 50, name: "Multimedia"},
-            {x:510, y:700, width: 2400, height: 1300, textX: 150, textY: 50, name: "Particles & Shaders"}
+            {x:-2880, y:-2100, width: 2400, height: 1200, textX: 50, textY: 50, name: "Feeds"},
+            {x:700, y:-2100, width: 1700, height: 1200, textX: 50, textY: 50, name: "Canvas"},
+            {x:-900, y:-800, width: 2650, height: 1300, textX: 50, textY: 50, name: "Applications"},
+            {x:-3000, y:-500, width: 1750, height: 1150, textX: 50, textY: 50, name: "Games"},
+            {x:-2100, y:850, width: 1950, height: 1150, textX: 50, textY: 150, name: "Multimedia"},
+            {x:510, y:600, width: 2450, height: 1500, textX: 50, textY: 50, name: "Particles & Shaders"}
         ]
 
-var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
-var widths = [300, 360, 366, 758, 600, 918, 923, 800]
-var heights = [605, 706, 720, 564, 488, 600, 600, 638]
-var scales = [1.0, 0.8, 0.6, 0.9, 1.0, 0.9, 1.0, 1.0]
-var demoWidths = [269, 322, 322, 642, 482, 688, 691, 726]
-var demoHeights = [404, 482, 482, 402, 322, 431, 432, 456]
-var maskHorizontalOffsets = [1, 1, 1, 1, 1, 1, 1, 1]
-var maskVerticalOffsets = [20, 32, 15, 24, 45, 59, 57, 56]
-var colors = ["#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3", "#4353c3"]
-var navigationList = [1,2,0,4,3,5,6,7,8,9,13,12,11,10]
+var imageSources = ["phone1.png","phone2.png", "phone3.png","tablet1.png", "car_device.png", "medical_device.png", "laptop1.png", "laptop2.png", "tv.png"]
+var widths = [300, 360, 366, 758, 625, 600, 918, 923, 800]
+var heights = [605, 706, 720, 564, 386, 488, 600, 600, 638]
+var scales = [0.8, 0.8, 0.6, 0.9, 1.0, 1.0, 0.9, 1.0, 1.0]
+var demoWidths = [269, 322, 322, 642, 480, 482, 688, 691, 726]
+var demoHeights = [404, 482, 482, 402, 320, 322, 431, 432, 456]
+var maskHorizontalOffsets = [1, 1, 1, 1, -52, 1, 1, 1, 1]
+var maskVerticalOffsets = [20, 32, 15, 24, 15, 45, 59, 57, 56]
+var navigationList = [1,2,0,3,4,5,7,6,8,9,13,12,10,11]
 var groupNavigationList = [0,1,2,3,4,5]
 var currentDemoIndex = -1
 var currentGroupIndex = -1
@@ -62,7 +61,6 @@ function createSlide(x,y,gid,url,device,name){
         object.scale = scales[device]
         object.demoWidth = demoWidths[device]
         object.demoHeight = demoHeights[device]
-        object.demoColor = colors[device]
         object.maskVerticalOffset = maskVerticalOffsets[device]
         object.maskHorizontalOffset = maskHorizontalOffsets[device]
         object.uid = objects.length

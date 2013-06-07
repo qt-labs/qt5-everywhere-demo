@@ -17,7 +17,7 @@ Item {
     property int demoHeight: 378
     property int maskVerticalOffset: 51
     property int maskHorizontalOffset: 1
-    property string demoColor: "#883322"
+    property string demoColor: "#4353c3"
     property string name: ""
 
     function targetWidth()
