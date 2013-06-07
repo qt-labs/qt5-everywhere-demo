@@ -15,7 +15,7 @@ Rectangle {
     Rectangle {
         id: dialog
         anchors.centerIn: parent
-        width: parent.width * 0.4
+        width: dialogText.paintedWidth * 1.1
         height: parent.height * 0.3
         property double dialogMargin: height * 0.05
 
@@ -33,6 +33,7 @@ Rectangle {
             height: dialog.height * 0.6
 
             Text {
+                id: dialogText
                 anchors.centerIn: parent
                 verticalAlignment: Text.AlignVCenter
                 text: qsTr("Are you sure you want to quit?")
