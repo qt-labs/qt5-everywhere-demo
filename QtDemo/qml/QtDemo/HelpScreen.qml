@@ -120,25 +120,25 @@ Item {
         opacity: .8
     }
 
-Text{
-    id: instructionText
-    anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.05}
-    text: ""
-    font.pixelSize: parent.width*.075
-    font.family: Style.FONT_FAMILY
-    smooth: true
-    color: "white"
-
     Text{
-        id: instructionText2
-        anchors {horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: -parent.height/2}
+        id: instructionText
+        anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.05}
         text: ""
-        font.pixelSize: parent.font.pixelSize
+        font.pixelSize: parent.width*.075
         font.family: Style.FONT_FAMILY
         smooth: true
         color: "white"
+
+        Text{
+            id: instructionText2
+            anchors {horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: -parent.height/2}
+            text: ""
+            font.pixelSize: parent.font.pixelSize
+            font.family: Style.FONT_FAMILY
+            smooth: true
+            color: "white"
+        }
     }
-}
 
     Item{
         id: pointer

@@ -63,7 +63,7 @@ Item {
         Text {
             id: txt
             color: 'white'
-            font.pixelSize: parent.width *.13
+            font.pixelSize: parent.width *.2
             font.family: Style.FONT_FAMILY
             anchors.centerIn: parent
             smooth: true

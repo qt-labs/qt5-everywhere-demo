@@ -90,7 +90,7 @@ Item {
             Text {
                 id: splashScreenText
                 color: 'white'
-                font.pixelSize: parent.width *.13
+                font.pixelSize: parent.width *.2
                 font.family: Style.FONT_FAMILY
                 text: slide.name
                 anchors.centerIn: parent

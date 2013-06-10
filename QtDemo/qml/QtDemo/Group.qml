@@ -45,27 +45,14 @@ Item {
     id: group
     objectName: "group"
 
-    /*color: "transparent"
-    border.color: "red"
-    border.width: 10*/
-
     property int uid: 0
     property real targetScale: 1
-    property string textSource: "images/txt_feeds.png"
     property int textX: 0
     property int textY: 0
     property string name: "Text"
     property real imageScale: 6.0
 
-    /*Image {
-        x: group.textX
-        y: group.textY
-        source: group.textSource
-        smooth: true
-        scale: group.imageScale
-    }*/
-
-    property int fontSize: 120
+    property int fontSize: 160
     property string uiFont: Style.FONT_FAMILY
     property bool bold: true
     property int fontTransition: 6
@@ -91,5 +78,4 @@ Item {
             smooth: true
         }
     }
-
 }
