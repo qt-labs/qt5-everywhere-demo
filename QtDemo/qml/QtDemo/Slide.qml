@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import "style.js" as Style
 
 Item {
     id: slide
@@ -90,8 +91,7 @@ Item {
                 id: splashScreenText
                 color: 'white'
                 font.pixelSize: parent.width *.13
-                font.family: "Purisa"
-                font.bold: true
+                font.family: Style.FONT_FAMILY
                 text: slide.name
                 anchors.centerIn: parent
                 smooth: true

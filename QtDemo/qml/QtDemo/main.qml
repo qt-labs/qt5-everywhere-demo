@@ -123,7 +123,7 @@ Rectangle{
 
     FontLoader {
         id: fontLoader
-        source: "fonts/Purisa-Bold.ttf"
+        source: "fonts/PatrickHandSC-Regular.ttf"
     }
 
     gradient: Gradient {

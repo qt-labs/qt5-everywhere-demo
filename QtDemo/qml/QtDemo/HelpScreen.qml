@@ -39,13 +39,13 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import "style.js" as Style
 
 Item {
     id: root
     anchors.fill:parent
     property int delay: 500
     property int rotationAngle:0
-    property int showInstruction: 0
 
     SequentialAnimation {
         id: closeAnimation
@@ -53,6 +53,8 @@ Item {
         ScriptAction{
             script: {
                 pointer.visible = false
+                instructionText.text = ""
+                instructionText2.text = ""
                 highlightImage.smooth = false
                 highlight.size = Math.max(root.height, root.width)*2.5
             }
@@ -118,27 +120,25 @@ Item {
         opacity: .8
     }
 
-    Image {
-        anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.1}
-        source: "images/txt_tapDevices.png"
-        visible: root.showInstruction === 1
-        scale: parent.width/1000
-    }
+Text{
+    id: instructionText
+    anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.05}
+    text: ""
+    font.pixelSize: parent.width*.075
+    font.family: Style.FONT_FAMILY
+    smooth: true
+    color: "white"
 
-    Image {
-        anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.1}
-        source: "images/txt_useArrows.png"
-        visible: root.showInstruction === 2
-        scale: parent.width/1000
+    Text{
+        id: instructionText2
+        anchors {horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: -parent.height/2}
+        text: ""
+        font.pixelSize: parent.font.pixelSize
+        font.family: Style.FONT_FAMILY
+        smooth: true
+        color: "white"
     }
-
-    Image {
-        anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.1}
-        source: "images/txt_useHome.png"
-        visible: root.showInstruction === 3
-        scale: parent.width/1000
-    }
-
+}
 
     Item{
         id: pointer
@@ -180,7 +180,6 @@ Item {
             }
 
         }
-
     }
 
     SequentialAnimation {
@@ -189,7 +188,8 @@ Item {
 
         PauseAnimation { duration: 1000 }
         PropertyAction { target: handImage; property: "mirror"; value: true}
-        PropertyAction { target: root; property: "showInstruction"; value: 1}
+        PropertyAction { target: instructionText; property: "text"; value: "Tap on the devices to"}
+        PropertyAction { target: instructionText2; property: "text"; value: "open applications"}
         PropertyAction { target: pointer; property: "visible"; value: true}
         PropertyAction { target: highlight; property: "hidden"; value: false}
 
@@ -227,7 +227,8 @@ Item {
         SequentialAnimation{
             id: navigationAnimation
             PropertyAction { target: handImage; property: "mirror"; value: false}
-            PropertyAction { target: root; property: "showInstruction"; value: 2}
+            PropertyAction { target: instructionText; property: "text"; value: "Use the Arrow to navigate"}
+            PropertyAction { target: instructionText2; property: "text"; value: "between applications"}
             ScriptAction{
                 script: {
                     highlight.size= Math.min(root.width, root.height)*.4
@@ -259,7 +260,8 @@ Item {
             }
             PauseAnimation { duration: 5000 }
 
-            PropertyAction { target: root; property: "showInstruction"; value: 3}
+            PropertyAction { target: instructionText; property: "text"; value: "Use the Home button to"}
+            PropertyAction { target: instructionText2; property: "text"; value: "return to the beginning"}
             ScriptAction{
                 script: {
                     highlight.size= Math.min(root.width, root.height)*.3

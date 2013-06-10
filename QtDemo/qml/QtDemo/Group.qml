@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import "style.js" as Style
 
 Item {
     id: group
@@ -65,7 +66,7 @@ Item {
     }*/
 
     property int fontSize: 120
-    property string uiFont: "Purisa"
+    property string uiFont: Style.FONT_FAMILY
     property bool bold: true
     property int fontTransition: 6
 
@@ -74,7 +75,7 @@ Item {
         x: textX
         y: textY
         font.pixelSize: group.fontSize
-        font.family: "Purisa"
+        font.family: Style.FONT_FAMILY
         font.bold: group.bold
         color: "#42200a"
         smooth: true
@@ -85,7 +86,7 @@ Item {
             x:group.fontTransition
             y:-group.fontTransition
             font.pixelSize: group.fontSize
-            font.family: "Purisa"
+            font.family: Style.FONT_FAMILY
             font.bold: group.bold
             smooth: true
         }
