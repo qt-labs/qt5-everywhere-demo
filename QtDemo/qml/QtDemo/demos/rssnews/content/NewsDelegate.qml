@@ -56,13 +56,15 @@ Item {
         Text {
             id: titleText
             text: title; width: parent.width; wrapMode: Text.WordWrap
-            font { bold: true; family: "Helvetica"; pointSize: 16 }
+            font { bold: true; family: "Helvetica"; pixelSize: 20}
         }
 
         Text {
             id: descriptionText
             width: parent.width; text: description
-            wrapMode: Text.WordWrap; font.family: "Helvetica"
+            wrapMode: Text.WordWrap
+            font.family: "Helvetica"
+            font.pixelSize: 12
         }
     }
 
