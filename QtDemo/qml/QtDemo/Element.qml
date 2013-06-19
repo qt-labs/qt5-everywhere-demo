@@ -54,13 +54,23 @@ Item {
     }
 
     Component.onCompleted: {
-        elementImage.source = root.itemId === 0 ? "images/man1.png" :
-                              root.itemId === 1 ? "images/tree1.png" :
+        elementImage.source = root.itemId === 1 ? "images/tree1.png" :
                               root.itemId === 2 ? "images/tree2.png" :
                               root.itemId === 3 ? "images/mountain.png" :
                               root.itemId === 4 ? "images/stones.png" :
                               root.itemId === 5 ? "images/box_open.png" :
                               root.itemId === 6 ? "images/box.png" :
+                              root.itemId === 10 ? "images/character0.png" :
+                              root.itemId === 11 ? "images/character1.png" :
+                              root.itemId === 12 ? "images/character3.png" :
+                              root.itemId === 13 ? "images/character7.png" :
+                              root.itemId === 14 ? "images/character8.png" :
+                              root.itemId === 15 ? "images/character9.png" :
+                              root.itemId === 20 ? "images/character2.png" :
+                              root.itemId === 21 ? "images/character4.png" :
+                              root.itemId === 22 ? "images/character5.png" :
+                              root.itemId === 23 ? "images/character6.png" :
+                              root.itemId === 24 ? "images/character10.png" :
                               ""
     }
 }

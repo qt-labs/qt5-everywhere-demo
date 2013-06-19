@@ -63,7 +63,7 @@ Item {
     {
         // Left side
         if (place === 0) {
-            var temp0 = Math.floor(Math.random()*5.9);
+            var temp0 = Math.floor(Math.random()*6.9);
             switch(temp0) {
             case 0:
                 createElement(elementContainer.width*0.4, elementContainer.height*0.2, 1);
@@ -89,13 +89,15 @@ Item {
                 createElement(elementContainer.width*0.7, elementContainer.height*0.6, 2);
                 break;
             case 4:
-                createElement(elementContainer.width*0.7, elementContainer.height*0.3, 0);
+            case 5:
+                var characterId = 10 + Math.floor(Math.random()*5.9);
+                createElement(elementContainer.width*0.7, elementContainer.height*0.3, characterId);
                 break;
             default: break;
             }
         }
         else if (place === 1) {
-            var temp1 = Math.floor(Math.random()*4.9);
+            var temp1 = Math.floor(Math.random()*6.9);
             switch(temp1) {
             case 0:
                 createElement(elementContainer.width*0.6, elementContainer.height*0.2, 1);
@@ -119,6 +121,11 @@ Item {
                 createElement(elementContainer.width*0.6, elementContainer.height*0.4, 2);
                 createElement(elementContainer.width*0.5, elementContainer.height*0.5, 1);
                 createElement(elementContainer.width*0.3, elementContainer.height*0.6, 2);
+                break;
+            case 4:
+            case 5:
+                var characterId1 = 20 + Math.floor(Math.random()*4.9);
+                createElement(elementContainer.width*0.3, elementContainer.height*0.3, characterId1);
                 break;
             default: break;
             }

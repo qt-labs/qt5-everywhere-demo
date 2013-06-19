@@ -196,7 +196,7 @@ Item {
         SequentialAnimation {
             id: clickAnimation
             property int index: 0
-            property variant uids: [9,13]
+            property variant uids: [8,12]
             loops: 2
 
             ScriptAction{
