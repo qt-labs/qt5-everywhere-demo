@@ -168,7 +168,7 @@ Item {
         {
             splashScreenText.visible = true
             loadTimer.start();
-        } else if (slide.name==="Internet Radio"){
+        } else if (slide.url==="demos/radio/radio.qml"){
             for (var i =0; i<demoContainer.children.length; i++){
                 if (demoContainer.children[i].objectName === "demoApp"){
                     demoContainer.children[i].focus = true;
@@ -226,7 +226,7 @@ Item {
             return;
         }
 
-        if (slide.name === "Internet Radio")
+        if (slide.url === "demos/radio/radio.qml")
             return; //Always alive
 
         app.forceActiveFocus();

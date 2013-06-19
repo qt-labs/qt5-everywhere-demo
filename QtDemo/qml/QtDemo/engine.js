@@ -41,7 +41,6 @@
 var positions = [
             {x:-1100,  y:-1650, gid: 0, url: "demos/rssnews/rssnews.qml", device: 3, name: "Rss Reader"},
             {x:-2100, y:-1550, gid: 0, url: "demos/gridrssnews/main.qml", device: 7, name: "Rss Reader"},
-            {x:-1500, y:-1200, gid: 0, url: "demos/tweetsearch/tweetsearch.qml", device: 2, name: " Tweet\nSearch"},
 
             {x:1300,  y:-1600, gid: 1, url: "demos/canvasclock/canvasClock.qml", device: 4, name: "Canvas\n Clock"},
             {x:2020,  y:-1520, gid: 1, url: "demos/heartmonitor/main.qml", device: 5, name: "  Heart\nMonitor"},
@@ -77,7 +76,7 @@ var demoWidths = [269, 322, 322, 642, 480, 482, 688, 691, 726]
 var demoHeights = [404, 482, 482, 402, 320, 322, 431, 432, 456]
 var maskHorizontalOffsets = [1, 1, 1, 1, -52, 1, 1, 1, 1]
 var maskVerticalOffsets = [20, 32, 15, 24, 15, 45, 59, 57, 56]
-var navigationList = [1,2,0,3,4,5,7,6,8,9,13,12,10,11]
+var navigationList = [1,0,2,3,4,6,5,7,8,12,11,9,10]
 var groupNavigationList = [0,1,2,3,4,5]
 var currentDemoIndex = -1
 var currentGroupIndex = -1
