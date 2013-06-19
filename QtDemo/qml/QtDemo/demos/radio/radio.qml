@@ -69,6 +69,11 @@ FocusScope {
                     if (volumeButton.playing) playMusic.play()
                 }
             }
+            Component.onDestruction: {
+                volumeButton.playing = false
+                playMusic.stop()
+                playMusic.source = ""
+            }
         }
 
         Rectangle {
