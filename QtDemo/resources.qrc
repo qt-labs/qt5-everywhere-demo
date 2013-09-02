@@ -313,5 +313,34 @@
         <file>qml/QtDemo/demos/photosurface/images/image1.png</file>
         <file>qml/QtDemo/demos/photosurface/images/image3.png</file>
         <file>qml/QtDemo/demos/photosurface/photosurface.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/Effect.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectBillboard.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectBlackAndWhite.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectEmboss.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectGaussianBlur.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectGlow.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectIsolate.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectPassThrough.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectPixelate.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectPosterize.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectRipple.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectSepia.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectSharpen.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectShockwave.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectSobelEdgeDetection1.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectToon.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectVignette.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectWarhol.qml</file>
+        <file>qml/QtDemo/demos/shaders/Effects/EffectWobble.qml</file>
+        <file>qml/QtDemo/demos/shaders/Content.qml</file>
+        <file>qml/QtDemo/demos/shaders/EffectSelectionPanel.qml</file>
+        <file>qml/QtDemo/demos/shaders/Logo.qml</file>
+        <file>qml/QtDemo/demos/shaders/LogoContainer.qml</file>
+        <file>qml/QtDemo/demos/shaders/main.qml</file>
+        <file>qml/QtDemo/demos/shaders/ParameterPanel.qml</file>
+        <file>qml/QtDemo/demos/shaders/Slider.qml</file>
+        <file>qml/QtDemo/demos/shaders/images/particle-smoke.png</file>
+        <file>qml/QtDemo/demos/shaders/images/qt-logo.png</file>
+        <file>qml/QtDemo/demos/shaders/images/wallpaper.png</file>
     </qresource>
 </RCC>
