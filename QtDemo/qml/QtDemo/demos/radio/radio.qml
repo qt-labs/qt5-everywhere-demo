@@ -100,22 +100,20 @@ FocusScope {
                 }
                 border {width:1; color: "#888888"}
                 radius: height/2
+                clip: true
 
 
                 PathView {
-                    enabled: root.activeFocus
+                    //enabled: root.activeFocus
                     id: stationList
                     anchors.fill:parent
                     anchors.leftMargin: parent.height*.9
                     model: stationModel
-                    pathItemCount: 6
-                    clip: true
                     property int openedIndex: -1
 
                     onMovementStarted: {
                         idleTimer.stop()
                         openedIndex = -1
-                        pathItemCount = 5
                     }
                     onMovementEnded: idleTimer.restart()
 

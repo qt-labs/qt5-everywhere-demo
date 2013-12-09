@@ -239,22 +239,22 @@ function drawPointer(context, angle, len, thickness, color){
                 }
                 context.closePath()
 
+                context.strokeStyle = "#222222"
                 context.beginPath()
 
                 var romans = ['I','II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
-
                 for (i=1; i<=12; i++){
                     x1=Math.cos((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35 -clockContainer.width*0.03
                     y1=Math.sin((-90+(i)*30)*0.01745)*clockContainer.clockRadius*.35 +clockContainer.height*0.04
 
                     if (root.dialStyle === 1) x1-=clockContainer.width*0.01
 
-                    context.font = 'bold '+Math.floor(clockContainer.width*.1)+'px Arial'
+                    context.font = 'bold '+Math.floor(clockContainer.width*.07)+'px sans-serif'
 
 
                     if (i >= 10)
                         x1 -= clockContainer.width*0.02
-                    context.textAlign = 'center';
+                    context.textAlign = 'right';
                     context.textBaseline  = 'middle'
 
                     var dial = i
