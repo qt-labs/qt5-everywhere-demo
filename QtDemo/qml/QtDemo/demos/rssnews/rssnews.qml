@@ -67,6 +67,14 @@ Rectangle {
         XmlRole { name: "title"; query: "title/string()" }
         XmlRole { name: "link"; query: "link/string()" }
         XmlRole { name: "description"; query: "description/string()" }
+
+        onStatusChanged: {
+            if (status == XmlListModel.Error) {
+                networkErrorBox.opacity = 1.0
+            } else if (status == XmlListModel.Ready) {
+                networkErrorBox.opacity = 0.0
+            }
+        }
     }
 
     Row {
@@ -93,8 +101,20 @@ Rectangle {
             width: window.width - window.listWidth; height: window.height
             model: feedModel
             delegate: NewsDelegate {}
+
+            Item {
+                id: networkErrorBox
+                opacity: 0
+                anchors.fill: parent
+
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("Sorry! No network connection")
+                }
+            }
         }
     }
+
 
     ScrollBar { scrollArea: list; height: list.height; width: 8; anchors.right: window.right }
     Rectangle { x: window.listWidth; height: window.height; width: 1; color: "#cccccc" }

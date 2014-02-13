@@ -96,6 +96,22 @@ FocusScope {
                 clip: true
 
 
+                Item {
+                    id: networkErrorBox
+                    opacity: 0
+                    anchors.fill: parent
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: parent.width * 0.1
+                        text: qsTr("Sorry! No network connection")
+                        font.pixelSize: stationList.height*.1;
+                        color: "white"
+                        smooth: true
+                    }
+                }
+
                 PathView {
                     //enabled: root.activeFocus
                     id: stationList
@@ -215,6 +231,14 @@ FocusScope {
             query: "/radio/channel"
             XmlRole {name: "title"; query: "title/string()"}
             XmlRole {name: "url"; query: "url/string()"}
+
+            onStatusChanged: {
+                if (status == XmlListModel.Ready) {
+                    networkErrorBox.opacity = 0;
+                } else if (status == XmlListModel.Error) {
+                    networkErrorBox.opacity = 1;
+                }
+            }
         }
 
         VolumeButton {

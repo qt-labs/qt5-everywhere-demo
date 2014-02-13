@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the examples of the Qt Toolkit.
@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.0
 import QtQuick.XmlListModel 2.0
 
 Rectangle {
@@ -74,6 +74,8 @@ Rectangle {
         onStatusChanged: {
             if (status == XmlListModel.Ready) {
                 playbanner.start();
+            } else if (status == XmlListModel.Error) {
+                networkErrorMessage.start();
             }
         }
     }
@@ -139,6 +141,21 @@ Rectangle {
         pageSize: grid.visibleArea.widthRatio
     }
 
+    Item {
+        id: networkErrorBox
+        opacity: 0
+        anchors.fill: parent
+
+        Text {
+            anchors.centerIn: parent
+            text: qsTr("Sorry! No network connection")
+            font.family: uiFont;
+            font.pixelSize: appHeaderFontSize;
+            color: textColor
+            smooth: true
+        }
+    }
+
     SequentialAnimation {
          id: playbanner
          running: false
@@ -146,5 +163,13 @@ Rectangle {
          NumberAnimation { target: grid; property: "opacity"; to: 1.0; duration: 300}
     }
 
-}
+    NumberAnimation {
+        id: networkErrorMessage
+        running: false
+        target: networkErrorBox
+        property: "opacity"
+        to: 1.0
+        duration: 300
+    }
 
+}
