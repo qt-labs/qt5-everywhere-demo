@@ -14,5 +14,10 @@ SOURCES += main.cpp shaderfilereader.cpp
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
+QT += multimedia
+QTPLUGIN += qsqlite
+
 RESOURCES += \
     resources.qrc
+
+ios: QMAKE_INFO_PLIST = ios/iosInfo.plist
