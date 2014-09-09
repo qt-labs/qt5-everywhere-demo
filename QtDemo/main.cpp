@@ -1,5 +1,5 @@
-#include <QtGui/QGuiApplication>
-#include "qtquick2applicationviewer.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "shaderfilereader.h"
 
@@ -7,12 +7,11 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    QtQuick2ApplicationViewer viewer;
-    viewer.setSource(QUrl("qrc:/qml/QtDemo/main.qml"));
-    viewer.showExpanded();
-
     ShaderFileReader fileReader;
-    viewer.rootContext()->setContextProperty("shaderFileReader", &fileReader);
+
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("shaderFileReader", &fileReader);
+    engine.load(QUrl(QStringLiteral("qrc:///qml/QtDemo/main.qml")));
 
     return app.exec();
 }

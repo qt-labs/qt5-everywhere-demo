@@ -1,11 +1,12 @@
 #ifndef SHADERFILEREADER_H
 #define SHADERFILEREADER_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class ShaderFileReader : public QObject
 {
     Q_OBJECT
+
 public:
     Q_INVOKABLE QString readFile(const QString &fileName);
 };
