@@ -42,6 +42,7 @@
 import QtQuick 2.2
 
 ShaderEffect {
+    id: shaderEffect
     property variant source
     property ListModel parameters: ListModel { }
     property bool divider: false
@@ -65,11 +66,31 @@ ShaderEffect {
     }
 
     // The following is a workaround for the fact that ShaderEffect
-    // doesn't provide a way for shader programs to be read from a file,
-    // rather than being inline in the QML file
+    // doesn't provide a way for shader programs to be read from a file.
+    QtObject {
+        id: shaderFileReader
 
-    onFragmentShaderFilenameChanged:
-        fragmentShader = d.fragmentShaderCommon + shaderFileReader.readFile("qml/QtDemo/demos/shaders/" + fragmentShaderFilename)
-    onVertexShaderFilenameChanged:
-        vertexShader = shaderFileReader.readFile("qml/QtDemo/demos/shaders/" + vertexShaderFilename)
+        signal fileReady(string shader, string shaderType)
+
+        function readFile(shaderFile, shaderType)
+        {
+            var xhr = new XMLHttpRequest
+            xhr.open("GET", "../" + shaderFile, true)
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE)
+                    shaderFileReader.fileReady(xhr.responseText, shaderType)
+            }
+            xhr.send()
+        }
+
+        onFileReady: {
+            if (shaderType == "fragment")
+                shaderEffect.fragmentShader = d.fragmentShaderCommon + shader
+            if (shaderType == "vertex")
+                shaderEffect.vertexShader = shader
+        }
+    }
+
+    onFragmentShaderFilenameChanged: shaderFileReader.readFile(fragmentShaderFilename, "fragment")
+    onVertexShaderFilenameChanged: shaderFileReader.readFile(vertexShaderFilename, "vertex")
 }

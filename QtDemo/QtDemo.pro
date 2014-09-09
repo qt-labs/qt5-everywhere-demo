@@ -2,10 +2,7 @@ TEMPLATE = app
 
 QT += qml quick xmlpatterns sql svg multimedia
 
-HEADERS += shaderfilereader.h
-
-SOURCES += main.cpp \
-           shaderfilereader.cpp
+SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
