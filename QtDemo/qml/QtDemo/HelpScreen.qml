@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import "style.js" as Style
 
 Item {
@@ -125,7 +125,7 @@ Item {
         anchors {horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: parent.height*.05}
         text: ""
         font.pixelSize: parent.width*.075
-        font.family: Style.FONT_FAMILY
+        font.family: fontLoader.name
         smooth: true
         color: "white"
 
@@ -134,7 +134,7 @@ Item {
             anchors {horizontalCenter: parent.horizontalCenter; top: parent.bottom; topMargin: -parent.height/2}
             text: ""
             font.pixelSize: parent.font.pixelSize
-            font.family: Style.FONT_FAMILY
+            font.family: fontLoader.name
             smooth: true
             color: "white"
         }
@@ -210,12 +210,12 @@ Item {
                 script: {
                     highlight.size= (700+clickAnimation.index*100)*canvas.scalingFactor
 
-                    highlight.x=root.width/2 +getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor
-                    highlight.y=root.height/2 +getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor
+                    highlight.x=root.width/2 +app.getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor
+                    highlight.y=root.height/2 +app.getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor
 
-                    pointer.x= root.width/2 -pointer.width/2 +getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor*.5
-                    pointer.y= root.height/2 -pointer.height/2 +getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor*.5
-                    pointer.rotation=Math.atan2(getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor, getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor)*180.0/Math.PI
+                    pointer.x= root.width/2 -pointer.width/2 +app.getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor*.5
+                    pointer.y= root.height/2 -pointer.height/2 +app.getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor*.5
+                    pointer.rotation=Math.atan2(app.getPosition(clickAnimation.uids[clickAnimation.index]).y*canvas.scalingFactor, app.getPosition(clickAnimation.uids[clickAnimation.index]).x*canvas.scalingFactor)*180.0/Math.PI
                     pointingAnimation.restart()
                 }
             }

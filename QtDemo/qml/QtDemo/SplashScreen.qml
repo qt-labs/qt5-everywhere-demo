@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import QtQuick.Particles 2.0
 import "style.js" as Style
 //based on the SmokeText component from SameGame
@@ -64,7 +64,7 @@ Item {
             id: txt
             color: 'white'
             font.pixelSize: parent.width *.2
-            font.family: Style.FONT_FAMILY
+            font.family: fontLoader.name
             anchors.centerIn: parent
             smooth: true
         }

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import "style.js" as Style
 
 Item {
@@ -53,7 +53,7 @@ Item {
     property real imageScale: 6.0
 
     property int fontSize: 160
-    property string uiFont: Style.FONT_FAMILY
+    property string uiFont: fontLoader.name
     property bool bold: true
     property int fontTransition: 6
 
@@ -62,7 +62,7 @@ Item {
         x: textX
         y: textY
         font.pixelSize: group.fontSize
-        font.family: Style.FONT_FAMILY
+        font.family: fontLoader.name
         font.bold: group.bold
         color: "#42200a"
         smooth: true
@@ -73,7 +73,7 @@ Item {
             x:group.fontTransition
             y:-group.fontTransition
             font.pixelSize: group.fontSize
-            font.family: Style.FONT_FAMILY
+            font.family: fontLoader.name
             font.bold: group.bold
             smooth: true
         }

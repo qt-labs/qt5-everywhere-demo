@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 
 MouseArea{
     id: worldMouseArea
@@ -53,6 +53,14 @@ MouseArea{
     onReleased: {
         var dx = mouse.x - startMouseX;
         var dy = mouse.y - startMouseY;
+
+        var coords = mapToItem(canvas, width/2, height/2)
+
+        canvas.rotationOriginX=coords.x
+        canvas.rotationOriginY=coords.y
+
+        canvas.xOffset = -canvas.rotationOriginX;
+        canvas.yOffset = -canvas.rotationOriginY;
 
         // Check the point only if we didn't move the mouse too much
         if (!mouse.wasHeld && Math.abs(dx) <= app.tapLimitX && Math.abs(dy) <= app.tapLimitY)
@@ -74,7 +82,7 @@ MouseArea{
                 zoomAnimation.restart()
             }
             else // If not target under mouse -> go home
-                canvas.goHome()
+                canvas.goHome(true)
         }
     }
 

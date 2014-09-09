@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import "style.js" as Style
 
 Item{
@@ -59,7 +59,7 @@ Item{
     property real rotationOriginX
     property real rotationOriginY
 
-    function goHome()
+    function goHome(useZoom)
     {
         worldMouseArea.panning = false
         xOffset = 0; //(app.homeCenterX * app.homeScaleFactor);
@@ -70,7 +70,10 @@ Item{
         zoomInTarget = app.homeScaleFactor;
         app.navigationState = 0 //home
         app.forceActiveFocus()
-        zoomAnimation.restart();
+        if (useZoom)
+            zoomAnimation.restart();
+        else
+            navigationAnimation.restartAnimation()
     }
     function goTo(target, updateScalingFactor)
     {
@@ -105,7 +108,7 @@ Item{
             zoomAnimation.restart()
         }
         else
-            canvas.goHome()
+            canvas.goHome(true)
     }
 
     Behavior on xOffset {
@@ -121,11 +124,13 @@ Item{
     }
 
     Behavior on rotationOriginX {
+        enabled: !worldMouseArea.panning
         NumberAnimation{
             duration: Style.APP_ANIMATION_DELAY
         }
     }
     Behavior on rotationOriginY {
+        enabled: !worldMouseArea.panning
         NumberAnimation{
             duration: Style.APP_ANIMATION_DELAY
         }

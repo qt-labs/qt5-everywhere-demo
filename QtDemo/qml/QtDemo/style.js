@@ -45,5 +45,3 @@ var APP_ANIMATION_DELAY = 1000
 
 var LOGO_WIDTH = 800 //1006
 var LOGO_HEIGHT = 960 //1200
-
-var FONT_FAMILY = "Patrick Hand SC"
