@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import QtQuick.Particles 2.0
 import "content"
 import "content/logic.js" as Logic

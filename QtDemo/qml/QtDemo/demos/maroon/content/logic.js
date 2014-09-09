@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 .pragma library // Shared game state
-.import QtQuick 2.0 as QQ
+.import QtQuick 2.2 as QQ
 
 // Game Stuff
 var gameState // Local reference
@@ -105,6 +105,7 @@ function newGameState(gameCanvas)
     gameState.freshState();
     gameState.towers = new Array(gameCanvas.rows * gameCanvas.cols);
     gameState.mobs = new Array(gameCanvas.cols);
+    gameState.gameOver = false;
     return gameState;
 }
 

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 
 TemplateBase{
     goalText: "5 of 10<br><br>Clear the level..."
