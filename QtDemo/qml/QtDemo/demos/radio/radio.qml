@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 import QtMultimedia 5.0
 import QtQuick.XmlListModel 2.0
 
@@ -61,14 +61,7 @@ FocusScope {
             id: playMusic
             source: ""
             volume: volumeButton.volume
-            onSourceChanged: {
-                if (volumeButton.playing) playMusic.play()
-            }
-            onAvailabilityChanged: {
-                if (availability === Audio.Available) {
-                    if (volumeButton.playing) playMusic.play()
-                }
-            }
+            autoLoad: true
             Component.onDestruction: {
                 volumeButton.playing = false
                 playMusic.stop()
@@ -134,9 +127,19 @@ FocusScope {
 
                     Timer {
                         id: browseTimer
-                        interval: 500
+                        interval: 1000
                         property string source:""
-                        onTriggered: playMusic.source = source
+                        onTriggered: {
+
+                            if (playMusic.status===Audio.Loading) {
+                                browseTimer.restart()
+                                return;
+                            }
+                            playMusic.stop()
+                            playMusic.source = ""
+                            playMusic.source = source
+
+                        }
                     }
 
                     path: Path {
