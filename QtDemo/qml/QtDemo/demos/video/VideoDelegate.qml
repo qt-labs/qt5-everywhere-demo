@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.2
 
 Item {
     id: delegate
@@ -86,6 +86,8 @@ Item {
             anchors.bottom: parent.bottom
             color: "Black"
             opacity: 0.5
+            visible: iconImage.source !== ""
+
         }
 
         Text {
