@@ -53,16 +53,19 @@ Item {
 
         Slider {
             anchors.margins: 20
+            width: 280
             style: touchStyle
             value: 0
         }
         Slider {
             anchors.margins: 20
+            width: 280
             style: touchStyle
             value: 0.5
         }
         Slider {
             anchors.margins: 20
+            width: 280
             style: touchStyle
             value: 1.0
         }

@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
@@ -84,7 +80,7 @@ Item {
                     Text {
                         anchors.centerIn: parent
                         color: "white"
-                        text: styleData.title.toUpperCase()
+                        text: styleData.title
                         font.pixelSize: 16
                     }
                     Rectangle {

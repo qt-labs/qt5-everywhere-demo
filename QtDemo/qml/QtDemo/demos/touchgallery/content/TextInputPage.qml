@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
@@ -91,7 +87,7 @@ Item {
             font.pixelSize: 28
             background: Item {
                 implicitHeight: 50
-                implicitWidth: 320
+                implicitWidth: 300
                 BorderImage {
                     source: "../images/textinput.png"
                     border.left: 8

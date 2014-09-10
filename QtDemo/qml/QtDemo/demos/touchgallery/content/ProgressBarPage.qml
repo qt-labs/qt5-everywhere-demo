@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
@@ -73,14 +69,14 @@ Item {
         ProgressBar {
             anchors.margins: 20
             style: touchStyle
-            width: 400
+            width: 300
             value: progress
         }
 
         ProgressBar {
             anchors.margins: 20
             style: touchStyle
-            width: 400
+            width: 300
             value: 1 - progress
         }
 
@@ -88,7 +84,7 @@ Item {
             anchors.margins: 20
             style: touchStyle
             value: 1
-            width: 400
+            width: 300
         }
 
     }
